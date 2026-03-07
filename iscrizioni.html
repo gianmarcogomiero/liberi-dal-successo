@@ -455,6 +455,23 @@
       line-height: 1.65;
     }
     .confirm-cta em { color: var(--accent); font-style: normal; font-weight: 600; }
+    .btn-cal {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      margin-top: 28px;
+      padding: 12px 22px;
+      background: transparent;
+      border: 1px solid rgba(196,169,98,0.4);
+      border-radius: var(--r-sm);
+      color: var(--accent);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 0.92rem;
+      font-weight: 600;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+    }
+    .btn-cal:hover { background: rgba(196,169,98,0.08); border-color: var(--accent); }
 
     /* ── Modal ── */
     .modal-bg {
@@ -731,20 +748,8 @@
     <div class="confirm-screen" id="js-confirm">
       <div class="confirm-icon" id="js-conf-icon">✓</div>
       <h2 class="confirm-title" id="js-conf-title">Iscrizione confermata!</h2>
-      <p class="confirm-body" id="js-conf-body">
-        Grazie per esserti iscritto a <em>Liberi dal Successo</em>.<br>
-        Ti aspettiamo il 20 Giugno 2026 alle ore 17:30 alla Sala Polivalente di Bresseo.
-      </p>
-      <div class="confirm-details">
-        <p>📍 <strong>Sala Polivalente</strong> — Bresseo, Teolo (PD)</p>
-        <p>📅 <strong>20 Giugno 2026</strong> — ore 17:30</p>
-        <p>🎟 <strong>Ingresso gratuito</strong></p>
-      </div>
-      <p class="confirm-cta">
-        Ci vediamo il 20 giugno —<br>
-        non per imparare ad avere successo,<br>
-        ma per imparare ad <em>essere noi stessi.</em>
-      </p>
+      <p class="confirm-body" id="js-conf-body"></p>
+      <button class="btn-cal" id="js-btn-cal" type="button">📅 Aggiungi al calendario</button>
     </div>
 
   </div><!-- /container -->
@@ -759,9 +764,8 @@
     </span>
     <span>
       © 2026 Liberi dal Successo ·
-      <a href="mailto:liberidalsuccesso@gmail.com"
-         style="color:rgba(175,198,233,0.5);text-decoration:none;">
-        liberidalsuccesso@gmail.com
+      <a href="/cdn-cgi/l/email-protection#ea8683888f98838e8b86999f89898f999985aa8d878b8386c4898587" style="color:rgba(175,198,233,0.5);text-decoration:none;">
+        <span class="__cf_email__" data-cfemail="8ce0e5eee9fee5e8ede0fff9efefe9ffffe3ccebe1ede5e0a2efe3e1">[email&#160;protected]</span>
       </a>
     </span>
   </div>
@@ -774,7 +778,7 @@
     <h3 class="modal-title">Informativa sulla Privacy</h3>
     <div class="modal-content">
       <h4>Titolare del trattamento</h4>
-      <p>Liberi dal Successo — <a href="mailto:liberidalsuccesso@gmail.com">liberidalsuccesso@gmail.com</a></p>
+      <p>Liberi dal Successo — <a href="/cdn-cgi/l/email-protection#6e02070c0b1c070a0f021d1b0d0d0b1d1d012e09030f0702400d0103"><span class="__cf_email__" data-cfemail="f995909b9c8b909d98958a8c9a9a9c8a8a96b99e94989095d79a9694">[email&#160;protected]</span></a></p>
       <h4>Dati raccolti</h4>
       <p>Nome, cognome, indirizzo email, fascia d'età, comune di provenienza ed eventuali esigenze alimentari.</p>
       <h4>Finalità del trattamento</h4>
@@ -786,7 +790,7 @@
       <h4>Periodo di conservazione</h4>
       <p>I dati saranno conservati fino a 30 giorni dopo lo svolgimento dell'evento e successivamente cancellati.</p>
       <h4>Diritti dell'interessato</h4>
-      <p>Hai diritto di accedere ai tuoi dati, richiederne la rettifica o la cancellazione, opporti al trattamento e revocare il consenso in qualsiasi momento. Per esercitare i tuoi diritti scrivi a: <a href="mailto:liberidalsuccesso@gmail.com">liberidalsuccesso@gmail.com</a></p>
+      <p>Hai diritto di accedere ai tuoi dati, richiederne la rettifica o la cancellazione, opporti al trattamento e revocare il consenso in qualsiasi momento. Per esercitare i tuoi diritti scrivi a: <a href="/cdn-cgi/l/email-protection#7f13161d1a0d161b1e130c0a1c1c1a0c0c103f18121e1613511c1012"><span class="__cf_email__" data-cfemail="87ebeee5e2f5eee3e6ebf4f2e4e4e2f4f4e8c7e0eae6eeeba9e4e8ea">[email&#160;protected]</span></a></p>
     </div>
   </div>
 </div>
@@ -794,7 +798,7 @@
 <!-- ══════════════════════════════════════════════
      JAVASCRIPT
 ══════════════════════════════════════════════ -->
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function () {
   'use strict';
 
@@ -881,30 +885,10 @@
   var barEl    = document.getElementById('js-bar');
   var wBanner  = document.getElementById('js-wbanner');
 
-  /* ── ICS DOWNLOAD ──────────────────────────── */
+  /* ── ICS LINK IN HEADER ─────────────────────── */
   document.getElementById('js-ics').addEventListener('click', function(e) {
     e.preventDefault();
-    var lines = [
-      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Liberi dal Successo//IT',
-      'BEGIN:VEVENT',
-      'UID:liberidalsuccesso-20260620@bresseo',
-      'DTSTAMP:20260307T000000Z',
-      'DTSTART:20260620T153000Z',
-      'DTEND:20260620T173000Z',
-      'SUMMARY:Liberi dal Successo',
-      'DESCRIPTION:Un evento per ridefinire il significato di successo. Ingresso gratuito.',
-      'LOCATION:Sala Polivalente\\, Bresseo\\, Teolo (PD)',
-      'END:VEVENT', 'END:VCALENDAR'
-    ];
-    var blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
-    var url  = URL.createObjectURL(blob);
-    var a    = document.createElement('a');
-    a.href   = url;
-    a.download = 'liberi-dal-successo-20giugno2026.ics';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    downloadIcs();
   });
 
   /* ── SPOTS COUNTER ─────────────────────────── */
@@ -1061,22 +1045,24 @@
   });
 
   /* ── VALIDATION ────────────────────────────── */
-  var EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
+  var EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 
   function validate() {
+    /* always trim before checking */
     [fNome, fCognome, fEmail, fComune].forEach(function(el){
       el.value = el.value.trim();
     });
     var errors = [];
-    if (!fNome.value)            errors.push('Il campo <strong>Nome</strong> è obbligatorio');
-    if (!fCognome.value)         errors.push('Il campo <strong>Cognome</strong> è obbligatorio');
-    if (!EMAIL_RE.test(fEmail.value))
+    if (!fNome.value)
+      errors.push('Il campo <strong>Nome</strong> è obbligatorio');
+    if (!fCognome.value)
+      errors.push('Il campo <strong>Cognome</strong> è obbligatorio');
+    if (!fEmail.value || !EMAIL_RE.test(fEmail.value))
       errors.push('<strong>Email</strong> non valida — controlla che non ci siano spazi o errori di battitura');
     if (!prvOk) {
-      errors.push('Accetta l\'<strong>informativa sulla privacy</strong> per procedere');
+      errors.push("Accetta l'<strong>informativa sulla privacy</strong> per procedere");
       prvRow.classList.add('err');
     }
-
     if (errors.length) {
       toastUl.innerHTML = errors.map(function(e){ return '<li>' + e + '</li>'; }).join('');
       toast.classList.add('show');
@@ -1085,6 +1071,31 @@
     }
     toast.classList.remove('show');
     return true;
+  }
+
+  /* ── ICS HELPER ────────────────────────────── */
+  function downloadIcs() {
+    var lines = [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Liberi dal Successo//IT',
+      'BEGIN:VEVENT',
+      'UID:liberidalsuccesso-20260620@bresseo',
+      'DTSTAMP:20260307T000000Z',
+      'DTSTART:20260620T153000Z',
+      'DTEND:20260620T173000Z',
+      'SUMMARY:Liberi dal Successo',
+      'DESCRIPTION:Non per imparare ad avere successo — ma per imparare ad essere noi stessi. Ingresso gratuito.',
+      'LOCATION:Sala Polivalente\\, Bresseo\\, Teolo (PD)',
+      'END:VEVENT', 'END:VCALENDAR'
+    ];
+    var blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href   = url;
+    a.download = 'liberi-dal-successo-20giugno2026.ics';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
   }
 
   /* ── SUBMIT ────────────────────────────────── */
@@ -1115,6 +1126,7 @@
     btnTxt.textContent = '';
     spinner.style.display = 'block';
 
+
     fetch(ENDPOINT, {
       method: 'POST',
       mode:   'no-cors',
@@ -1125,26 +1137,37 @@
       if (!isWait) reg++;
       updateSpots();
 
-      form.style.display    = 'none';
+      form.style.display       = 'none';
       confirmDiv.style.display = 'block';
 
       var confIcon  = document.getElementById('js-conf-icon');
       var confTitle = document.getElementById('js-conf-title');
       var confBody  = document.getElementById('js-conf-body');
+      var calBtn    = document.getElementById('js-btn-cal');
+
+      calBtn.removeEventListener('click', downloadIcs);
+      calBtn.addEventListener('click', downloadIcs);
 
       if (isWait) {
         confIcon.textContent  = '📋';
         confTitle.textContent = "Sei in lista d'attesa";
-        confBody.innerHTML    =
-          'Grazie per il tuo interesse per <em>Liberi dal Successo</em>.<br>' +
+        calBtn.style.display  = 'none';
+        confBody.innerHTML =
+          "Grazie per il tuo interesse per " +
+          "<span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br>" +
           "L'evento ha raggiunto la capienza massima, ma sei in lista d'attesa.<br>" +
-          'Ti contatteremo a <strong>' + escHtml(payload.email) + '</strong> in caso di disponibilità.';
+          "Ti contatteremo a <strong style='color:var(--info)'>" + escHtml(payload.email) + "</strong> in caso di disponibilità.";
       } else {
         confTitle.textContent = 'Iscrizione confermata!';
-        confBody.innerHTML    =
-          'Grazie per esserti iscritto a <em>Liberi dal Successo</em>.<br>' +
-          'Ti aspettiamo il <strong>20 Giugno 2026</strong> alle ore <strong>17:30</strong><br>' +
-          'alla Sala Polivalente di Bresseo.';
+        calBtn.style.display  = 'inline-flex';
+        confBody.innerHTML =
+          "Grazie per esserti iscritto a " +
+          "<span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br>" +
+          "Ti aspettiamo il <strong>20 giugno</strong> alle ore <strong>17:30</strong> " +
+          "presso la Sala Polivalente di Bresseo.<br><br>" +
+          "<span style='font-family:\"Playfair Display\",serif;font-style:italic;font-size:1rem;color:rgba(217,207,195,0.75);'>" +
+          "Non per imparare ad avere successo —<br>ma per imparare ad essere noi stessi." +
+          "</span>";
       }
     });
   });
