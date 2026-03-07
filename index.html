@@ -225,12 +225,25 @@
   .autocomplete-item:hover,
   .autocomplete-item.highlighted { background: rgba(175,198,233,0.18); }
 
-  .checkbox-wrap { display: flex; align-items: flex-start; gap: 10px; cursor: pointer; }
-  .checkbox-wrap input[type="checkbox"] {
-    width: 18px; height: 18px; flex-shrink: 0;
-    margin-top: 1px; accent-color: var(--night-blue);
-    cursor: pointer; padding: 0;
+  .checkbox-wrap { display: flex; align-items: flex-start; gap: 12px; cursor: pointer; }
+  .checkbox-wrap input[type="checkbox"] { display: none; }
+  .checkbox-custom {
+    width: 22px; height: 22px; flex-shrink: 0; margin-top: 1px;
+    border: 2px solid var(--border); border-radius: 5px;
+    background: var(--bg);
+    display: flex; align-items: center; justify-content: center;
+    transition: all 0.18s; cursor: pointer;
   }
+  .checkbox-custom.checked { background: var(--night-blue); border-color: var(--night-blue); }
+  .checkbox-custom::after {
+    content: ''; display: none;
+    width: 6px; height: 11px;
+    border: 2px solid var(--sand);
+    border-top: none; border-left: none;
+    transform: rotate(45deg) translateY(-1px);
+  }
+  .checkbox-custom.checked::after { display: block; }
+  .field.has-error .checkbox-custom { border-color: var(--error); }
   .checkbox-wrap span { font-size: 13px; color: var(--text-muted); line-height: 1.65; }
   .checkbox-wrap a { color: var(--soft-blue); text-decoration: underline; cursor: pointer; }
 
@@ -419,10 +432,11 @@
         <p class="section-divider">Privacy</p>
 
         <div class="field" id="field-privacy">
-          <label class="checkbox-wrap">
+          <div class="checkbox-wrap" onclick="togglePrivacy()">
             <input type="checkbox" id="privacyCheck">
-            <span>Ho letto e accetto l'<a onclick="openPrivacy()">Informativa sulla Privacy</a>. Acconsento al trattamento dei miei dati personali per la gestione dell'iscrizione all'evento. <span class="req">*</span></span>
-          </label>
+            <div class="checkbox-custom" id="checkboxCustom"></div>
+            <span>Ho letto e accetto l'<a onclick="event.stopPropagation(); openPrivacy()">Informativa sulla Privacy</a>. Acconsento al trattamento dei miei dati personali per la gestione dell'iscrizione all'evento. <span class="req">*</span></span>
+          </div>
           <span class="field-error" style="display:none; margin-top:4px;">Devi accettare l'informativa per procedere.</span>
         </div>
 
@@ -432,7 +446,7 @@
 
         <div class="send-error" id="sendError">
           ⚠️ Si è verificato un problema nell'invio. Riprova oppure scrivici a
-          <a href="mailto:liberidalsuccesso@gmail.com" style="color:var(--error)">liberidalsuccesso@gmail.com</a>
+          <a href="/cdn-cgi/l/email-protection#98f4f1fafdeaf1fcf9f4ebedfbfbfdebebf7d8fff5f9f1f4b6fbf7f5" style="color:var(--error)"><span class="__cf_email__" data-cfemail="1a7673787f68737e7b76696f79797f6969755a7d777b737634797577">[email&#160;protected]</span></a>
         </div>
 
       </div>
@@ -456,7 +470,7 @@
     <p>Ai sensi del Regolamento (UE) 2016/679 (GDPR) e del D.Lgs. 196/2003 come modificato dal D.Lgs. 101/2018, ti forniamo le seguenti informazioni sul trattamento dei tuoi dati personali.</p>
     <h4>Titolare del trattamento</h4>
     <p>Iniziativa culturale "Liberi dal Successo" – Bresseo, Teolo (PD)<br>
-    Email: <a href="mailto:liberidalsuccesso@gmail.com" style="color:var(--soft-blue)">liberidalsuccesso@gmail.com</a></p>
+    Email: <a href="/cdn-cgi/l/email-protection#7b1712191e09121f1a17080e18181e0808143b1c161a121755181416" style="color:var(--soft-blue)"><span class="__cf_email__" data-cfemail="35595c5750475c515459464056565046465a755258545c591b565a58">[email&#160;protected]</span></a></p>
     <h4>Dati raccolti</h4>
     <p>Nome, cognome, indirizzo email, fascia d'età, comune di provenienza ed eventuali esigenze alimentari.</p>
     <h4>Finalità del trattamento</h4>
@@ -473,7 +487,7 @@
     <h4>Condivisione dei dati</h4>
     <p>I dati non saranno ceduti, venduti o comunicati a terzi. Potranno essere accessibili unicamente ai membri del team organizzativo dell'evento, vincolati alla riservatezza.</p>
     <h4>I tuoi diritti</h4>
-    <p>In qualsiasi momento puoi esercitare i seguenti diritti scrivendo a <a href="mailto:liberidalsuccesso@gmail.com" style="color:var(--soft-blue)">liberidalsuccesso@gmail.com</a>:</p>
+    <p>In qualsiasi momento puoi esercitare i seguenti diritti scrivendo a <a href="/cdn-cgi/l/email-protection#660a0f0403140f02070a151305050315150926010b070f0a4805090b" style="color:var(--soft-blue)"><span class="__cf_email__" data-cfemail="b1ddd8d3d4c3d8d5d0ddc2c4d2d2d4c2c2def1d6dcd0d8dd9fd2dedc">[email&#160;protected]</span></a>:</p>
     <ul>
       <li>Accedere ai tuoi dati personali</li>
       <li>Correggerli o aggiornarli</li>
@@ -488,10 +502,10 @@
 
 <footer>
   © 2026 Liberi dal Successo · Bresseo, Teolo (PD) ·
-  <a href="mailto:liberidalsuccesso@gmail.com" style="color:var(--text-muted)">liberidalsuccesso@gmail.com</a>
+  <a href="/cdn-cgi/l/email-protection#fc90959e998e95989d908f899f9f998f8f93bc9b919d9590d29f9391" style="color:var(--text-muted)"><span class="__cf_email__" data-cfemail="a5c9ccc7c0d7ccc1c4c9d6d0c6c6c0d6d6cae5c2c8c4ccc98bc6cac8">[email&#160;protected]</span></a>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // ── ENDPOINT GOOGLE APPS SCRIPT ──────────────────────────────
   const SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXQ179jJhZCjUpVygaqGAYQN8NabHrSbCAz-cZQQpnxp8WFh_u0LKLHUs9kyL-6gDFnw/exec";
   const MAX_CONFIRMED = 200;
@@ -650,7 +664,20 @@
     })
     .then(() => {
       incrementCount();
-      updateCounter();
+      function togglePrivacy() {
+    const cb = document.getElementById('privacyCheck');
+    const custom = document.getElementById('checkboxCustom');
+    cb.checked = !cb.checked;
+    custom.classList.toggle('checked', cb.checked);
+    const privacyField = document.getElementById('field-privacy');
+    const privacyError = privacyField.querySelector('.field-error');
+    if (cb.checked) {
+      privacyField.classList.remove('has-error');
+      privacyError.style.display = 'none';
+    }
+  }
+
+  updateCounter();
       showSuccess(isWaitlist);
     })
     .catch(() => {
@@ -674,17 +701,4 @@
       tag.textContent = 'Lista d\'attesa'; tag.className = 'success-tag waitlisted';
     } else {
       icon.textContent = '✓'; icon.className = 'success-icon confirmed';
-      title.textContent = 'Iscrizione confermata!';
-      text.innerHTML = 'Grazie per esserti iscritto a <strong>Liberi dal Successo</strong>. Riceverai una email di conferma a breve. Non vediamo l\'ora di accoglierti!';
-      tag.textContent = 'Posto confermato'; tag.className = 'success-tag confirmed';
-    }
-  }
-
-  function openPrivacy() { document.getElementById('privacyModal').classList.add('open'); document.body.style.overflow = 'hidden'; }
-  function closePrivacy() { document.getElementById('privacyModal').classList.remove('open'); document.body.style.overflow = ''; }
-  document.getElementById('privacyModal').addEventListener('click', function(e) { if (e.target === this) closePrivacy(); });
-
-  updateCounter();
-</script>
-</body>
-</html>
+      title.textContent = 'Iscrizione con
