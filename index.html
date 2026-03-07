@@ -97,13 +97,26 @@
   .btn-ghost:hover { border-color: rgba(217,207,195,0.50); background: rgba(217,207,195,0.06); }
 
   .meta-row {
-    display: flex; gap: 10px; flex-wrap: wrap; justify-content: center;
+    display: flex; gap: 0; flex-wrap: wrap; justify-content: center;
     margin-top: 52px; position: relative; z-index: 1;
     animation: fadeUp 0.9s 0.5s ease both;
+    border: 1px solid rgba(175,198,233,0.14);
+    border-radius: 12px; overflow: hidden; max-width: 520px; margin-left: auto; margin-right: auto;
   }
   .meta-pill {
-    background: rgba(175,198,233,0.07); border: 1px solid rgba(175,198,233,0.16);
-    padding: 7px 18px; border-radius: 100px; font-size: 12px; color: rgba(217,207,195,0.65);
+    padding: 12px 20px; font-size: 12px; color: rgba(217,207,195,0.65);
+    border-right: 1px solid rgba(175,198,233,0.12);
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    flex: 1; min-width: 110px;
+  }
+  .meta-pill:last-child { border-right: none; }
+  .meta-pill .pill-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(175,198,233,0.45); }
+  .meta-pill .pill-val { font-size: 13px; color: rgba(217,207,195,0.80); font-weight: 400; }
+  @media(max-width:480px) {
+    .meta-row { border-radius: 10px; }
+    .meta-pill { min-width: 50%; border-bottom: 1px solid rgba(175,198,233,0.12); }
+    .meta-pill:nth-child(even) { border-right: none; }
+    .meta-pill:nth-last-child(-n+2) { border-bottom: none; }
   }
   .scroll-hint {
     position: absolute; bottom: 32px; left: 50%; transform: translateX(-50%);
@@ -130,6 +143,13 @@
   .col-card li { font-size: 14px; color: rgba(217,207,195,0.70); padding: 6px 0; border-bottom: 1px solid rgba(175,198,233,0.07); line-height: 1.55; }
   .col-card li:last-child { border-bottom: none; }
   .col-card li::before { content: '— '; color: var(--blue); opacity: 0.45; }
+  .col-card-highlight {
+    background: rgba(196,169,98,0.07);
+    border-color: rgba(196,169,98,0.30);
+  }
+  .col-card-highlight h4 { color: var(--gold); opacity: 0.9; }
+  .col-card-highlight li { color: rgba(217,207,195,0.90); }
+  .col-card-highlight li::before { color: var(--gold); opacity: 0.70; }
 
   /* ── MESSAGGIO ── */
   .section-message {
@@ -195,6 +215,15 @@
   @keyframes fadeUp { from{opacity:0;transform:translateY(20px)} to{opacity:1;transform:translateY(0)} }
   .reveal { opacity:0; transform:translateY(24px); transition:opacity 0.7s ease,transform 0.7s ease; }
   .reveal.visible { opacity:1; transform:translateY(0); }
+  .version-badge {
+    display: inline-flex; align-items: center; gap: 6px;
+    background: var(--night); color: var(--gold);
+    border: 1px solid rgba(196,169,98,0.30);
+    font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;
+    padding: 4px 12px; border-radius: 100px; margin-bottom: 10px;
+  }
+  .version-dot { width: 6px; height: 6px; border-radius: 50%; background: var(--gold); animation: blink 1.4s ease-in-out infinite; }
+  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
 </style>
 </head>
 <body>
@@ -210,13 +239,21 @@
   </p>
   <div class="cta-group">
     <a href="iscrizioni.html" class="btn-primary">Iscriviti — è gratuito</a>
-    <a href="#evento" class="btn-ghost">Scopri l'evento</a>
+    <a href="#perche" class="btn-ghost">Scopri l'evento</a>
   </div>
   <div class="meta-row">
-    <span class="meta-pill">📅 20 Giugno 2026</span>
-    <span class="meta-pill">📍 Sala Polivalente, Bresseo</span>
-    <span class="meta-pill">🕔 Ore 17:30</span>
-    <span class="meta-pill">🎟 Ingresso gratuito</span>
+    <div class="meta-pill">
+      <span class="pill-label">Quando</span>
+      <span class="pill-val">20 Giugno · 17:30</span>
+    </div>
+    <div class="meta-pill">
+      <span class="pill-label">Dove</span>
+      <span class="pill-val">Sala Polivalente, Bresseo</span>
+    </div>
+    <div class="meta-pill">
+      <span class="pill-label">Accesso</span>
+      <span class="pill-val">Ingresso gratuito</span>
+    </div>
   </div>
   <div class="scroll-hint"><div class="arrow"></div></div>
 </section>
@@ -224,7 +261,7 @@
 <hr class="divider">
 
 <!-- PROBLEMA -->
-<section id="evento" class="reveal">
+<section id="perche" class="reveal">
   <p class="section-label">Perché questo evento</p>
   <p class="lead">Viviamo in una società che ci misura continuamente.<br>Ma nessuno ci insegna <em>ad accettarci.</em></p>
   <div class="two-col">
@@ -237,7 +274,7 @@
         <li>Apparenza e confronto</li>
       </ul>
     </div>
-    <div class="col-card">
+    <div class="col-card col-card-highlight">
       <h4>Quello che nessuno insegna</h4>
       <ul>
         <li>Accettarsi per come si è</li>
@@ -313,7 +350,7 @@
       </div>
       <div class="info-item">
         <span class="info-lbl">Contatti</span>
-        <span class="info-val">liberidalsuccesso@gmail.com</span>
+        <span class="info-val"><a href="/cdn-cgi/l/email-protection" class="__cf_email__" data-cfemail="c9a5a0abacbba0ada8a5babcaaaaacbabaa689aea4a8a0a5e7aaa6a4">[email&#160;protected]</a></span>
         <span class="info-sub">Per info e collaborazioni</span>
       </div>
     </div>
@@ -340,13 +377,14 @@
 
 <!-- FOOTER -->
 <footer>
+  <div class="version-badge"><div class="version-dot"></div>Beta · v0.3 · 07.03.2026</div><br>
   © 2026 Liberi dal Successo · Bresseo, Teolo (PD) ·
-  <a href="mailto:liberidalsuccesso@gmail.com">liberidalsuccesso@gmail.com</a>
+  <a href="/cdn-cgi/l/email-protection#eb8782898e99828f8a87989e88888e989884ab8c868a8287c5888486"><span class="__cf_email__" data-cfemail="44282d2621362d202528373127272137372b042329252d286a272b29">[email&#160;protected]</span></a>
   &nbsp;·&nbsp;
   <a href="iscrizioni.html">Iscrizioni</a>
 </footer>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
   // Scroll reveal
   var obs = new IntersectionObserver(function(entries) {
     entries.forEach(function(e) {
@@ -367,18 +405,4 @@
       'SUMMARY:Liberi dal Successo',
       'DESCRIPTION:Un evento per ridefinire il significato di successo. Ingresso gratuito.',
       'LOCATION:Sala Polivalente\\, Bresseo\\, Teolo (PD)',
-      'URL:https://liberidalsuccesso.it',
-      'END:VEVENT',
-      'END:VCALENDAR'
-    ].join('\r\n');
-    var blob = new Blob([ics], { type: 'text/calendar' });
-    var a = document.createElement('a');
-    a.href = URL.createObjectURL(blob);
-    a.download = 'liberi-dal-successo.ics';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-  });
-</script>
-</body>
-</html>
+      'URL:htt
