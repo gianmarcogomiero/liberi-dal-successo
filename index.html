@@ -107,7 +107,10 @@
     border: 1px solid rgba(175,198,233,0.22);
     padding: 6px 16px; border-radius: 100px;
     font-size: 12px; color: rgba(217,207,195,0.80);
+    text-decoration: none;
   }
+  .meta-pill-link { transition: background 0.18s; }
+  .meta-pill-link:hover { background: rgba(175,198,233,0.22); }
 
   .counter-bar {
     background: var(--surface);
@@ -200,7 +203,6 @@
   }
 
   .altro-field { display: none; margin-top: 10px; }
-  .altro-field.visible { display: block; }
   .altro-field textarea { resize: none; height: 72px; font-size: 14px; line-height: 1.5; }
 
   .autocomplete-wrap { position: relative; }
@@ -326,7 +328,7 @@
   <h1>Liberi dal<br><em>Successo</em></h1>
   <p class="header-sub">Un evento comunitario su identità, benessere e il coraggio di accettarci per quello che siamo.</p>
   <div class="header-meta">
-    <span class="meta-pill">📍 Sala Polivalente, Bresseo</span>
+    <a href="https://maps.google.com/?q=Sala+Polivalente+Bresseo+Teolo+Padova" target="_blank" class="meta-pill meta-pill-link">📍 Sala Polivalente, Bresseo</a>
     <span class="meta-pill">📅 Giugno 2026</span>
     <span class="meta-pill">🎟 Ingresso gratuito</span>
   </div>
@@ -559,24 +561,38 @@
   const acList = document.getElementById('autocompleteList');
   let highlightedIndex = -1;
 
-  comuneInput.addEventListener('input', function() {
-    const val = this.value.trim().toLowerCase();
-    acList.innerHTML = ''; highlightedIndex = -1;
-    if (val.length < 2) { acList.classList.remove('open'); return; }
-    const matches = COMUNI.filter(c => c.toLowerCase().startsWith(val)).slice(0, 8);
+  function showSuggestions(val) {
+    acList.innerHTML = '';
+    highlightedIndex = -1;
+    const trimmed = val.trim().toLowerCase();
+    if (trimmed.length < 2) { acList.classList.remove('open'); return; }
+    const matches = COMUNI.filter(c => c.toLowerCase().startsWith(trimmed)).slice(0, 8);
     if (!matches.length) { acList.classList.remove('open'); return; }
     matches.forEach(comune => {
       const item = document.createElement('div');
       item.className = 'autocomplete-item';
       item.textContent = comune;
-      item.addEventListener('mousedown', () => {
+      // Use both touchstart and mousedown for mobile + desktop
+      function selectComune(e) {
+        e.preventDefault();
+        e.stopPropagation();
         comuneInput.value = comune;
         acList.classList.remove('open');
         document.getElementById('field-comune').classList.remove('has-error');
-      });
+        comuneInput.blur();
+      }
+      item.addEventListener('touchstart', selectComune, { passive: false });
+      item.addEventListener('mousedown', selectComune);
       acList.appendChild(item);
     });
     acList.classList.add('open');
+  }
+
+  // Fire on both input and keyup for broader mobile support
+  comuneInput.addEventListener('input', function() { showSuggestions(this.value); });
+  comuneInput.addEventListener('keyup', function(e) {
+    if (['ArrowDown','ArrowUp','Enter','Escape'].includes(e.key)) return;
+    showSuggestions(this.value);
   });
 
   comuneInput.addEventListener('keydown', function(e) {
@@ -584,23 +600,39 @@
     if (!items.length) return;
     if (e.key === 'ArrowDown') { e.preventDefault(); highlightedIndex = Math.min(highlightedIndex+1, items.length-1); }
     else if (e.key === 'ArrowUp') { e.preventDefault(); highlightedIndex = Math.max(highlightedIndex-1, 0); }
-    else if (e.key === 'Enter' && highlightedIndex >= 0) { e.preventDefault(); comuneInput.value = items[highlightedIndex].textContent; acList.classList.remove('open'); return; }
-    else if (e.key === 'Escape') { acList.classList.remove('open'); return; }
+    else if (e.key === 'Enter' && highlightedIndex >= 0) {
+      e.preventDefault();
+      comuneInput.value = items[highlightedIndex].textContent;
+      acList.classList.remove('open');
+      return;
+    } else if (e.key === 'Escape') { acList.classList.remove('open'); return; }
     items.forEach((el, i) => el.classList.toggle('highlighted', i === highlightedIndex));
   });
 
+  // Close on click/touch outside
   document.addEventListener('click', function(e) {
+    if (!e.target.closest('.autocomplete-wrap')) acList.classList.remove('open');
+  });
+  document.addEventListener('touchend', function(e) {
     if (!e.target.closest('.autocomplete-wrap')) acList.classList.remove('open');
   });
 
   // ── DIETA ALTRO ───────────────────────────────────────────────
-  document.querySelectorAll('input[name="dieta"]').forEach(radio => {
-    radio.addEventListener('change', function() {
-      const altroField = document.getElementById('altroField');
-      if (this.value === 'altro') { altroField.classList.add('visible'); document.getElementById('altroText').focus(); }
-      else { altroField.classList.remove('visible'); document.getElementById('altroText').value = ''; }
+  function setupDieta() {
+    document.querySelectorAll('input[name="dieta"]').forEach(radio => {
+      radio.addEventListener('change', function() {
+        const altroField = document.getElementById('altroField');
+        if (this.value === 'altro') {
+          altroField.style.display = 'block';
+          document.getElementById('altroText').focus();
+        } else {
+          altroField.style.display = 'none';
+          document.getElementById('altroText').value = '';
+        }
+      });
     });
-  });
+  }
+  setupDieta();
 
   // ── VALIDATION ────────────────────────────────────────────────
   function validateEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
@@ -668,16 +700,16 @@
     const cb = document.getElementById('privacyCheck');
     const custom = document.getElementById('checkboxCustom');
     cb.checked = !cb.checked;
-    custom.classList.toggle('checked', cb.checked);
-    const privacyField = document.getElementById('field-privacy');
-    const privacyError = privacyField.querySelector('.field-error');
     if (cb.checked) {
-      privacyField.classList.remove('has-error');
-      privacyError.style.display = 'none';
+      custom.classList.add('checked');
+      document.getElementById('field-privacy').classList.remove('has-error');
+      document.getElementById('field-privacy').querySelector('.field-error').style.display = 'none';
+    } else {
+      custom.classList.remove('checked');
     }
   }
 
-  updateCounter();
+  updateCounter(0);
       showSuccess(isWaitlist);
     })
     .catch(() => {
