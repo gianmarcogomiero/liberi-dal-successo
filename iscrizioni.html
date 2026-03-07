@@ -41,8 +41,23 @@
   .header-sub { font-size:15px; font-weight:300; color:rgba(217,207,195,0.72); max-width:460px; margin:0 auto; line-height:1.75; position:relative; z-index:1; }
 
   .header-meta { margin-top:28px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
-  .meta-pill { background:rgba(175,198,233,0.10); border:1px solid rgba(175,198,233,0.22); padding:6px 16px; border-radius:100px; font-size:12px; color:rgba(217,207,195,0.80); text-decoration:none; display:inline-block; }
-  a.meta-pill:hover { background:rgba(175,198,233,0.22); }
+  .header-meta { gap: 0 !important; border: 1px solid rgba(175,198,233,0.14); border-radius: 12px; overflow: hidden; max-width: 500px; margin-left: auto; margin-right: auto; }
+  .meta-pill {
+    padding: 12px 16px; font-size: 12px; color: rgba(217,207,195,0.65);
+    border-right: 1px solid rgba(175,198,233,0.12);
+    display: flex; flex-direction: column; align-items: center; gap: 3px;
+    flex: 1; text-decoration: none; background: transparent; cursor: default;
+  }
+  .meta-pill:last-child { border-right: none; }
+  .meta-pill .pill-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(175,198,233,0.45); }
+  .meta-pill .pill-val { font-size: 12px; color: rgba(217,207,195,0.80); font-weight: 400; text-align: center; line-height: 1.4; }
+  a.meta-pill { cursor: pointer; transition: background 0.18s; }
+  a.meta-pill:hover { background: rgba(175,198,233,0.08); }
+  @media(max-width:480px) {
+    .meta-pill { min-width: 50%; border-bottom: 1px solid rgba(175,198,233,0.12); }
+    .meta-pill:nth-child(even) { border-right: none; }
+    .meta-pill:nth-last-child(-n+2) { border-bottom: none; }
+  }
 
   /* COUNTER */
   .counter-bar { background:var(--surface); border-bottom:1px solid var(--border); padding:16px 24px; text-align:center; }
@@ -315,7 +330,7 @@
 </div>
 
 <footer>
-  <div class="version-badge"><div class="version-dot"></div>Beta · v0.2 · 07.03.2026</div><br>
+  <div class="version-badge"><div class="version-dot"></div>Beta · v0.3 · 07.03.2026</div><br>
   © 2026 Liberi dal Successo · Bresseo, Teolo (PD) ·
   <a href="/cdn-cgi/l/email-protection#0d61646f687f64696c617e786e6e687e7e624d6a606c6461236e6260" style="color:var(--text-muted)"><span class="__cf_email__" data-cfemail="c2aeaba0a7b0aba6a3aeb1b7a1a1a7b1b1ad82a5afa3abaeeca1adaf">[email&#160;protected]</span></a>
 </footer>
@@ -518,4 +533,4 @@ function showSuccess(isWaitlist) {
   if (isWaitlist) {
     icon.textContent = '⏳'; icon.className = 'success-icon waitlisted';
     title.textContent = 'Sei in lista d\'attesa!';
-    text.innerHTML = 'I posti confermati sono esauriti, ma ti abbiamo aggiunto alla lista d\'attesa di <strong>Liberi dal Successo</strong>. Ti contatteremo via email se si libera 
+    text.innerHTML = 'I posti confermati sono esauriti, ma ti abbiamo aggiunto alla lista d\'attesa di <strong>Liberi dal Successo</strong>. Ti contatteremo via email se si libera
