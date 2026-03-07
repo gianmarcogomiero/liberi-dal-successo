@@ -1,0 +1,611 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Liberi dal Successo – 20 Giugno 2026, Bresseo</title>
+  <meta name="description" content="Un evento per ridefinire il significato di successo. Bresseo, Teolo (PD) – 20 Giugno 2026. Ingresso gratuito." />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet" />
+
+  <style>
+    /* ── RESET & VARIABILI ─────────────────────────────── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; }
+
+    :root {
+      --night : #0B1C2D;
+      --sand  : #D9CFC3;
+      --blue  : #AFC6E9;
+      --grey  : #E6E8EC;
+      --cgrey : #C4C9D4;
+      --gold  : #C4A962;
+    }
+
+    body {
+      font-family: 'DM Sans', sans-serif;
+      background: var(--night);
+      color: var(--sand);
+      overflow-x: hidden;
+    }
+
+    /* ── HERO ──────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+      padding: 80px 24px 120px;
+      position: relative;
+      overflow: hidden;
+    }
+
+    /* cerchi decorativi sfondo */
+    .hero::before {
+      content: '';
+      position: absolute;
+      width: 500px; height: 500px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(175,198,233,0.08) 0%, transparent 70%);
+      top: -80px; left: -120px;
+      pointer-events: none;
+    }
+    .hero::after {
+      content: '';
+      position: absolute;
+      width: 400px; height: 400px;
+      border-radius: 50%;
+      background: radial-gradient(circle, rgba(196,169,98,0.06) 0%, transparent 70%);
+      bottom: -60px; right: -80px;
+      pointer-events: none;
+    }
+
+    /* Logo placeholder */
+    .logo-wrap {
+      width: 80px; height: 80px;
+      border-radius: 50%;
+      border: 1.5px dashed rgba(175,198,233,0.25);
+      display: flex; align-items: center; justify-content: center;
+      margin: 0 auto 40px;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(175,198,233,0.35);
+      position: relative; z-index: 1;
+    }
+
+    .hero-eyebrow {
+      font-size: 11px; font-weight: 500;
+      letter-spacing: 3px; text-transform: uppercase;
+      color: var(--blue); opacity: 0.7;
+      margin-bottom: 20px;
+      position: relative; z-index: 1;
+    }
+
+    .hero-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(3.2rem, 11vw, 7.5rem);
+      font-weight: 700;
+      line-height: 1.05;
+      letter-spacing: -0.02em;
+      color: var(--sand);
+      position: relative; z-index: 1;
+      margin-bottom: 8px;
+    }
+    /* "Successo" in oro come da palette */
+    .hero-title .gold { color: var(--gold); font-style: italic; display: block; }
+
+    .hero-tagline {
+      max-width: 540px;
+      margin: 24px auto 48px;
+      position: relative; z-index: 1;
+    }
+    .hero-tagline .line1 {
+      font-size: 15px; font-weight: 300;
+      color: rgba(217,207,195,0.55);
+      letter-spacing: 0.3px;
+      margin-bottom: 14px;
+    }
+    .hero-tagline .line2 {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.05rem, 2.8vw, 1.25rem);
+      color: rgba(217,207,195,0.85);
+      line-height: 1.65;
+    }
+
+    /* CTA buttons */
+    .hero-cta {
+      display: flex; gap: 14px; flex-wrap: wrap; justify-content: center;
+      position: relative; z-index: 1;
+    }
+    .btn-main {
+      display: inline-block;
+      padding: 14px 34px;
+      background: var(--sand); color: var(--night);
+      font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
+      border-radius: 100px; text-decoration: none; letter-spacing: 0.3px;
+      transition: transform 0.18s, box-shadow 0.18s;
+      box-shadow: 0 4px 20px rgba(217,207,195,0.15);
+    }
+    .btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(217,207,195,0.25); }
+
+    .btn-outline {
+      display: inline-block;
+      padding: 14px 34px;
+      background: transparent; color: var(--sand);
+      font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 400;
+      border-radius: 100px; text-decoration: none; letter-spacing: 0.3px;
+      border: 1.5px solid rgba(217,207,195,0.22);
+      transition: border-color 0.18s, background 0.18s;
+    }
+    .btn-outline:hover { border-color: rgba(217,207,195,0.50); background: rgba(217,207,195,0.05); }
+
+    /* Info strip — box unico sotto i CTA */
+    .info-strip {
+      display: flex;
+      margin: 52px auto 0;
+      max-width: 500px;
+      border: 1px solid rgba(175,198,233,0.15);
+      border-radius: 12px;
+      overflow: hidden;
+      position: relative; z-index: 1;
+    }
+    .info-cell {
+      flex: 1;
+      display: flex; flex-direction: column;
+      align-items: center; justify-content: center;
+      gap: 4px;
+      padding: 14px 12px;
+      border-right: 1px solid rgba(175,198,233,0.12);
+    }
+    .info-cell:last-child { border-right: none; }
+    .info-cell-label {
+      font-size: 9px; letter-spacing: 1.8px; text-transform: uppercase;
+      color: rgba(175,198,233,0.45);
+    }
+    .info-cell-value {
+      font-size: 12px; color: rgba(217,207,195,0.78);
+      text-align: center; line-height: 1.45;
+    }
+    @media (max-width: 480px) {
+      .info-strip { flex-wrap: wrap; max-width: 300px; }
+      .info-cell { min-width: 50%; border-bottom: 1px solid rgba(175,198,233,0.12); }
+      .info-cell:nth-child(even) { border-right: none; }
+      .info-cell:last-child { border-bottom: none; }
+      .info-cell:nth-last-child(2) { border-bottom: none; }
+    }
+
+    /* ── SEZIONI COMUNI ────────────────────────────────── */
+    .section {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 80px 24px;
+    }
+
+    .section-sep {
+      border: none;
+      border-top: 1px solid rgba(175,198,233,0.09);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    .section-tag {
+      font-size: 10px; font-weight: 500;
+      letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--blue); opacity: 0.55;
+      margin-bottom: 22px;
+    }
+
+    /* ── PROBLEMA ──────────────────────────────────────── */
+    .problem-lead {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.45rem, 4vw, 2.2rem);
+      font-weight: 400; line-height: 1.5;
+      color: var(--sand); margin-bottom: 32px;
+    }
+    .problem-lead em { font-style: italic; color: var(--blue); }
+
+    .cards {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 18px;
+    }
+    @media (max-width: 520px) { .cards { grid-template-columns: 1fr; } }
+
+    .card {
+      border-radius: 12px; padding: 24px;
+      background: rgba(175,198,233,0.04);
+      border: 1px solid rgba(175,198,233,0.11);
+    }
+    /* Card "quello che nessuno insegna" evidenziata in oro */
+    .card--gold {
+      background: rgba(196,169,98,0.07);
+      border-color: rgba(196,169,98,0.28);
+    }
+    .card-title {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--blue); opacity: 0.65; margin-bottom: 16px;
+    }
+    .card--gold .card-title { color: var(--gold); opacity: 0.9; }
+
+    .card ul { list-style: none; }
+    .card li {
+      font-size: 14px; color: rgba(217,207,195,0.70);
+      padding: 7px 0; border-bottom: 1px solid rgba(175,198,233,0.08);
+      line-height: 1.55;
+    }
+    .card--gold li { color: rgba(217,207,195,0.88); border-color: rgba(196,169,98,0.12); }
+    .card li:last-child { border-bottom: none; }
+    .card li::before { content: '— '; color: var(--blue); opacity: 0.4; }
+    .card--gold li::before { color: var(--gold); opacity: 0.65; }
+
+    /* ── CITAZIONE ─────────────────────────────────────── */
+    .quote-section {
+      background: rgba(175,198,233,0.03);
+      border-top: 1px solid rgba(175,198,233,0.09);
+      border-bottom: 1px solid rgba(175,198,233,0.09);
+      padding: 100px 24px;
+      text-align: center;
+    }
+    .quote-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.5rem, 5vw, 2.8rem);
+      font-weight: 400; line-height: 1.45;
+      color: var(--sand); max-width: 680px;
+      margin: 0 auto;
+    }
+    /* Unico accento oro = parola "accettarsi" */
+    .quote-text .gold { color: var(--gold); }
+    .quote-attr {
+      margin-top: 28px;
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: rgba(175,198,233,0.38);
+    }
+
+    /* ── TEMI ──────────────────────────────────────────── */
+    .chips {
+      display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px;
+    }
+    .chip {
+      padding: 9px 18px;
+      border: 1px solid rgba(175,198,233,0.16);
+      border-radius: 100px;
+      font-size: 13px; color: rgba(217,207,195,0.68);
+      background: rgba(175,198,233,0.04);
+    }
+
+    /* ── FORMAT ────────────────────────────────────────── */
+    .format-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 16px;
+      margin-top: 28px;
+    }
+    @media (max-width: 520px) { .format-grid { grid-template-columns: 1fr; } }
+
+    .format-item {
+      display: flex; align-items: flex-start; gap: 14px;
+      padding: 18px; border-radius: 10px;
+      background: rgba(175,198,233,0.04);
+      border: 1px solid rgba(175,198,233,0.10);
+    }
+    .format-icon { font-size: 20px; flex-shrink: 0; margin-top: 2px; }
+    .format-title { font-size: 14px; font-weight: 500; color: var(--sand); margin-bottom: 4px; }
+    .format-desc { font-size: 13px; color: rgba(217,207,195,0.62); line-height: 1.6; }
+
+    /* ── INFO EVENTO ───────────────────────────────────── */
+    .info-box {
+      background: rgba(175,198,233,0.05);
+      border: 1px solid rgba(175,198,233,0.13);
+      border-radius: 16px; padding: 36px;
+      margin-top: 28px;
+    }
+    .info-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 28px;
+    }
+    @media (max-width: 520px) { .info-grid { grid-template-columns: 1fr; } }
+
+    .info-item-label {
+      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
+      color: var(--blue); opacity: 0.55; margin-bottom: 4px;
+    }
+    .info-item-value { font-size: 16px; color: var(--sand); line-height: 1.4; }
+    .info-item-sub { font-size: 13px; color: rgba(217,207,195,0.50); margin-top: 3px; }
+
+    .info-actions {
+      display: flex; gap: 12px; flex-wrap: wrap;
+      margin-top: 32px; padding-top: 28px;
+      border-top: 1px solid rgba(175,198,233,0.10);
+    }
+    .action-btn {
+      display: inline-flex; align-items: center; gap: 8px;
+      padding: 11px 22px; border-radius: 100px;
+      background: rgba(175,198,233,0.06);
+      border: 1.5px solid rgba(175,198,233,0.20);
+      color: rgba(217,207,195,0.78);
+      font-family: 'DM Sans', sans-serif; font-size: 13px; font-weight: 500;
+      text-decoration: none; cursor: pointer;
+      transition: border-color 0.18s, background 0.18s, color 0.18s;
+      letter-spacing: 0.3px;
+    }
+    .action-btn:hover {
+      border-color: rgba(175,198,233,0.45);
+      background: rgba(175,198,233,0.12);
+      color: var(--sand);
+    }
+
+    /* ── CTA FINALE ────────────────────────────────────── */
+    .cta-section {
+      text-align: center; padding: 100px 24px;
+    }
+    .cta-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2.2rem, 7vw, 4rem);
+      font-weight: 700; line-height: 1.1;
+      color: var(--sand); margin-bottom: 16px;
+    }
+    .cta-title .gold { font-style: italic; color: var(--gold); }
+    .cta-sub {
+      font-size: 15px; font-weight: 300;
+      color: rgba(217,207,195,0.52);
+      max-width: 360px; margin: 0 auto 36px;
+      line-height: 1.85;
+    }
+
+    /* ── FOOTER ────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid rgba(175,198,233,0.09);
+      padding: 28px 24px;
+      text-align: center;
+      font-size: 12px; color: rgba(217,207,195,0.35);
+    }
+    footer a { color: rgba(175,198,233,0.50); text-decoration: none; }
+    footer a:hover { color: var(--blue); }
+
+    /* Version badge */
+    .version-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 4px 12px; border-radius: 100px;
+      background: rgba(196,169,98,0.10);
+      border: 1px solid rgba(196,169,98,0.28);
+      color: var(--gold);
+      font-size: 10px; font-weight: 500; letter-spacing: 1.5px; text-transform: uppercase;
+      margin-bottom: 12px;
+    }
+    .version-dot {
+      width: 6px; height: 6px; border-radius: 50%;
+      background: var(--gold);
+      animation: blink 1.4s ease-in-out infinite;
+    }
+    @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+  </style>
+</head>
+<body>
+
+  <!-- ══════════ HERO ══════════ -->
+  <div class="hero">
+    <div class="logo-wrap">Logo</div>
+
+    <p class="hero-eyebrow">Bresseo · Teolo · Padova</p>
+
+    <h1 class="hero-title">
+      Liberi dal<br>
+      <span class="gold">Successo</span>
+    </h1>
+
+    <div class="hero-tagline">
+      <p class="line1">Un evento per ridefinire il significato di successo.</p>
+      <p class="line2">
+        "Il vero successo non è dimostrare qualcosa.<br>
+        È il coraggio di accettarsi e imparare ad amarsi per come si è."
+      </p>
+    </div>
+
+    <div class="hero-cta">
+      <a href="iscrizioni.html" class="btn-main">Iscriviti — è gratuito</a>
+      <a href="#perche" class="btn-outline">Scopri l'evento</a>
+    </div>
+
+    <!-- Info strip: data+ora nello stesso cell, non sembrano pulsanti -->
+    <div class="info-strip">
+      <div class="info-cell">
+        <span class="info-cell-label">Quando</span>
+        <span class="info-cell-value">20 Giugno 2026<br>Ore 17:30</span>
+      </div>
+      <div class="info-cell">
+        <span class="info-cell-label">Dove</span>
+        <span class="info-cell-value">Sala Polivalente<br>Bresseo</span>
+      </div>
+      <div class="info-cell">
+        <span class="info-cell-label">Accesso</span>
+        <span class="info-cell-value">Ingresso<br>gratuito</span>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ PROBLEMA ══════════ -->
+  <hr class="section-sep" />
+
+  <div class="section" id="perche">
+    <p class="section-tag">Perché questo evento</p>
+    <p class="problem-lead">
+      Viviamo in una società che ci misura continuamente.<br>
+      Ma nessuno ci insegna <em>ad accettarci.</em>
+    </p>
+    <div class="cards">
+      <div class="card">
+        <p class="card-title">Quello che la società misura</p>
+        <ul>
+          <li>Carriera e posizione</li>
+          <li>Soldi e status</li>
+          <li>Performance e risultati</li>
+          <li>Apparenza e confronto</li>
+        </ul>
+      </div>
+      <div class="card card--gold">
+        <p class="card-title">Quello che nessuno insegna</p>
+        <ul>
+          <li>Accettarsi per come si è</li>
+          <li>Affrontare il fallimento</li>
+          <li>Prendersi cura di sé</li>
+          <li>Capire chi si è davvero</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ CITAZIONE ══════════ -->
+  <div class="quote-section">
+    <p class="quote-text">
+      "Il vero successo non è dimostrare qualcosa.<br>
+      È avere il coraggio di <span class="gold">accettarsi</span><br>
+      e imparare ad amarsi per come si è."
+    </p>
+    <p class="quote-attr">Il messaggio dell'evento</p>
+  </div>
+
+  <!-- ══════════ TEMI ══════════ -->
+  <div class="section">
+    <p class="section-tag">I temi</p>
+    <div class="chips">
+      <span class="chip">Identità come processo</span>
+      <span class="chip">Crescita personale</span>
+      <span class="chip">Benessere mentale</span>
+      <span class="chip">Accettazione di sé</span>
+      <span class="chip">Le cadute come parte del percorso</span>
+      <span class="chip">Comunità che accoglie</span>
+      <span class="chip">Consapevolezza</span>
+      <span class="chip">Viaggio come apertura</span>
+    </div>
+  </div>
+
+  <hr class="section-sep" />
+
+  <!-- ══════════ FORMAT ══════════ -->
+  <div class="section">
+    <p class="section-tag">Come è strutturato</p>
+    <div class="format-grid">
+      <div class="format-item">
+        <div class="format-icon">🎤</div>
+        <div>
+          <p class="format-title">Talk brevi e storie vere</p>
+          <p class="format-desc">Persone del territorio che condividono esperienze reali, non esperti irraggiungibili.</p>
+        </div>
+      </div>
+      <div class="format-item">
+        <div class="format-icon">🎵</div>
+        <div>
+          <p class="format-title">Musica live</p>
+          <p class="format-desc">Momenti musicali che accompagnano la serata e creano atmosfera.</p>
+        </div>
+      </div>
+      <div class="format-item">
+        <div class="format-icon">🤝</div>
+        <div>
+          <p class="format-title">Comunità e condivisione</p>
+          <p class="format-desc">Spazio per incontrarsi, parlare e sentirsi meno soli in certi pensieri.</p>
+        </div>
+      </div>
+      <div class="format-item">
+        <div class="format-icon">📍</div>
+        <div>
+          <p class="format-title">A chilometro zero</p>
+          <p class="format-desc">Voci locali, ospiti del territorio. Non il curriculum, ma la passione.</p>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <hr class="section-sep" />
+
+  <!-- ══════════ INFO EVENTO ══════════ -->
+  <div class="section">
+    <p class="section-tag">Informazioni pratiche</p>
+    <div class="info-box">
+      <div class="info-grid">
+        <div>
+          <p class="info-item-label">Data</p>
+          <p class="info-item-value">Sabato 20 Giugno 2026</p>
+          <p class="info-item-sub">Ore 17:30</p>
+        </div>
+        <div>
+          <p class="info-item-label">Luogo</p>
+          <p class="info-item-value">Sala Polivalente</p>
+          <p class="info-item-sub">Bresseo, Teolo (PD)</p>
+        </div>
+        <div>
+          <p class="info-item-label">Accesso</p>
+          <p class="info-item-value">Gratuito e aperto a tutti</p>
+          <p class="info-item-sub">Consigliata l'iscrizione</p>
+        </div>
+        <div>
+          <p class="info-item-label">Contatti</p>
+          <p class="info-item-value">liberidalsuccesso@gmail.com</p>
+          <p class="info-item-sub">Per info e collaborazioni</p>
+        </div>
+      </div>
+
+      <div class="info-actions">
+        <a href="https://maps.google.com/?q=Sala+Polivalente+Bresseo+Teolo+Padova"
+           target="_blank" rel="noopener" class="action-btn">
+          📍 Apri in Google Maps
+        </a>
+        <button class="action-btn" id="calBtn">
+          📅 Salva nel calendario
+        </button>
+        <a href="iscrizioni.html" class="action-btn">
+          🎟 Iscriviti all'evento
+        </a>
+      </div>
+    </div>
+  </div>
+
+  <!-- ══════════ CTA FINALE ══════════ -->
+  <div class="cta-section">
+    <h2 class="cta-title">
+      Ci vediamo il<br>
+      <span class="gold">20 Giugno</span>
+    </h2>
+    <p class="cta-sub">
+      Non per imparare ad avere successo.<br>
+      Ma per imparare ad essere noi stessi.
+    </p>
+    <a href="iscrizioni.html" class="btn-main">Prenota il tuo posto</a>
+  </div>
+
+  <!-- ══════════ FOOTER ══════════ -->
+  <footer>
+    <div class="version-badge"><div class="version-dot"></div>Beta · v0.3 · 07.03.2026</div>
+    <br>
+    © 2026 Liberi dal Successo · Bresseo, Teolo (PD) ·
+    <a href="mailto:liberidalsuccesso@gmail.com">liberidalsuccesso@gmail.com</a>
+    &nbsp;·&nbsp;
+    <a href="iscrizioni.html">Iscrizioni</a>
+  </footer>
+
+  <script>
+    // Salva nel calendario → genera .ics
+    document.getElementById('calBtn').addEventListener('click', function () {
+      var lines = [
+        'BEGIN:VCALENDAR',
+        'VERSION:2.0',
+        'PRODID:-//Liberi dal Successo//IT',
+        'BEGIN:VEVENT',
+        'DTSTART:20260620T153000Z',
+        'DTEND:20260620T210000Z',
+        'SUMMARY:Liberi dal Successo',
+        'DESCRIPTION:Un evento per ridefinire il significato di successo. Ingresso gratuito.',
+        'LOCATION:Sala Polivalente\\, Bresseo\\, Teolo (PD)',
+        'URL:https://liberidalsuccesso.it',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ];
+      var blob = new Blob([lines.join('\r\n')], { type: 'text/calendar' });
+      var a = document.createElement('a');
+      a.href = URL.createObjectURL(blob);
+      a.download = 'liberi-dal-successo.ics';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    });
+  </script>
+
+</body>
+</html>
