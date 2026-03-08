@@ -4,19 +4,21 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Iscrizione — Liberi dal Successo</title>
-  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
   <style>
     :root {
-      --bg:        #0B1C2D;
-      --title:     #D9CFC3;
-      --info:      #AFC6E9;
-      --body:      #E6E8EC;
-      --border:    #C4C9D4;
-      --accent:    #C4A962;
-      --surface:   rgba(255,255,255,0.04);
-      --surface2:  rgba(255,255,255,0.08);
-      --r:         12px;
-      --r-sm:      8px;
+      --bg:       #0B1C2D;
+      --title:    #D9CFC3;
+      --info:     #AFC6E9;
+      --body:     #E6E8EC;
+      --border:   #C4C9D4;
+      --accent:   #C4A962;
+      --accent2:  #d4b96e;
+      --surface:  rgba(255,255,255,0.035);
+      --surface2: rgba(255,255,255,0.07);
+      --glass:    rgba(11,28,45,0.6);
+      --r:        14px;
+      --r-sm:     9px;
     }
 
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -34,13 +36,27 @@
       overflow-x: hidden;
     }
 
+    /* ── Layered atmosphere ── */
     body::before {
       content: '';
       position: fixed;
       inset: 0;
       background:
-        radial-gradient(ellipse 80% 50% at 20% -10%, rgba(175,198,233,0.06) 0%, transparent 60%),
-        radial-gradient(ellipse 60% 40% at 80% 110%, rgba(196,169,98,0.05) 0%, transparent 55%);
+        radial-gradient(ellipse 90% 60% at 15% -5%,  rgba(175,198,233,0.09) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 50% at 85% 105%, rgba(196,169,98,0.07)  0%, transparent 50%),
+        radial-gradient(ellipse 50% 40% at 50% 50%,  rgba(11,28,45,0.4)     0%, transparent 100%);
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* Grain overlay */
+    body::after {
+      content: '';
+      position: fixed;
+      inset: 0;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
       pointer-events: none;
       z-index: 0;
     }
@@ -48,75 +64,151 @@
     main { flex: 1; position: relative; z-index: 1; }
 
     .container {
-      max-width: 680px;
+      max-width: 660px;
       margin: 0 auto;
-      padding: 0 24px 80px;
+      padding: 0 28px 100px;
+    }
+
+    /* ── Stagger animations ── */
+    .reveal {
+      opacity: 0;
+      transform: translateY(18px);
+      animation: revealUp 0.65s cubic-bezier(0.22, 1, 0.36, 1) forwards;
+    }
+    .reveal-1  { animation-delay: 0.05s; }
+    .reveal-2  { animation-delay: 0.15s; }
+    .reveal-3  { animation-delay: 0.25s; }
+    .reveal-4  { animation-delay: 0.35s; }
+    .reveal-5  { animation-delay: 0.45s; }
+    .reveal-6  { animation-delay: 0.55s; }
+
+    @keyframes revealUp {
+      to { opacity: 1; transform: translateY(0); }
     }
 
     /* ── Back link ── */
     .back-link {
       display: inline-flex;
       align-items: center;
-      gap: 6px;
+      gap: 7px;
       color: var(--info);
       text-decoration: none;
-      font-size: 0.85rem;
+      font-size: 0.8rem;
       font-weight: 500;
-      padding: 28px 0 0;
-      opacity: 0.8;
-      transition: opacity 0.2s, gap 0.2s;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
+      padding: 32px 0 0;
+      opacity: 0.55;
+      transition: opacity 0.25s, gap 0.25s;
     }
-    .back-link:hover { opacity: 1; gap: 10px; }
+    .back-link:hover { opacity: 0.9; gap: 11px; }
+    .back-link svg { stroke: var(--info); }
 
     /* ── Header ── */
     .site-header {
       text-align: center;
-      padding: 48px 0 40px;
-      border-bottom: 1px solid rgba(196,201,212,0.15);
-      margin-bottom: 36px;
+      padding: 52px 0 44px;
+      margin-bottom: 40px;
+      position: relative;
+    }
+
+    /* Decorative side lines flanking the header */
+    .site-header::after {
+      content: '';
+      display: block;
+      width: 60px;
+      height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      margin: 28px auto 0;
+      opacity: 0.6;
     }
 
     .logo-placeholder {
-      width: 72px;
-      height: 72px;
-      border: 2px dashed rgba(196,169,98,0.5);
+      width: 68px;
+      height: 68px;
+      border: 1.5px dashed rgba(196,169,98,0.45);
       border-radius: 50%;
-      margin: 0 auto 20px;
+      margin: 0 auto 24px;
       display: flex;
       align-items: center;
       justify-content: center;
-      color: rgba(196,169,98,0.4);
-      font-size: 0.65rem;
+      color: rgba(196,169,98,0.35);
+      font-size: 0.6rem;
       font-weight: 600;
-      letter-spacing: 0.06em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
+      position: relative;
+    }
+    .logo-placeholder::before {
+      content: '';
+      position: absolute;
+      inset: -6px;
+      border-radius: 50%;
+      border: 1px solid rgba(196,169,98,0.1);
+    }
+
+    .eyebrow {
+      font-size: 0.7rem;
+      font-weight: 600;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      opacity: 0.75;
+      margin-bottom: 12px;
     }
 
     .site-title {
       font-family: 'Playfair Display', serif;
-      font-size: clamp(1.9rem, 5vw, 2.6rem);
+      font-size: clamp(2rem, 5.5vw, 2.9rem);
       font-weight: 700;
       color: var(--title);
-      line-height: 1.15;
-      margin-bottom: 28px;
+      line-height: 1.1;
+      letter-spacing: -0.01em;
+      margin-bottom: 0;
     }
-    .site-title em { font-style: italic; color: var(--accent); }
+    .site-title em {
+      font-style: italic;
+      color: var(--accent);
+      font-weight: 600;
+    }
+
+    /* ── Ornament ── */
+    .ornament {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 12px;
+      margin: 20px 0 28px;
+      opacity: 0.4;
+    }
+    .ornament-line {
+      width: 48px;
+      height: 1px;
+      background: var(--accent);
+    }
+    .ornament-diamond {
+      width: 5px;
+      height: 5px;
+      background: var(--accent);
+      transform: rotate(45deg);
+    }
 
     /* ── Info box ── */
     .info-box {
       display: grid;
       grid-template-columns: repeat(3, 1fr);
-      gap: 2px;
-      background: rgba(196,201,212,0.15);
-      border: 1px solid rgba(196,201,212,0.2);
+      gap: 1px;
+      background: rgba(196,201,212,0.12);
+      border: 1px solid rgba(196,201,212,0.16);
       border-radius: var(--r);
       overflow: hidden;
       margin: 0 auto;
-      max-width: 500px;
+      max-width: 480px;
+      backdrop-filter: blur(8px);
     }
     .info-cell {
-      background: var(--surface);
-      padding: 14px 12px;
+      background: rgba(11,28,45,0.55);
+      padding: 16px 10px;
       text-align: center;
       text-decoration: none;
       color: var(--body);
@@ -125,190 +217,269 @@
       align-items: center;
       gap: 5px;
       transition: background 0.2s;
+      position: relative;
     }
-    a.info-cell:hover { background: var(--surface2); }
-    .ic-icon { font-size: 1.1rem; line-height: 1; }
+    a.info-cell:hover { background: rgba(175,198,233,0.07); }
+    a.info-cell:hover .ic-value { color: var(--title); }
+    .ic-icon { font-size: 1rem; line-height: 1; margin-bottom: 2px; }
     .ic-label {
-      font-size: 0.65rem;
-      font-weight: 600;
-      letter-spacing: 0.08em;
+      font-size: 0.6rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--info);
+      opacity: 0.7;
     }
-    .ic-value { font-size: 0.82rem; color: var(--body); line-height: 1.3; }
+    .ic-value {
+      font-size: 0.8rem;
+      color: rgba(230,232,236,0.8);
+      line-height: 1.35;
+      transition: color 0.2s;
+    }
     a.info-cell .ic-value { color: var(--info); }
 
     /* ── Spots widget ── */
     .spots-widget {
       background: var(--surface);
-      border: 1px solid rgba(196,201,212,0.18);
+      border: 1px solid rgba(196,201,212,0.13);
       border-radius: var(--r);
-      padding: 18px 20px;
+      padding: 20px 22px;
       margin-bottom: 28px;
+      position: relative;
+      overflow: hidden;
+    }
+    .spots-widget::before {
+      content: '';
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(196,169,98,0.3) 50%, transparent 100%);
     }
     .spots-header {
       display: flex;
       justify-content: space-between;
       align-items: baseline;
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
     .spots-label {
-      font-size: 0.8rem;
-      font-weight: 500;
-      letter-spacing: 0.04em;
+      font-size: 0.72rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
-      color: var(--info);
+      color: rgba(175,198,233,0.6);
     }
     .spots-num {
       font-family: 'Playfair Display', serif;
-      font-size: 1.15rem;
+      font-size: 1.1rem;
       color: var(--title);
     }
-    .spots-num b { color: var(--accent); font-weight: 700; }
+    .spots-num b { color: var(--accent); }
     .progress-track {
-      height: 4px;
-      background: rgba(196,201,212,0.15);
+      height: 3px;
+      background: rgba(196,201,212,0.1);
       border-radius: 2px;
       overflow: hidden;
     }
     .progress-fill {
       height: 100%;
-      background: linear-gradient(90deg, var(--accent), #e8c97a);
+      background: linear-gradient(90deg, var(--accent) 0%, #e8c97a 100%);
       border-radius: 2px;
       width: 0%;
-      transition: width 0.5s cubic-bezier(.4,0,.2,1);
+      transition: width 0.6s cubic-bezier(.4,0,.2,1);
     }
 
     .waitlist-banner {
       display: none;
-      background: rgba(196,169,98,0.1);
-      border: 1px solid rgba(196,169,98,0.3);
+      background: rgba(196,169,98,0.08);
+      border: 1px solid rgba(196,169,98,0.25);
       border-radius: var(--r-sm);
-      padding: 14px 16px;
+      padding: 14px 18px;
       margin-bottom: 24px;
-      font-size: 0.88rem;
+      font-size: 0.87rem;
       color: var(--title);
-      line-height: 1.5;
+      line-height: 1.55;
     }
     .waitlist-banner b { color: var(--accent); }
 
     /* ── Section intro ── */
-    .section-intro { margin-bottom: 32px; }
-    .section-intro h2 {
-      font-family: 'Playfair Display', serif;
-      font-size: 1.5rem;
-      color: var(--title);
-      margin-bottom: 8px;
+    .section-intro {
+      margin-bottom: 36px;
+      display: flex;
+      align-items: baseline;
+      gap: 16px;
     }
-    .section-intro p { font-size: 0.92rem; color: rgba(230,232,236,0.7); }
+    .section-num {
+      font-family: 'Playfair Display', serif;
+      font-size: 0.85rem;
+      font-style: italic;
+      color: var(--accent);
+      opacity: 0.5;
+      flex-shrink: 0;
+    }
+    .section-intro-text h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.45rem;
+      font-weight: 600;
+      color: var(--title);
+      margin-bottom: 5px;
+      line-height: 1.2;
+    }
+    .section-intro-text p {
+      font-size: 0.9rem;
+      color: rgba(230,232,236,0.55);
+      font-weight: 300;
+    }
 
-    /* ── Form grid ── */
+    /* ── Form ── */
     .form-grid {
       display: grid;
       grid-template-columns: 1fr 1fr;
-      gap: 18px;
-    }
-    .fg { display: flex; flex-direction: column; gap: 8px; }
-    .fg.full { grid-column: 1 / -1; }
-    .fg.hr {
-      grid-column: 1 / -1;
-      height: 1px;
-      background: rgba(196,201,212,0.12);
-      margin: 4px 0;
+      gap: 0;
+      border: 1px solid rgba(196,201,212,0.12);
+      border-radius: var(--r);
+      overflow: hidden;
+      background: rgba(196,201,212,0.06);
+      margin-bottom: 0;
     }
 
-    .field-label {
-      font-size: 0.8rem;
-      font-weight: 600;
-      letter-spacing: 0.05em;
-      text-transform: uppercase;
-      color: var(--info);
+    .fg {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+      padding: 20px 22px;
+      border-right: 1px solid rgba(196,201,212,0.1);
+      border-bottom: 1px solid rgba(196,201,212,0.1);
+      background: rgba(11,28,45,0.4);
+      transition: background 0.2s;
     }
-    .field-label .req { color: var(--accent); margin-left: 3px; }
+    .fg:focus-within { background: rgba(175,198,233,0.04); }
+    .fg.full {
+      grid-column: 1 / -1;
+      border-right: none;
+    }
+    .fg:nth-child(2n) { border-right: none; }
+    .fg.hr {
+      padding: 0;
+      height: 1px;
+      background: rgba(196,201,212,0.1);
+      grid-column: 1 / -1;
+      border: none;
+    }
+    .fg.no-border-bottom { border-bottom: none; }
+
+    .field-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: rgba(175,198,233,0.55);
+      margin-bottom: 8px;
+      display: block;
+    }
+    .field-label .req { color: var(--accent); margin-left: 2px; }
 
     input[type="text"],
     input[type="email"],
     select,
     textarea {
-      background: var(--surface);
-      border: 1px solid rgba(196,201,212,0.22);
-      border-radius: var(--r-sm);
-      padding: 12px 14px;
+      background: transparent;
+      border: none;
+      border-bottom: 1px solid rgba(196,201,212,0.18);
+      border-radius: 0;
+      padding: 4px 0 10px;
       color: var(--body);
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.95rem;
+      font-size: 0.97rem;
+      font-weight: 400;
       width: 100%;
       outline: none;
       -webkit-appearance: none;
       appearance: none;
-      transition: border-color 0.2s, background 0.2s;
+      transition: border-color 0.25s;
     }
     input[type="text"]:focus,
     input[type="email"]:focus,
     select:focus,
     textarea:focus {
-      border-color: rgba(175,198,233,0.5);
-      background: var(--surface2);
+      border-color: var(--accent);
     }
-    textarea { resize: vertical; min-height: 80px; }
+    input::placeholder,
+    textarea::placeholder { color: rgba(196,201,212,0.25); font-weight: 300; }
+    textarea {
+      resize: vertical;
+      min-height: 72px;
+      padding-top: 6px;
+      border: 1px solid rgba(196,201,212,0.18);
+      border-radius: var(--r-sm);
+      padding: 10px 12px;
+      background: rgba(255,255,255,0.03);
+      margin-top: 4px;
+    }
+    textarea:focus { border-color: var(--accent); background: rgba(175,198,233,0.04); }
 
     select {
-      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%23AFC6E9' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E");
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%23AFC6E9' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
       background-repeat: no-repeat;
-      background-position: right 14px center;
-      padding-right: 38px;
+      background-position: right 0 center;
+      padding-right: 20px;
       cursor: pointer;
     }
-    select option { background: #0d2035; color: var(--body); }
+    select option { background: #0d2236; color: var(--body); }
 
     /* ── Autocomplete ── */
     .ac-wrap { position: relative; }
     .ac-list {
       position: absolute;
-      top: calc(100% + 4px);
-      left: 0;
-      right: 0;
-      background: #0e2236;
-      border: 1px solid rgba(196,201,212,0.25);
+      top: calc(100% + 8px);
+      left: -22px;
+      right: -22px;
+      background: #0c2030;
+      border: 1px solid rgba(196,201,212,0.2);
       border-radius: var(--r-sm);
-      max-height: 210px;
+      max-height: 200px;
       overflow-y: auto;
       z-index: 200;
-      box-shadow: 0 8px 24px rgba(0,0,0,0.45);
+      box-shadow: 0 16px 40px rgba(0,0,0,0.5);
       display: none;
     }
-    .ac-list.open { display: block; }
+    .ac-list.open { display: block; animation: revealUp 0.18s ease; }
     .ac-item {
-      padding: 10px 14px;
-      font-size: 0.9rem;
-      color: var(--body);
+      padding: 10px 16px;
+      font-size: 0.88rem;
+      color: rgba(230,232,236,0.75);
       cursor: pointer;
-      transition: background 0.12s;
+      transition: background 0.12s, color 0.12s;
+      border-bottom: 1px solid rgba(196,201,212,0.06);
     }
-    .ac-item:hover,
-    .ac-item.hi { background: rgba(175,198,233,0.1); color: var(--title); }
+    .ac-item:last-child { border-bottom: none; }
+    .ac-item:hover, .ac-item.hi {
+      background: rgba(175,198,233,0.08);
+      color: var(--title);
+    }
     .ac-item b { color: var(--accent); font-weight: 600; }
 
     /* ── Chips ── */
-    .chip-group { display: flex; flex-wrap: wrap; gap: 8px; }
+    .chip-group { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; }
     .chip {
       display: inline-block;
-      padding: 8px 14px;
-      border: 1px solid rgba(196,201,212,0.25);
+      padding: 7px 14px;
+      border: 1px solid rgba(196,201,212,0.18);
       border-radius: 100px;
-      font-size: 0.85rem;
+      font-size: 0.83rem;
       font-weight: 500;
-      color: rgba(230,232,236,0.65);
-      background: var(--surface);
+      color: rgba(230,232,236,0.5);
+      background: transparent;
       cursor: pointer;
       user-select: none;
-      transition: all 0.18s;
+      transition: all 0.2s;
       -webkit-tap-highlight-color: transparent;
+      letter-spacing: 0.01em;
     }
+    .chip:hover { border-color: rgba(196,169,98,0.35); color: rgba(230,232,236,0.8); }
     .chip.selected {
-      border-color: var(--accent);
+      border-color: rgba(196,169,98,0.6);
       color: var(--title);
-      background: rgba(196,169,98,0.1);
+      background: rgba(196,169,98,0.08);
     }
 
     /* ── Custom checkbox ── */
@@ -316,27 +487,26 @@
       display: flex;
       align-items: flex-start;
       gap: 14px;
-      padding: 16px;
-      background: var(--surface);
-      border: 1px solid rgba(196,201,212,0.18);
-      border-radius: var(--r-sm);
+      padding: 18px 22px;
       cursor: pointer;
       -webkit-tap-highlight-color: transparent;
-      transition: border-color 0.2s;
+      transition: background 0.2s;
+      border-radius: 0 0 var(--r) var(--r);
     }
-    .prv-row.err { border-color: rgba(210,90,80,0.45); }
+    .prv-row:hover { background: rgba(175,198,233,0.03); }
+    .prv-row.err { background: rgba(210,90,80,0.04); }
 
     .chk-box {
       flex-shrink: 0;
-      width: 22px;
-      height: 22px;
-      border: 2px solid rgba(196,201,212,0.35);
-      border-radius: 5px;
+      width: 20px;
+      height: 20px;
+      border: 1.5px solid rgba(196,201,212,0.3);
+      border-radius: 4px;
       background: transparent;
       display: flex;
       align-items: center;
       justify-content: center;
-      transition: all 0.18s;
+      transition: all 0.2s;
       margin-top: 2px;
       pointer-events: none;
     }
@@ -347,185 +517,199 @@
     .chk-box svg { display: none; }
     .chk-box.on svg { display: block; }
 
-    .prv-text { font-size: 0.88rem; color: rgba(230,232,236,0.75); line-height: 1.55; }
+    .prv-text {
+      font-size: 0.86rem;
+      color: rgba(230,232,236,0.6);
+      line-height: 1.6;
+      font-weight: 300;
+    }
     .prv-link {
       color: var(--info);
       text-decoration: underline;
-      text-underline-offset: 2px;
+      text-underline-offset: 3px;
       cursor: pointer;
+      font-weight: 400;
     }
 
     /* ── Error toast ── */
     .err-toast {
       display: none;
-      background: rgba(196,169,98,0.07);
-      border: 1px solid rgba(196,169,98,0.25);
+      background: rgba(196,169,98,0.06);
+      border: 1px solid rgba(196,169,98,0.2);
       border-radius: var(--r-sm);
-      padding: 14px 18px;
-      margin-top: 20px;
+      padding: 16px 20px;
+      margin-top: 16px;
     }
-    .err-toast.show { display: block; animation: fadeUp 0.25s ease; }
-    .err-toast-title { font-size: 0.92rem; font-weight: 600; color: var(--title); margin-bottom: 8px; }
-    .err-toast-title span { margin-right: 6px; }
+    .err-toast.show { display: block; animation: revealUp 0.25s ease; }
+    .err-toast-title {
+      font-size: 0.9rem;
+      font-weight: 600;
+      color: var(--title);
+      margin-bottom: 8px;
+    }
     .err-toast ul { list-style: none; padding: 0; margin: 0; }
-    .err-toast li {
-      font-size: 0.87rem;
-      color: rgba(230,232,236,0.8);
-      padding: 2px 0;
-    }
+    .err-toast li { font-size: 0.85rem; color: rgba(230,232,236,0.7); padding: 2px 0; font-weight: 300; }
     .err-toast li::before { content: "→ "; color: var(--accent); font-weight: 600; }
 
     /* ── Submit button ── */
     .btn-submit {
       width: 100%;
-      margin-top: 8px;
-      padding: 15px 24px;
-      background: linear-gradient(135deg, var(--accent), #d4b86a);
+      margin-top: 20px;
+      padding: 16px 28px;
+      background: linear-gradient(135deg, #c4a962 0%, #d8bb72 50%, #c4a962 100%);
+      background-size: 200% 200%;
       color: #0B1C2D;
       font-family: 'DM Sans', sans-serif;
-      font-size: 1rem;
+      font-size: 0.95rem;
       font-weight: 700;
+      letter-spacing: 0.04em;
+      text-transform: uppercase;
       border: none;
       border-radius: var(--r-sm);
       cursor: pointer;
       display: flex;
       align-items: center;
       justify-content: center;
-      gap: 8px;
-      transition: opacity 0.2s, transform 0.15s;
+      gap: 10px;
+      transition: opacity 0.2s, transform 0.2s, background-position 0.4s;
+      position: relative;
+      overflow: hidden;
     }
-    .btn-submit:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+    .btn-submit::after {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.15) 60%, transparent 70%);
+      background-size: 200% 200%;
+      background-position: 200% 0;
+      transition: background-position 0.5s;
+    }
+    .btn-submit:hover:not(:disabled)::after { background-position: -100% 0; }
+    .btn-submit:hover:not(:disabled) { opacity: 0.92; transform: translateY(-1px); }
     .btn-submit:active:not(:disabled) { transform: translateY(0); }
-    .btn-submit:disabled { opacity: 0.5; cursor: not-allowed; }
-    .spin { animation: spin 0.8s linear infinite; display: none; }
-    @keyframes spin { to { transform: rotate(360deg); } }
+    .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+    .spin { animation: spinAnim 0.8s linear infinite; display: none; }
+    @keyframes spinAnim { to { transform: rotate(360deg); } }
 
     /* ── Confirm screen ── */
     .confirm-screen {
       display: none;
       text-align: center;
-      padding: 60px 0;
-      animation: fadeUp 0.45s ease;
+      padding: 70px 0 40px;
+      animation: revealUp 0.5s ease;
     }
-    .confirm-icon {
-      width: 80px;
-      height: 80px;
-      border: 2px solid var(--accent);
+    .confirm-ring {
+      width: 88px;
+      height: 88px;
+      margin: 0 auto 28px;
+      border: 1.5px solid rgba(196,169,98,0.4);
       border-radius: 50%;
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 2rem;
-      margin: 0 auto 24px;
+      font-size: 2.2rem;
+      position: relative;
+    }
+    .confirm-ring::before {
+      content: '';
+      position: absolute;
+      inset: 6px;
+      border-radius: 50%;
+      border: 1px solid rgba(196,169,98,0.15);
     }
     .confirm-title {
       font-family: 'Playfair Display', serif;
-      font-size: 1.8rem;
+      font-size: clamp(1.7rem, 4vw, 2.1rem);
+      font-weight: 700;
       color: var(--title);
-      margin-bottom: 12px;
+      margin-bottom: 20px;
+      line-height: 1.2;
     }
     .confirm-body {
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: rgba(230,232,236,0.7);
-      line-height: 1.7;
-      max-width: 400px;
-      margin: 0 auto 32px;
-    }
-    .confirm-details {
-      background: var(--surface);
-      border: 1px solid rgba(196,201,212,0.15);
-      border-radius: var(--r);
-      padding: 20px;
-      max-width: 340px;
+      line-height: 1.75;
+      max-width: 420px;
       margin: 0 auto;
-      font-size: 0.88rem;
+      font-weight: 300;
     }
-    .confirm-details p { color: rgba(230,232,236,0.65); margin-bottom: 4px; }
-    .confirm-details p:last-child { margin-bottom: 0; }
-    .confirm-details strong { color: var(--info); }
-    .confirm-cta {
-      margin: 36px auto 0;
-      padding-top: 28px;
-      border-top: 1px solid rgba(196,201,212,0.12);
-      max-width: 380px;
-      font-family: 'Playfair Display', serif;
-      font-style: italic;
-      font-size: 1.05rem;
-      color: rgba(217,207,195,0.65);
-      line-height: 1.65;
-    }
-    .confirm-cta em { color: var(--accent); font-style: normal; font-weight: 600; }
     .btn-cal {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      margin-top: 28px;
-      padding: 12px 22px;
+      gap: 9px;
+      margin-top: 36px;
+      padding: 13px 24px;
       background: transparent;
-      border: 1px solid rgba(196,169,98,0.4);
-      border-radius: var(--r-sm);
+      border: 1px solid rgba(196,169,98,0.35);
+      border-radius: 100px;
       color: var(--accent);
       font-family: 'DM Sans', sans-serif;
-      font-size: 0.92rem;
+      font-size: 0.87rem;
       font-weight: 600;
+      letter-spacing: 0.04em;
       cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
     }
-    .btn-cal:hover { background: rgba(196,169,98,0.08); border-color: var(--accent); }
+    .btn-cal:hover {
+      background: rgba(196,169,98,0.08);
+      border-color: rgba(196,169,98,0.6);
+      transform: translateY(-1px);
+    }
 
     /* ── Modal ── */
     .modal-bg {
       display: none;
       position: fixed;
       inset: 0;
-      background: rgba(5,12,22,0.85);
+      background: rgba(5,12,22,0.88);
       z-index: 1000;
       align-items: center;
       justify-content: center;
       padding: 20px;
+      backdrop-filter: blur(4px);
     }
     .modal-bg.open { display: flex; }
     .modal-box {
-      background: #0e2236;
-      border: 1px solid rgba(196,201,212,0.2);
+      background: #0c2030;
+      border: 1px solid rgba(196,201,212,0.16);
       border-radius: var(--r);
-      max-width: 560px;
+      max-width: 540px;
       width: 100%;
-      max-height: 80vh;
+      max-height: 82vh;
       overflow-y: auto;
-      padding: 32px;
+      padding: 36px;
       position: relative;
-      animation: fadeUp 0.25s ease;
+      animation: revealUp 0.28s cubic-bezier(0.22,1,0.36,1);
     }
     .modal-close {
       position: absolute;
-      top: 14px;
-      right: 16px;
+      top: 16px; right: 18px;
       background: none;
       border: none;
-      color: rgba(230,232,236,0.35);
-      font-size: 1.5rem;
+      color: rgba(230,232,236,0.3);
+      font-size: 1.4rem;
       cursor: pointer;
-      line-height: 1;
       padding: 4px 8px;
       transition: color 0.2s;
+      line-height: 1;
     }
     .modal-close:hover { color: var(--body); }
     .modal-title {
       font-family: 'Playfair Display', serif;
-      font-size: 1.3rem;
+      font-size: 1.25rem;
       color: var(--title);
-      margin-bottom: 20px;
-      padding-right: 32px;
+      margin-bottom: 22px;
+      padding-right: 36px;
     }
-    .modal-content { font-size: 0.87rem; color: rgba(230,232,236,0.7); line-height: 1.7; }
+    .modal-content { font-size: 0.86rem; color: rgba(230,232,236,0.65); line-height: 1.75; font-weight: 300; }
     .modal-content h4 {
-      font-size: 0.8rem;
+      font-size: 0.72rem;
       font-weight: 700;
-      letter-spacing: 0.05em;
+      letter-spacing: 0.1em;
       text-transform: uppercase;
       color: var(--info);
-      margin: 18px 0 5px;
+      opacity: 0.7;
+      margin: 20px 0 6px;
     }
     .modal-content h4:first-child { margin-top: 0; }
     .modal-content a { color: var(--info); }
@@ -534,42 +718,49 @@
     footer {
       position: relative;
       z-index: 1;
-      border-top: 1px solid rgba(196,201,212,0.1);
-      padding: 20px 24px;
+      padding: 24px 28px;
       text-align: center;
-      font-size: 0.77rem;
-      color: rgba(196,201,212,0.35);
+      border-top: 1px solid rgba(196,201,212,0.07);
     }
-    .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+    .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 8px; }
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 7px;
-      background: var(--surface);
-      border: 1px solid rgba(196,201,212,0.14);
+      gap: 8px;
+      background: rgba(255,255,255,0.03);
+      border: 1px solid rgba(196,201,212,0.1);
       border-radius: 100px;
-      padding: 4px 12px;
-      font-size: 0.72rem;
+      padding: 4px 13px;
+      font-size: 0.68rem;
       font-weight: 600;
-      letter-spacing: 0.06em;
-      color: rgba(196,201,212,0.5);
+      letter-spacing: 0.1em;
+      color: rgba(196,201,212,0.35);
+      text-transform: uppercase;
     }
     .badge-dot {
-      width: 6px;
-      height: 6px;
+      width: 5px; height: 5px;
       background: var(--accent);
       border-radius: 50%;
-      animation: pulse 2s ease-in-out infinite;
+      animation: pulseDot 2.2s ease-in-out infinite;
     }
+    .footer-copy {
+      font-size: 0.75rem;
+      color: rgba(196,201,212,0.3);
+      letter-spacing: 0.02em;
+    }
+    .footer-event-link {
+      font-size: 0.72rem;
+      color: rgba(175,198,233,0.3);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      letter-spacing: 0.03em;
+      transition: color 0.2s;
+    }
+    .footer-event-link:hover { color: rgba(175,198,233,0.6); }
 
-    /* ── Animations ── */
-    @keyframes fadeUp {
-      from { opacity: 0; transform: translateY(10px); }
-      to   { opacity: 1; transform: translateY(0); }
-    }
-    @keyframes pulse {
+    @keyframes pulseDot {
       0%, 100% { opacity: 1; transform: scale(1); }
-      50%       { opacity: 0.45; transform: scale(0.7); }
+      50% { opacity: 0.4; transform: scale(0.65); }
     }
 
     /* ── Utils ── */
@@ -577,11 +768,14 @@
     .mt-14  { margin-top: 14px; }
 
     /* ── Responsive ── */
-    @media (max-width: 520px) {
+    @media (max-width: 540px) {
       .form-grid { grid-template-columns: 1fr; }
+      .fg { border-right: none; }
       .fg.full { grid-column: 1; }
-      .info-box { grid-template-columns: 1fr; max-width: 260px; }
-      .info-cell { flex-direction: row; text-align: left; gap: 10px; padding: 12px 14px; }
+      .info-box { grid-template-columns: 1fr; max-width: 240px; }
+      .info-cell { flex-direction: row; text-align: left; gap: 12px; padding: 12px 14px; }
+      .section-intro { flex-direction: column; gap: 4px; }
+      .ac-list { left: 0; right: 0; }
     }
   </style>
 </head>
@@ -590,23 +784,27 @@
 <main>
   <div class="container">
 
-    <!-- Back -->
-    <a class="back-link" href="index.html">
-      <svg width="16" height="16" viewBox="0 0 16 16" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+    <a class="back-link reveal reveal-1" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
         <polyline points="10,4 6,8 10,12"/>
       </svg>
       Torna all'evento
     </a>
 
-    <!-- Header -->
-    <header class="site-header">
+    <header class="site-header reveal reveal-2">
       <div class="logo-placeholder">Logo</div>
+      <p class="eyebrow">Bresseo · 20 Giugno 2026</p>
       <h1 class="site-title">Liberi dal<br><em>Successo</em></h1>
+      <div class="ornament">
+        <span class="ornament-line"></span>
+        <span class="ornament-diamond"></span>
+        <span class="ornament-line"></span>
+      </div>
       <div class="info-box">
         <a class="info-cell" href="https://maps.google.com/?q=Sala+Polivalente+Bresseo+Teolo+Padova" target="_blank" rel="noopener">
           <span class="ic-icon">📍</span>
           <span class="ic-label">Dove</span>
-          <span class="ic-value">Sala Polivalente<br>Bresseo, Teolo (PD)</span>
+          <span class="ic-value">Sala Polivalente<br>Bresseo, Teolo</span>
         </a>
         <a class="info-cell" id="js-ics" href="#">
           <span class="ic-icon">📅</span>
@@ -621,52 +819,49 @@
       </div>
     </header>
 
-    <!-- Spots -->
-    <div class="spots-widget">
-      <div class="spots-header">
-        <span class="spots-label">Posti disponibili</span>
-        <span class="spots-num"><b id="js-free">200</b> su 200</span>
+    <div class="reveal reveal-3">
+      <div class="spots-widget">
+        <div class="spots-header">
+          <span class="spots-label">Posti disponibili</span>
+          <span class="spots-num"><b id="js-free">200</b> su 200</span>
+        </div>
+        <div class="progress-track">
+          <div class="progress-fill" id="js-bar"></div>
+        </div>
       </div>
-      <div class="progress-track">
-        <div class="progress-fill" id="js-bar"></div>
+
+      <div class="waitlist-banner" id="js-wbanner">
+        <b>L'evento ha raggiunto la capienza massima.</b><br>
+        Puoi comunque iscriverti alla lista d'attesa: ti contatteremo in caso di disponibilità.
       </div>
     </div>
 
-    <!-- Waitlist banner -->
-    <div class="waitlist-banner" id="js-wbanner">
-      <b>L'evento ha raggiunto la capienza massima.</b><br>
-      Puoi comunque iscriverti alla lista d'attesa: ti contatteremo in caso di disponibilità.
+    <div class="section-intro reveal reveal-4">
+      <span class="section-num">I.</span>
+      <div class="section-intro-text">
+        <h2>Prenota il tuo posto</h2>
+        <p>Iscrizione gratuita e aperta a tutti.</p>
+      </div>
     </div>
 
-    <!-- Section intro -->
-    <div class="section-intro">
-      <h2>Prenota il tuo posto</h2>
-      <p>Compila il form per registrare la tua presenza. L'iscrizione è gratuita e aperta a tutti.</p>
-    </div>
-
-    <!-- ══ FORM ══ -->
-    <form id="js-form" novalidate>
+    <form id="js-form" novalidate class="reveal reveal-5">
       <div class="form-grid">
 
-        <!-- Nome -->
         <div class="fg">
           <label class="field-label" for="f-nome">Nome <span class="req">*</span></label>
           <input type="text" id="f-nome" placeholder="Il tuo nome" autocomplete="given-name" />
         </div>
 
-        <!-- Cognome -->
         <div class="fg">
           <label class="field-label" for="f-cognome">Cognome <span class="req">*</span></label>
           <input type="text" id="f-cognome" placeholder="Il tuo cognome" autocomplete="family-name" />
         </div>
 
-        <!-- Email -->
         <div class="fg full">
           <label class="field-label" for="f-email">Email <span class="req">*</span></label>
           <input type="email" id="f-email" placeholder="nome@esempio.it" autocomplete="email" inputmode="email" />
         </div>
 
-        <!-- Età -->
         <div class="fg">
           <label class="field-label" for="f-eta">Fascia d'età</label>
           <select id="f-eta">
@@ -680,7 +875,6 @@
           </select>
         </div>
 
-        <!-- Comune -->
         <div class="fg">
           <label class="field-label" for="f-comune">Comune di provenienza</label>
           <div class="ac-wrap">
@@ -689,12 +883,10 @@
           </div>
         </div>
 
-        <!-- Divider -->
         <div class="fg hr"></div>
 
-        <!-- Dieta -->
         <div class="fg full">
-          <span class="field-label">Esigenze alimentari</span>
+          <label class="field-label">Esigenze alimentari</label>
           <div class="chip-group" id="js-chips">
             <span class="chip selected" data-val="Nessuna">Nessuna</span>
             <span class="chip" data-val="Vegetariano">Vegetariano</span>
@@ -707,36 +899,33 @@
           </div>
         </div>
 
-        <!-- Divider -->
         <div class="fg hr"></div>
 
-        <!-- Privacy -->
-        <div class="fg full">
+        <div class="fg full no-border-bottom" style="padding:0;">
           <div class="prv-row" id="js-prvrow" tabindex="0" role="checkbox" aria-checked="false">
             <div class="chk-box" id="js-chkbox">
-              <svg width="12" height="10" viewBox="0 0 12 10" fill="none"
+              <svg width="11" height="9" viewBox="0 0 12 10" fill="none"
                    stroke="#0B1C2D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="1,5 4.5,8.5 11,1"/>
               </svg>
             </div>
             <p class="prv-text">
               Ho letto e accetto l'<span class="prv-link" id="js-prvlink">informativa sulla privacy</span>.
-              I dati forniti saranno trattati esclusivamente per la gestione dell'evento.
+              I dati saranno trattati esclusivamente per la gestione dell'evento.
             </p>
           </div>
         </div>
 
-      </div><!-- /form-grid -->
+      </div>
 
-      <!-- Error toast -->
       <div class="err-toast" id="js-toast">
-        <p class="err-toast-title"><span>😅</span> Quasi tutto a posto! Controlla solo:</p>
+        <p class="err-toast-title">😅 &nbsp;Quasi tutto a posto! Controlla solo:</p>
         <ul id="js-toast-list"></ul>
       </div>
 
       <button type="submit" class="btn-submit" id="js-btn">
         <span id="js-btn-txt">Invia iscrizione</span>
-        <svg class="spin" id="js-spinner" width="18" height="18" viewBox="0 0 24 24"
+        <svg class="spin" id="js-spinner" width="17" height="17" viewBox="0 0 24 24"
              fill="none" stroke="#0B1C2D" stroke-width="2.5" stroke-linecap="round">
           <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83
                    M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
@@ -744,70 +933,64 @@
       </button>
     </form>
 
-    <!-- Confirm screen -->
     <div class="confirm-screen" id="js-confirm">
-      <div class="confirm-icon" id="js-conf-icon">✓</div>
+      <div class="confirm-ring" id="js-conf-icon">✓</div>
       <h2 class="confirm-title" id="js-conf-title">Iscrizione confermata!</h2>
       <p class="confirm-body" id="js-conf-body"></p>
-      <button class="btn-cal" id="js-btn-cal" type="button">📅 Aggiungi al calendario</button>
+      <button class="btn-cal" id="js-btn-cal" type="button">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        Aggiungi al calendario
+      </button>
     </div>
 
-  </div><!-- /container -->
+  </div>
 </main>
 
-<!-- Footer -->
-<footer>
+<footer class="reveal reveal-6">
   <div class="footer-inner">
     <span class="badge">
       <span class="badge-dot"></span>
-      Beta · v0.4 · 07.03.2026
+      Beta · v0.5 · 07.03.2026
     </span>
-    <span>
+    <span class="footer-copy">
       © 2026 Liberi dal Successo ·
       <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#108;&#105;&#98;&#101;&#114;&#105;&#100;&#97;&#108;&#115;&#117;&#99;&#99;&#101;&#115;&#115;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;"
-         style="color:rgba(175,198,233,0.5);text-decoration:none;">
+         style="color:rgba(175,198,233,0.4);text-decoration:none;">
         &#108;&#105;&#98;&#101;&#114;&#105;&#100;&#97;&#108;&#115;&#117;&#99;&#99;&#101;&#115;&#115;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;
       </a>
     </span>
-    <a href="index.html"
-       style="color:rgba(175,198,233,0.35);font-size:0.72rem;text-decoration:underline;text-underline-offset:3px;letter-spacing:0.02em;">
-      Vedi i dettagli dell'evento →
-    </a>
+    <a class="footer-event-link" href="index.html">Vedi i dettagli dell'evento →</a>
   </div>
 </footer>
 
-<!-- Privacy Modal -->
-<div class="modal-bg" id="js-modal">
+<div class="modal-bg" id="js-modal" role="dialog" aria-modal="true">
   <div class="modal-box">
     <button class="modal-close" id="js-modal-close" type="button">×</button>
     <h3 class="modal-title">Informativa sulla Privacy</h3>
     <div class="modal-content">
       <h4>Titolare del trattamento</h4>
-      <p>Liberi dal Successo — <a href="/cdn-cgi/l/email-protection#6e02070c0b1c070a0f021d1b0d0d0b1d1d012e09030f0702400d0103"><span class="__cf_email__" data-cfemail="f995909b9c8b909d98958a8c9a9a9c8a8a96b99e94989095d79a9694">[email&#160;protected]</span></a></p>
+      <p>Liberi dal Successo — <a href="mailto:liberidalsuccesso@gmail.com">liberidalsuccesso@gmail.com</a></p>
       <h4>Dati raccolti</h4>
       <p>Nome, cognome, indirizzo email, fascia d'età, comune di provenienza ed eventuali esigenze alimentari.</p>
       <h4>Finalità del trattamento</h4>
-      <p>I dati sono trattati esclusivamente per la gestione delle iscrizioni all'evento "Liberi dal Successo" (Bresseo, 20 Giugno 2026), per comunicazioni organizzative legate all'evento e per la gestione logistica.</p>
+      <p>I dati sono trattati esclusivamente per la gestione delle iscrizioni all'evento "Liberi dal Successo" (Bresseo, 20 Giugno 2026) e per comunicazioni organizzative legate all'evento.</p>
       <h4>Base giuridica</h4>
       <p>Il trattamento si basa sul consenso dell'interessato, ai sensi dell'art. 6, par. 1, lett. a) del Regolamento UE 2016/679 (GDPR).</p>
-      <h4>Modalità di trattamento e conservazione</h4>
-      <p>I dati sono raccolti tramite modulo online e conservati su Google Sheets (Google LLC), servizio conforme al GDPR. I dati non saranno ceduti a terzi né utilizzati per finalità commerciali o di profilazione.</p>
-      <h4>Periodo di conservazione</h4>
-      <p>I dati saranno conservati fino a 30 giorni dopo lo svolgimento dell'evento e successivamente cancellati.</p>
-      <h4>Diritti dell'interessato</h4>
-      <p>Hai diritto di accedere ai tuoi dati, richiederne la rettifica o la cancellazione, opporti al trattamento e revocare il consenso in qualsiasi momento. Per esercitare i tuoi diritti scrivi a: <a href="/cdn-cgi/l/email-protection#7f13161d1a0d161b1e130c0a1c1c1a0c0c103f18121e1613511c1012"><span class="__cf_email__" data-cfemail="87ebeee5e2f5eee3e6ebf4f2e4e4e2f4f4e8c7e0eae6eeeba9e4e8ea">[email&#160;protected]</span></a></p>
+      <h4>Conservazione e trattamento</h4>
+      <p>I dati sono conservati su Google Sheets (Google LLC), conforme al GDPR. Non saranno ceduti a terzi né usati per finalità commerciali. Saranno cancellati entro 30 giorni dall'evento.</p>
+      <h4>I tuoi diritti</h4>
+      <p>Puoi richiedere accesso, rettifica, cancellazione o opporti al trattamento in qualsiasi momento scrivendo a: <a href="mailto:liberidalsuccesso@gmail.com">liberidalsuccesso@gmail.com</a></p>
     </div>
   </div>
 </div>
 
-<!-- ══════════════════════════════════════════════
-     JAVASCRIPT
-══════════════════════════════════════════════ -->
-<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
+<script>
 (function () {
   'use strict';
 
-  /* ── COMUNI ────────────────────────────────── */
   var COMUNI = [
     "Abano Terme","Adria","Agrigento","Albignasego","Alessandria","Ancona",
     "Anguillara Veneta","Aosta","Arezzo","Arquà Petrarca","Arzignano",
@@ -852,51 +1035,39 @@
   ];
   COMUNI.sort(function(a,b){ return a.localeCompare(b,'it'); });
 
-  /* ── STATE ─────────────────────────────────── */
   var MAX   = 200;
   var reg   = 0;
   var prvOk = false;
 
-  /* ── REFS ──────────────────────────────────── */
   var form       = document.getElementById('js-form');
   var confirmDiv = document.getElementById('js-confirm');
+  var fNome      = document.getElementById('f-nome');
+  var fCognome   = document.getElementById('f-cognome');
+  var fEmail     = document.getElementById('f-email');
+  var fEta       = document.getElementById('f-eta');
+  var fComune    = document.getElementById('f-comune');
+  var fAltro     = document.getElementById('f-altro');
+  var acList     = document.getElementById('js-aclist');
+  var chips      = document.getElementById('js-chips');
+  var altroWrp   = document.getElementById('js-altro-wrap');
+  var prvRow     = document.getElementById('js-prvrow');
+  var chkBox     = document.getElementById('js-chkbox');
+  var prvLink    = document.getElementById('js-prvlink');
+  var toast      = document.getElementById('js-toast');
+  var toastUl    = document.getElementById('js-toast-list');
+  var btn        = document.getElementById('js-btn');
+  var btnTxt     = document.getElementById('js-btn-txt');
+  var spinner    = document.getElementById('js-spinner');
+  var modal      = document.getElementById('js-modal');
+  var modalX     = document.getElementById('js-modal-close');
+  var freeEl     = document.getElementById('js-free');
+  var barEl      = document.getElementById('js-bar');
+  var wBanner    = document.getElementById('js-wbanner');
 
-  var fNome    = document.getElementById('f-nome');
-  var fCognome = document.getElementById('f-cognome');
-  var fEmail   = document.getElementById('f-email');
-  var fEta     = document.getElementById('f-eta');
-  var fComune  = document.getElementById('f-comune');
-  var fAltro   = document.getElementById('f-altro');
+  /* ICS header link */
+  document.getElementById('js-ics').addEventListener('click', function(e){ e.preventDefault(); downloadIcs(); });
 
-  var acList   = document.getElementById('js-aclist');
-  var chips    = document.getElementById('js-chips');
-  var altroWrp = document.getElementById('js-altro-wrap');
-
-  var prvRow   = document.getElementById('js-prvrow');
-  var chkBox   = document.getElementById('js-chkbox');
-  var prvLink  = document.getElementById('js-prvlink');
-
-  var toast    = document.getElementById('js-toast');
-  var toastUl  = document.getElementById('js-toast-list');
-
-  var btn      = document.getElementById('js-btn');
-  var btnTxt   = document.getElementById('js-btn-txt');
-  var spinner  = document.getElementById('js-spinner');
-
-  var modal    = document.getElementById('js-modal');
-  var modalX   = document.getElementById('js-modal-close');
-
-  var freeEl   = document.getElementById('js-free');
-  var barEl    = document.getElementById('js-bar');
-  var wBanner  = document.getElementById('js-wbanner');
-
-  /* ── ICS LINK IN HEADER ─────────────────────── */
-  document.getElementById('js-ics').addEventListener('click', function(e) {
-    e.preventDefault();
-    downloadIcs();
-  });
-
-  /* ── SPOTS COUNTER ─────────────────────────── */
+  /* Spots */
   function updateSpots() {
     var free = MAX - reg;
     freeEl.textContent = Math.max(0, free);
@@ -905,183 +1076,95 @@
   }
   updateSpots();
 
-  /* ── AUTOCOMPLETE ──────────────────────────── */
-  var acItems  = [];
-  var acActive = -1;
-
+  /* Autocomplete */
+  var acItems = [], acActive = -1;
   function acRender(q) {
-    acList.innerHTML = '';
-    acActive = -1;
+    acList.innerHTML = ''; acActive = -1;
     q = q.trim().toLowerCase();
     if (q.length < 2) { acList.classList.remove('open'); return; }
-    acItems = COMUNI.filter(function(c){ return c.toLowerCase().indexOf(q) !== -1; }).slice(0, 8);
+    acItems = COMUNI.filter(function(c){ return c.toLowerCase().indexOf(q) !== -1; }).slice(0,8);
     if (!acItems.length) { acList.classList.remove('open'); return; }
-    acItems.forEach(function(c, i) {
+    acItems.forEach(function(c,i){
       var div = document.createElement('div');
       div.className = 'ac-item';
-      var lo  = c.toLowerCase();
-      var idx = lo.indexOf(q);
-      div.innerHTML =
-        escHtml(c.substring(0, idx)) +
-        '<b>' + escHtml(c.substring(idx, idx + q.length)) + '</b>' +
-        escHtml(c.substring(idx + q.length));
+      var idx = c.toLowerCase().indexOf(q);
+      div.innerHTML = escHtml(c.substring(0,idx))+'<b>'+escHtml(c.substring(idx,idx+q.length))+'</b>'+escHtml(c.substring(idx+q.length));
       div.addEventListener('mousedown', function(e){ e.preventDefault(); acPick(i); });
-      div.addEventListener('touchstart', function(e){ e.preventDefault(); acPick(i); }, { passive: false });
+      div.addEventListener('touchstart', function(e){ e.preventDefault(); acPick(i); },{passive:false});
       acList.appendChild(div);
     });
     acList.classList.add('open');
   }
-
-  function acPick(i) {
-    fComune.value = acItems[i];
-    acList.classList.remove('open');
-    acList.innerHTML = '';
-  }
-
-  function acHighlight(i) {
-    var els = acList.querySelectorAll('.ac-item');
-    els.forEach(function(el){ el.classList.remove('hi'); });
-    if (i >= 0 && i < els.length) {
-      els[i].classList.add('hi');
-      els[i].scrollIntoView({ block: 'nearest' });
-    }
-  }
-
-  function escHtml(s) {
-    return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
-  }
+  function acPick(i){ fComune.value = acItems[i]; acList.classList.remove('open'); acList.innerHTML=''; }
+  function acHi(i){ var els=acList.querySelectorAll('.ac-item'); els.forEach(function(e){e.classList.remove('hi');}); if(i>=0&&i<els.length){els[i].classList.add('hi');els[i].scrollIntoView({block:'nearest'});} }
+  function escHtml(s){ return s.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
 
   fComune.addEventListener('input', function(){ acRender(this.value); });
-  fComune.addEventListener('keydown', function(e) {
-    if (!acList.classList.contains('open')) return;
-    if (e.key === 'ArrowDown') {
-      e.preventDefault();
-      acActive = Math.min(acActive + 1, acItems.length - 1);
-      acHighlight(acActive);
-    } else if (e.key === 'ArrowUp') {
-      e.preventDefault();
-      acActive = Math.max(acActive - 1, 0);
-      acHighlight(acActive);
-    } else if (e.key === 'Enter' && acActive >= 0) {
-      e.preventDefault();
-      acPick(acActive);
-    } else if (e.key === 'Escape') {
-      acList.classList.remove('open');
-    }
+  fComune.addEventListener('keydown', function(e){
+    if(!acList.classList.contains('open')) return;
+    if(e.key==='ArrowDown'){e.preventDefault();acActive=Math.min(acActive+1,acItems.length-1);acHi(acActive);}
+    else if(e.key==='ArrowUp'){e.preventDefault();acActive=Math.max(acActive-1,0);acHi(acActive);}
+    else if(e.key==='Enter'&&acActive>=0){e.preventDefault();acPick(acActive);}
+    else if(e.key==='Escape'){acList.classList.remove('open');}
   });
-  document.addEventListener('click', function(e) {
-    if (!e.target.closest('.ac-wrap')) {
-      acList.classList.remove('open');
-    }
-  });
+  document.addEventListener('click', function(e){ if(!e.target.closest('.ac-wrap')) acList.classList.remove('open'); });
 
-  /* ── CHIPS ─────────────────────────────────── */
+  /* Chips */
   var dietaVal = 'Nessuna';
-  chips.addEventListener('click', function(e) {
-    var chip = e.target.closest('.chip');
-    if (!chip) return;
-    chips.querySelectorAll('.chip').forEach(function(c){ c.classList.remove('selected'); });
+  chips.addEventListener('click', function(e){
+    var chip = e.target.closest('.chip'); if(!chip) return;
+    chips.querySelectorAll('.chip').forEach(function(c){c.classList.remove('selected');});
     chip.classList.add('selected');
     dietaVal = chip.getAttribute('data-val');
     altroWrp.classList.toggle('hidden', dietaVal !== 'Altro');
   });
 
-  /* ── PRIVACY CHECKBOX ──────────────────────── */
-  function togglePrivacy() {
+  /* Privacy */
+  function togglePrivacy(){
     prvOk = !prvOk;
     chkBox.classList.toggle('on', prvOk);
     prvRow.setAttribute('aria-checked', String(prvOk));
-    if (prvOk) prvRow.classList.remove('err');
+    if(prvOk) prvRow.classList.remove('err');
   }
+  prvRow.addEventListener('click', function(e){ if(e.target===prvLink||prvLink.contains(e.target)) return; togglePrivacy(); });
+  prvRow.addEventListener('touchend', function(e){ if(e.target===prvLink||prvLink.contains(e.target)) return; e.preventDefault(); togglePrivacy(); });
+  prvRow.addEventListener('keydown', function(e){ if(e.key===' '||e.key==='Enter'){e.preventDefault();togglePrivacy();} });
 
-  /* Click on the row — but NOT on the link */
-  prvRow.addEventListener('click', function(e) {
-    if (e.target === prvLink || prvLink.contains(e.target)) return;
-    togglePrivacy();
-  });
-
-  /* Touch on the row — but NOT on the link */
-  prvRow.addEventListener('touchend', function(e) {
-    if (e.target === prvLink || prvLink.contains(e.target)) return;
-    e.preventDefault();
-    togglePrivacy();
-  });
-
-  /* Keyboard */
-  prvRow.addEventListener('keydown', function(e) {
-    if (e.key === ' ' || e.key === 'Enter') {
-      e.preventDefault();
-      togglePrivacy();
-    }
-  });
-
-  /* ── MODAL ─────────────────────────────────── */
-  function openModal() {
-    modal.classList.add('open');
-    document.body.style.overflow = 'hidden';
-  }
-  function closeModal() {
-    modal.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-
-  prvLink.addEventListener('click', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    openModal();
-  });
-  prvLink.addEventListener('touchend', function(e) {
-    e.preventDefault();
-    e.stopPropagation();
-    openModal();
-  });
-
+  /* Modal */
+  function openModal(){ modal.classList.add('open'); document.body.style.overflow='hidden'; }
+  function closeModal(){ modal.classList.remove('open'); document.body.style.overflow=''; }
+  prvLink.addEventListener('click', function(e){ e.preventDefault(); e.stopPropagation(); openModal(); });
+  prvLink.addEventListener('touchend', function(e){ e.preventDefault(); e.stopPropagation(); openModal(); });
   modalX.addEventListener('click', closeModal);
-  modal.addEventListener('click', function(e) {
-    if (e.target === modal) closeModal();
-  });
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeModal();
-  });
+  modal.addEventListener('click', function(e){ if(e.target===modal) closeModal(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeModal(); });
 
-  /* ── TRIM ON BLUR ──────────────────────────── */
-  [fNome, fCognome, fEmail, fComune].forEach(function(el) {
-    el.addEventListener('blur', function(){ this.value = this.value.trim(); });
-  });
+  /* Trim on blur */
+  [fNome,fCognome,fEmail,fComune].forEach(function(el){ el.addEventListener('blur',function(){this.value=this.value.trim();}); });
 
-  /* ── VALIDATION ────────────────────────────── */
+  /* Validation */
   var EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
-
-  function validate() {
-    /* always trim before checking */
-    [fNome, fCognome, fEmail, fComune].forEach(function(el){
-      el.value = el.value.trim();
-    });
-    var errors = [];
-    if (!fNome.value)
-      errors.push('Il campo <strong>Nome</strong> è obbligatorio');
-    if (!fCognome.value)
-      errors.push('Il campo <strong>Cognome</strong> è obbligatorio');
-    if (!fEmail.value || !EMAIL_RE.test(fEmail.value))
-      errors.push('<strong>Email</strong> non valida — controlla che non ci siano spazi o errori di battitura');
-    if (!prvOk) {
-      errors.push("Accetta l'<strong>informativa sulla privacy</strong> per procedere");
-      prvRow.classList.add('err');
-    }
-    if (errors.length) {
-      toastUl.innerHTML = errors.map(function(e){ return '<li>' + e + '</li>'; }).join('');
+  function validate(){
+    [fNome,fCognome,fEmail,fComune].forEach(function(el){el.value=el.value.trim();});
+    var errors=[];
+    if(!fNome.value) errors.push('Il campo <strong>Nome</strong> è obbligatorio');
+    if(!fCognome.value) errors.push('Il campo <strong>Cognome</strong> è obbligatorio');
+    if(!fEmail.value||!EMAIL_RE.test(fEmail.value)) errors.push('<strong>Email</strong> non valida — controlla spazi o errori di battitura');
+    if(!prvOk){ errors.push("Accetta l'<strong>informativa sulla privacy</strong> per procedere"); prvRow.classList.add('err'); }
+    if(errors.length){
+      toastUl.innerHTML=errors.map(function(e){return '<li>'+e+'</li>';}).join('');
       toast.classList.add('show');
-      setTimeout(function(){ toast.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
+      setTimeout(function(){toast.scrollIntoView({behavior:'smooth',block:'nearest'});},50);
       return false;
     }
     toast.classList.remove('show');
     return true;
   }
 
-  /* ── ICS HELPER ────────────────────────────── */
-  function downloadIcs() {
-    var lines = [
-      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Liberi dal Successo//IT',
+  /* ICS helper */
+  function downloadIcs(){
+    var lines=[
+      'BEGIN:VCALENDAR','VERSION:2.0','PRODID:-//Liberi dal Successo//IT',
       'BEGIN:VEVENT',
       'UID:liberidalsuccesso-20260620@bresseo',
       'DTSTAMP:20260307T000000Z',
@@ -1090,91 +1173,59 @@
       'SUMMARY:Liberi dal Successo',
       'DESCRIPTION:Non per imparare ad avere successo — ma per imparare ad essere noi stessi. Ingresso gratuito.',
       'LOCATION:Sala Polivalente\\, Bresseo\\, Teolo (PD)',
-      'END:VEVENT', 'END:VCALENDAR'
+      'END:VEVENT','END:VCALENDAR'
     ];
-    var blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
-    var url  = URL.createObjectURL(blob);
-    var a    = document.createElement('a');
-    a.href   = url;
-    a.download = 'liberi-dal-successo-20giugno2026.ics';
-    document.body.appendChild(a);
-    a.click();
-    document.body.removeChild(a);
-    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+    var blob=new Blob([lines.join('\r\n')],{type:'text/calendar;charset=utf-8'});
+    var url=URL.createObjectURL(blob);
+    var a=document.createElement('a');
+    a.href=url; a.download='liberi-dal-successo-20giugno2026.ics';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function(){URL.revokeObjectURL(url);},1000);
   }
 
-  /* ── SUBMIT ────────────────────────────────── */
-  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxXQ179jJhZCjUpVygaqGAYQN8NabHrSbCAz-cZQQpnxp8WFh_u0LKLHUs9kyL-6gDFnw/exec';
+  /* Submit */
+  var ENDPOINT='https://script.google.com/macros/s/AKfycbxXQ179jJhZCjUpVygaqGAYQN8NabHrSbCAz-cZQQpnxp8WFh_u0LKLHUs9kyL-6gDFnw/exec';
 
-  form.addEventListener('submit', function(e) {
+  form.addEventListener('submit', function(e){
     e.preventDefault();
-    if (!validate()) return;
-
-    var isWait = (reg >= MAX);
-    var dieta  = dietaVal;
-    if (dieta === 'Altro') {
-      var extra = fAltro.value.trim();
-      dieta = extra ? ('Altro: ' + extra) : 'Altro';
-    }
-
-    var payload = {
-      nome:    fNome.value,
-      cognome: fCognome.value,
-      email:   fEmail.value,
-      eta:     fEta.value,
-      comune:  fComune.value,
-      dieta:   dieta,
-      tipo:    isWait ? "Lista d'attesa" : 'Confermato'
-    };
-
-    btn.disabled       = true;
-    btnTxt.textContent = '';
-    spinner.style.display = 'block';
-
-
-    fetch(ENDPOINT, {
-      method: 'POST',
-      mode:   'no-cors',
-      headers: { 'Content-Type': 'application/json' },
-      body:   JSON.stringify(payload)
-    }).catch(function(){})
-    .finally(function() {
-      if (!isWait) reg++;
-      updateSpots();
-
-      form.style.display       = 'none';
-      confirmDiv.style.display = 'block';
-
-      var confIcon  = document.getElementById('js-conf-icon');
-      var confTitle = document.getElementById('js-conf-title');
-      var confBody  = document.getElementById('js-conf-body');
-      var calBtn    = document.getElementById('js-btn-cal');
-
-      calBtn.removeEventListener('click', downloadIcs);
-      calBtn.addEventListener('click', downloadIcs);
-
-      if (isWait) {
-        confIcon.textContent  = '📋';
-        confTitle.textContent = "Sei in lista d'attesa";
-        calBtn.style.display  = 'none';
-        confBody.innerHTML =
-          "Grazie per il tuo interesse per " +
-          "<span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br>" +
-          "L'evento ha raggiunto la capienza massima, ma sei in lista d'attesa.<br>" +
-          "Ti contatteremo a <strong style='color:var(--info)'>" + escHtml(payload.email) + "</strong> in caso di disponibilità.";
-      } else {
-        confTitle.textContent = 'Iscrizione confermata!';
-        calBtn.style.display  = 'inline-flex';
-        confBody.innerHTML =
-          "Grazie per esserti iscritto a " +
-          "<span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br>" +
-          "Ti aspettiamo il <strong>20 giugno</strong> alle ore <strong>17:30</strong> " +
-          "presso la Sala Polivalente di Bresseo.<br><br>" +
-          "<span style='font-family:\"Playfair Display\",serif;font-style:italic;font-size:1rem;color:rgba(217,207,195,0.75);'>" +
-          "Non per imparare ad avere successo —<br>ma per imparare ad essere noi stessi." +
-          "</span>";
-      }
-    });
+    if(!validate()) return;
+    var isWait=(reg>=MAX);
+    var dieta=dietaVal;
+    if(dieta==='Altro'){ var extra=fAltro.value.trim(); dieta=extra?('Altro: '+extra):'Altro'; }
+    var payload={ nome:fNome.value, cognome:fCognome.value, email:fEmail.value, eta:fEta.value, comune:fComune.value, dieta:dieta, tipo:isWait?"Lista d'attesa":'Confermato' };
+    btn.disabled=true; btnTxt.textContent=''; spinner.style.display='block';
+    fetch(ENDPOINT,{method:'POST',mode:'no-cors',headers:{'Content-Type':'application/json'},body:JSON.stringify(payload)})
+      .catch(function(){})
+      .finally(function(){
+        if(!isWait) reg++;
+        updateSpots();
+        form.style.display='none';
+        confirmDiv.style.display='block';
+        var confIcon=document.getElementById('js-conf-icon');
+        var confTitle=document.getElementById('js-conf-title');
+        var confBody=document.getElementById('js-conf-body');
+        var calBtn=document.getElementById('js-btn-cal');
+        calBtn.removeEventListener('click',downloadIcs);
+        calBtn.addEventListener('click',downloadIcs);
+        if(isWait){
+          confIcon.textContent='📋';
+          confTitle.textContent="Sei in lista d'attesa";
+          calBtn.style.display='none';
+          confBody.innerHTML=
+            "Grazie per il tuo interesse per <span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br>"+
+            "L'evento ha raggiunto la capienza massima, ma sei in lista d'attesa.<br>"+
+            "Ti contatteremo a <strong style='color:var(--info);'>"+escHtml(payload.email)+"</strong> in caso di disponibilità.";
+        } else {
+          confTitle.textContent='Iscrizione confermata!';
+          calBtn.style.display='inline-flex';
+          confBody.innerHTML=
+            "Grazie per esserti iscritto a <span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br>"+
+            "Ti aspettiamo il <strong>20 giugno</strong> alle ore <strong>17:30</strong> presso la Sala Polivalente di Bresseo.<br><br>"+
+            "<span style='font-family:\"Playfair Display\",serif;font-style:italic;font-size:1.05rem;color:rgba(217,207,195,0.7);'>"+
+            "Non per imparare ad avere successo —<br>ma per imparare ad essere noi stessi."+
+            "</span>";
+        }
+      });
   });
 
 }());
