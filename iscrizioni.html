@@ -726,22 +726,17 @@
     .badge {
       display: inline-flex;
       align-items: center;
-      gap: 8px;
-      background: rgba(255,255,255,0.03);
-      border: 1px solid rgba(196,201,212,0.1);
+      gap: 6px;
+      padding: 4px 12px;
       border-radius: 100px;
-      padding: 4px 13px;
-      font-size: 0.68rem;
-      font-weight: 600;
-      letter-spacing: 0.1em;
-      color: rgba(196,201,212,0.35);
+      background: rgba(196,169,98,0.08);
+      border: 1px solid rgba(196,169,98,0.22);
+      color: rgba(196,169,98,0.65);
+      font-size: 10px;
+      font-weight: 400;
+      letter-spacing: 1.5px;
       text-transform: uppercase;
-    }
-    .badge-dot {
-      width: 5px; height: 5px;
-      background: var(--accent);
-      border-radius: 50%;
-      animation: pulseDot 2.2s ease-in-out infinite;
+      margin-bottom: 0;
     }
     .footer-copy {
       font-size: 0.75rem;
@@ -757,11 +752,6 @@
       transition: color 0.2s;
     }
     .footer-event-link:hover { color: rgba(175,198,233,0.6); }
-
-    @keyframes pulseDot {
-      0%, 100% { opacity: 1; transform: scale(1); }
-      50% { opacity: 0.4; transform: scale(0.65); }
-    }
 
     /* ── Utils ── */
     .hidden { display: none !important; }
@@ -951,10 +941,7 @@
 
 <footer class="reveal reveal-6">
   <div class="footer-inner">
-    <span class="badge">
-      <span class="badge-dot"></span>
-      Beta · v0.5 · 07.03.2026
-    </span>
+    <span class="badge">v0.5 · 07.03.2026</span>
     <span class="footer-copy">
       © 2026 Liberi dal Successo ·
       <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#108;&#105;&#98;&#101;&#114;&#105;&#100;&#97;&#108;&#115;&#117;&#99;&#99;&#101;&#115;&#115;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;"
@@ -972,7 +959,7 @@
     <h3 class="modal-title">Informativa sulla Privacy</h3>
     <div class="modal-content">
       <h4>Titolare del trattamento</h4>
-      <p>Liberi dal Successo — <a href="mailto:liberidalsuccesso@gmail.com">liberidalsuccesso@gmail.com</a></p>
+      <p>Liberi dal Successo — <a href="/cdn-cgi/l/email-protection#2f43464d4a5d464b4e435c5a4c4c4a5c5c406f48424e4643014c4042"><span class="__cf_email__" data-cfemail="94f8fdf6f1e6fdf0f5f8e7e1f7f7f1e7e7fbd4f3f9f5fdf8baf7fbf9">[email&#160;protected]</span></a></p>
       <h4>Dati raccolti</h4>
       <p>Nome, cognome, indirizzo email, fascia d'età, comune di provenienza ed eventuali esigenze alimentari.</p>
       <h4>Finalità del trattamento</h4>
@@ -982,12 +969,12 @@
       <h4>Conservazione e trattamento</h4>
       <p>I dati sono conservati su Google Sheets (Google LLC), conforme al GDPR. Non saranno ceduti a terzi né usati per finalità commerciali. Saranno cancellati entro 30 giorni dall'evento.</p>
       <h4>I tuoi diritti</h4>
-      <p>Puoi richiedere accesso, rettifica, cancellazione o opporti al trattamento in qualsiasi momento scrivendo a: <a href="mailto:liberidalsuccesso@gmail.com">liberidalsuccesso@gmail.com</a></p>
+      <p>Puoi richiedere accesso, rettifica, cancellazione o opporti al trattamento in qualsiasi momento scrivendo a: <a href="/cdn-cgi/l/email-protection#6c00050e091e05080d001f190f0f091f1f032c0b010d0500420f0301"><span class="__cf_email__" data-cfemail="7c10151e190e15181d100f091f1f190f0f133c1b111d1510521f1311">[email&#160;protected]</span></a></p>
     </div>
   </div>
 </div>
 
-<script>
+<script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
 (function () {
   'use strict';
 
@@ -1220,15 +1207,4 @@
           calBtn.style.display='inline-flex';
           confBody.innerHTML=
             "Grazie per esserti iscritto a <span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br>"+
-            "Ti aspettiamo il <strong>20 giugno</strong> alle ore <strong>17:30</strong> presso la Sala Polivalente di Bresseo.<br><br>"+
-            "<span style='font-family:\"Playfair Display\",serif;font-style:italic;font-size:1.05rem;color:rgba(217,207,195,0.7);'>"+
-            "Non per imparare ad avere successo —<br>ma per imparare ad essere noi stessi."+
-            "</span>";
-        }
-      });
-  });
-
-}());
-</script>
-</body>
-</html>
+            "Ti aspettiamo il <strong>2
