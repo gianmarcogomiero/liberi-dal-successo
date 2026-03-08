@@ -365,7 +365,41 @@
       font-size: 10px; font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase;
       margin-bottom: 12px;
     }
-  </style>
+      /* ── BOX PASSIONE ── */
+    .passione-box {
+      margin-top: 32px;
+      padding: 36px 40px;
+      border-radius: 14px;
+      background: rgba(196,169,98,0.05);
+      border: 1px solid rgba(196,169,98,0.22);
+      text-align: center;
+    }
+    .passione-text {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.05rem, 2.8vw, 1.3rem);
+      color: rgba(217,207,195,0.80);
+      line-height: 1.85;
+      max-width: 540px;
+      margin: 0 auto 20px;
+    }
+    .passione-text strong {
+      font-style: normal;
+      color: var(--sand);
+      font-weight: 600;
+    }
+    .passione-tags {
+      display: flex; gap: 10px; justify-content: center; flex-wrap: wrap;
+      margin-top: 20px;
+    }
+    .passione-tag {
+      font-size: 11px; letter-spacing: 1.8px; text-transform: uppercase;
+      color: var(--gold); opacity: 0.75;
+      padding: 5px 14px;
+      border: 1px solid rgba(196,169,98,0.25);
+      border-radius: 100px;
+    }
+</style>
 </head>
 <body>
 
@@ -470,30 +504,44 @@
       <div class="format-item">
         <div class="format-icon">🎤</div>
         <div>
-          <p class="format-title">Talk brevi e storie vere</p>
-          <p class="format-desc">Persone del territorio che condividono esperienze reali, non esperti irraggiungibili.</p>
+          <p class="format-title">Voci, non palchi</p>
+          <p class="format-desc">Interventi brevi di chi ha qualcosa da raccontare, non da dimostrare. Esperienze vissute, non slide.</p>
         </div>
       </div>
       <div class="format-item">
         <div class="format-icon">🎵</div>
         <div>
           <p class="format-title">Musica live</p>
-          <p class="format-desc">Momenti musicali che accompagnano la serata e creano atmosfera.</p>
+          <p class="format-desc">La musica non è un contorno. È parte del ritmo della serata, dello spazio che si crea tra le parole.</p>
         </div>
       </div>
       <div class="format-item">
         <div class="format-icon">🤝</div>
         <div>
-          <p class="format-title">Comunità e condivisione</p>
-          <p class="format-desc">Spazio per incontrarsi, parlare e sentirsi meno soli in certi pensieri.</p>
+          <p class="format-title">Un posto dove respirare</p>
+          <p class="format-desc">Non solo ascolto. Anche incontro. Lo spazio per stare con gli altri senza dover dimostrare nulla.</p>
         </div>
       </div>
       <div class="format-item">
         <div class="format-icon">📍</div>
         <div>
-          <p class="format-title">A chilometro zero</p>
-          <p class="format-desc">Voci locali, ospiti del territorio. Non il curriculum, ma la passione.</p>
+          <p class="format-title">Radici locali</p>
+          <p class="format-desc">Chi sale sul palco viene da qui. Nessun nome famoso da importare — la profondità nasce dalla vicinanza.</p>
         </div>
+      </div>
+    </div>
+
+    <div class="passione-box">
+      <p class="passione-text">
+        Non lo organizziamo perché è il nostro lavoro.<br>
+        Lo facciamo perché ci riguarda.<br>
+        <strong>E quando qualcosa ti riguarda davvero,<br>
+        riesce a muovere anche gli altri.</strong>
+      </p>
+      <div class="passione-tags">
+        <span class="passione-tag">Voci del territorio</span>
+        <span class="passione-tag">Formato informale</span>
+        <span class="passione-tag">Ingresso libero</span>
       </div>
     </div>
   </div>
