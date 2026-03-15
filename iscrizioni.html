@@ -1,544 +1,907 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
-  <!-- Google tag (gtag.js) -->
-  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H7C5JNC6SG"></script>
-  <script>
-    window.dataLayer = window.dataLayer || [];
-    function gtag(){dataLayer.push(arguments);}
-    gtag('js', new Date());
-    gtag('config', 'G-H7C5JNC6SG');
-  </script>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Liberi dal Successo – Iscrizione</title>
-<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-<style>
-  :root {
-    --night-blue: #0B1C2D;
-    --sand:       #D9CFC3;
-    --soft-blue:  #AFC6E9;
-    --light-grey: #E6E8EC;
-    --cool-grey:  #C4C9D4;
-    --gold:     #C4A962;
-    --bg:         #E6E8EC;
-    --surface:    #F2F1EF;
-    --border:     #C4C9D4;
-    --text-main:  #0B1C2D;
-    --text-muted: #5A6A7A;
-    --focus-ring: rgba(175,198,233,0.35);
-    --error:      #B33A3A;
-    --waitlist-bg:#FEF8E6;
-    --waitlist-bd:#E8C840;
-    --waitlist-tx:#7A5A10;
-  }
-  * { box-sizing: border-box; margin: 0; padding: 0; }
-  body { font-family: 'DM Sans', sans-serif; background: var(--bg); color: var(--text-main); min-height: 100vh; display: flex; flex-direction: column; }
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Iscrizione — Liberi dal Successo</title>
+  <meta name="description" content="Iscriviti a Liberi dal Successo — un evento gratuito per ridefinire il significato di successo. 20 Giugno 2026, Sala Polivalente, Bresseo, Teolo, Colli Euganei (PD)." />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #0B1C2D;
+      --title:   #D9CFC3;
+      --info:    #AFC6E9;
+      --body:    #E6E8EC;
+      --accent:  #C4A962;
+      --surface: rgba(255,255,255,0.035);
+      --surf2:   rgba(255,255,255,0.07);
+      --r:       14px;
+      --r-sm:    9px;
+    }
 
-  /* HEADER */
-  header { background: var(--night-blue); padding: 52px 24px 44px; text-align: center; position: relative; overflow: hidden; }
-  header::before { content:''; position:absolute; top:-70px; left:-70px; width:260px; height:260px; border-radius:50%; background:rgba(175,198,233,0.08); pointer-events:none; }
-  header::after  { content:''; position:absolute; bottom:-90px; right:-50px; width:300px; height:300px; border-radius:50%; background:rgba(196,169,98,0.06); pointer-events:none; }
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    html { scroll-behavior: smooth; background: #0B1C2D; }
 
-  .logo-placeholder { width:72px; height:72px; border-radius:50%; border:2px dashed rgba(175,198,233,0.35); margin:0 auto 28px; display:flex; align-items:center; justify-content:center; position:relative; z-index:1; }
-  .logo-placeholder span { font-size:10px; letter-spacing:1.5px; text-transform:uppercase; color:rgba(175,198,233,0.45); }
+    body {
+      background: var(--bg);
+      color: var(--body);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      line-height: 1.6;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      overflow-x: hidden;
+    }
 
-  .header-eyebrow { font-size:10px; font-weight:500; letter-spacing:3.5px; text-transform:uppercase; color:var(--soft-blue); margin-bottom:16px; position:relative; z-index:1; }
-  header h1 { font-family:'Playfair Display',serif; font-size:clamp(2rem,6vw,3.2rem); font-weight:700; line-height:1.15; margin-bottom:16px; color:var(--sand); position:relative; z-index:1; }
-  header h1 em { font-style:italic; color:var(--gold); }
-  .header-sub { font-size:15px; font-weight:300; color:rgba(217,207,195,0.72); max-width:460px; margin:0 auto; line-height:1.75; position:relative; z-index:1; }
+    body::before {
+      content: '';
+      position: fixed; inset: 0;
+      background:
+        radial-gradient(ellipse 90% 60% at 15% -5%,  rgba(175,198,233,0.09) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 50% at 85% 105%, rgba(196,169,98,0.07)  0%, transparent 50%);
+      pointer-events: none; z-index: 0;
+    }
 
-  .header-meta { margin-top:28px; display:flex; gap:12px; justify-content:center; flex-wrap:wrap; position:relative; z-index:1; }
-  .header-meta { gap: 0 !important; border: 1px solid rgba(175,198,233,0.14); border-radius: 12px; overflow: hidden; max-width: 500px; margin-left: auto; margin-right: auto; }
-  .meta-pill {
-    padding: 12px 16px; font-size: 12px; color: rgba(217,207,195,0.65);
-    border-right: 1px solid rgba(175,198,233,0.12);
-    display: flex; flex-direction: column; align-items: center; gap: 3px;
-    flex: 1; text-decoration: none; background: transparent; cursor: default;
-  }
-  .meta-pill:last-child { border-right: none; }
-  .meta-pill .pill-label { font-size: 10px; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(175,198,233,0.45); }
-  .meta-pill .pill-val { font-size: 12px; color: rgba(217,207,195,0.80); font-weight: 400; text-align: center; line-height: 1.4; }
-  a.meta-pill { cursor: pointer; transition: background 0.18s; }
-  a.meta-pill:hover { background: rgba(175,198,233,0.08); }
-  @media(max-width:480px) {
-    .meta-pill { min-width: 50%; border-bottom: 1px solid rgba(175,198,233,0.12); }
-    .meta-pill:nth-child(even) { border-right: none; }
-    .meta-pill:nth-last-child(-n+2) { border-bottom: none; }
-  }
+    body::after {
+      content: '';
+      position: fixed; inset: 0;
+      opacity: 0.032;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size: 220px 220px;
+      pointer-events: none; z-index: 0;
+    }
 
-  /* COUNTER */
-  .counter-bar { background:var(--surface); border-bottom:1px solid var(--border); padding:16px 24px; text-align:center; }
-  .counter-inner { max-width:560px; margin:0 auto; }
-  .counter-label { font-size:13px; color:var(--text-muted); margin-bottom:10px; }
-  .counter-label strong { color:var(--text-main); font-weight:500; }
-  .progress-track { height:5px; background:var(--border); border-radius:10px; overflow:hidden; }
-  .progress-fill { height:100%; background:linear-gradient(90deg,var(--soft-blue),var(--gold)); border-radius:10px; transition:width 0.7s ease; }
+    main { flex: 1; position: relative; z-index: 1; }
 
-  /* MAIN */
-  main { flex:1; display:flex; justify-content:center; padding:40px 16px 64px; }
-  .form-card { background:var(--surface); border-radius:16px; box-shadow:0 2px 28px rgba(11,28,45,0.10); padding:clamp(28px,5vw,48px); width:100%; max-width:560px; border:1px solid var(--border); }
-  .form-title { font-family:'Playfair Display',serif; font-size:1.45rem; margin-bottom:6px; color:var(--text-main); }
-  .form-subtitle { font-size:14px; color:var(--text-muted); margin-bottom:32px; line-height:1.65; }
+    .container { max-width: 660px; margin: 0 auto; padding: 0 28px 100px; }
 
-  /* WAITLIST */
-  .status-banner { padding:13px 16px; border-radius:8px; font-size:14px; margin-bottom:24px; line-height:1.55; }
-  .status-banner.waitlist { background:var(--waitlist-bg); border:1px solid var(--waitlist-bd); color:var(--waitlist-tx); }
+    /* ── Animations ── */
+    .reveal { opacity: 0; transform: translateY(18px); animation: revUp 0.65s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .d1 { animation-delay: 0.05s; } .d2 { animation-delay: 0.15s; } .d3 { animation-delay: 0.25s; }
+    .d4 { animation-delay: 0.35s; } .d5 { animation-delay: 0.45s; } .d6 { animation-delay: 0.55s; }
+    @keyframes revUp { to { opacity: 1; transform: translateY(0); } }
 
-  /* FIELDS */
-  .field-group { display:grid; gap:20px; }
-  .field { display:flex; flex-direction:column; gap:6px; }
-  label { font-size:13px; font-weight:500; color:var(--text-main); letter-spacing:0.2px; }
-  label span.req { color:var(--soft-blue); margin-left:2px; }
+    /* ── Back link ── */
+    .back-link {
+      display: inline-flex; align-items: center; gap: 7px;
+      color: var(--info); text-decoration: none;
+      font-size: 0.8rem; font-weight: 500; letter-spacing: 0.04em; text-transform: uppercase;
+      padding: 32px 0 0; opacity: 0.55;
+      transition: opacity 0.25s, gap 0.25s;
+    }
+    .back-link:hover { opacity: 0.9; gap: 11px; }
 
-  input, select, textarea { font-family:'DM Sans',sans-serif; font-size:15px; padding:12px 16px; border:1.5px solid var(--border); border-radius:8px; background:var(--bg); color:var(--text-main); outline:none; transition:border-color 0.2s,box-shadow 0.2s; -webkit-appearance:none; appearance:none; width:100%; }
-  input::placeholder, textarea::placeholder { color:var(--cool-grey); }
-  input:focus, select:focus, textarea:focus { border-color:var(--soft-blue); box-shadow:0 0 0 3px var(--focus-ring); }
-  select { background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%235A6A7A' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat:no-repeat; background-position:right 16px center; background-color:var(--bg); padding-right:40px; cursor:pointer; }
+    /* ── Header ── */
+    .site-header {
+      text-align: center; padding: 52px 0 44px; margin-bottom: 40px; position: relative;
+    }
+    .site-header::after {
+      content: ''; display: block; width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      margin: 28px auto 0; opacity: 0.6;
+    }
+    .logo-ring {
+      width: 68px; height: 68px; border: 1.5px dashed rgba(196,169,98,0.45); border-radius: 50%;
+      margin: 0 auto 24px; display: flex; align-items: center; justify-content: center;
+      color: rgba(196,169,98,0.35); font-size: 0.6rem; font-weight: 600;
+      letter-spacing: 0.1em; text-transform: uppercase; position: relative;
+    }
+    .logo-ring::before {
+      content: ''; position: absolute; inset: -6px; border-radius: 50%;
+      border: 1px solid rgba(196,169,98,0.1);
+    }
+    .eyebrow {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); opacity: 0.75; margin-bottom: 12px;
+    }
+    .site-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(2rem, 5.5vw, 2.9rem); font-weight: 700;
+      color: var(--title); line-height: 1.1; letter-spacing: -0.01em;
+    }
+    .site-title em { font-style: italic; color: var(--accent); font-weight: 600; }
+    .ornament {
+      display: flex; align-items: center; justify-content: center;
+      gap: 12px; margin: 20px 0 28px; opacity: 0.4;
+    }
+    .orn-line { width: 48px; height: 1px; background: var(--accent); }
+    .orn-dia  { width: 5px; height: 5px; background: var(--accent); transform: rotate(45deg); }
 
-  .field-error { font-size:12px; color:var(--error); display:none; }
-  .field.has-error input, .field.has-error select, .field.has-error textarea { border-color:var(--error); }
-  .field.has-error .field-error { display:block; }
+    /* ── Info box ── */
+    .info-box {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1px;
+      background: rgba(196,201,212,0.12); border: 1px solid rgba(196,201,212,0.16);
+      border-radius: var(--r); overflow: hidden; margin: 0 auto; max-width: 480px;
+    }
+    .ic {
+      background: rgba(11,28,45,0.55); padding: 16px 10px; text-align: center;
+      text-decoration: none; color: var(--body);
+      display: flex; flex-direction: column; align-items: center; gap: 5px;
+      transition: background 0.2s;
+    }
+    a.ic:hover { background: rgba(175,198,233,0.07); }
+    .ic-icon { font-size: 1rem; margin-bottom: 2px; }
+    .ic-lbl {
+      font-size: 0.6rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: var(--info); opacity: 0.7;
+    }
+    .ic-val { font-size: 0.8rem; color: rgba(230,232,236,0.8); line-height: 1.35; transition: color 0.2s; }
+    a.ic .ic-val { color: var(--info); }
 
-  .two-col { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-  @media (max-width:480px) { .two-col { grid-template-columns:1fr; } }
+    /* ── Spots widget ── */
+    .spots-widget {
+      background: var(--surface); border: 1px solid rgba(196,201,212,0.13);
+      border-radius: var(--r); padding: 20px 22px; margin-bottom: 28px; position: relative; overflow: hidden;
+    }
+    .spots-widget::before {
+      content: ''; position: absolute; top: 0; left: 0; right: 0; height: 1px;
+      background: linear-gradient(90deg, transparent 0%, rgba(196,169,98,0.3) 50%, transparent 100%);
+    }
+    .spots-head { display: flex; justify-content: space-between; align-items: baseline; margin-bottom: 6px; }
+    .spots-lbl { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent); }
+    .spots-sub { font-size: 0.82rem; color: rgba(230,232,236,0.45); font-weight: 300; margin-top: 4px; }
+    .spots-right { font-family: 'Playfair Display', serif; font-size: 1rem; color: var(--title); font-style: italic; }
 
-  .section-divider { font-size:10px; font-weight:500; letter-spacing:2.5px; text-transform:uppercase; color:var(--text-muted); padding-top:10px; border-top:1px solid var(--border); margin-top:4px; }
+    .waitlist-banner {
+      display: none;
+      background: rgba(196,169,98,0.08); border: 1px solid rgba(196,169,98,0.25);
+      border-radius: var(--r-sm); padding: 14px 18px; margin-bottom: 24px;
+      font-size: 0.87rem; color: var(--title); line-height: 1.55;
+    }
+    .waitlist-banner b { color: var(--accent); }
 
-  /* RADIO CHIPS */
-  .radio-group { display:flex; flex-wrap:wrap; gap:8px; margin-top:2px; }
-  .radio-chip input[type="radio"] { display:none; }
-  .radio-chip label { display:inline-block; padding:8px 16px; border:1.5px solid var(--border); border-radius:100px; font-size:13px; cursor:pointer; background:var(--bg); color:var(--text-main); transition:all 0.18s; font-weight:400; width:auto; }
-  .radio-chip input[type="radio"]:checked + label { border-color:var(--soft-blue); background:var(--night-blue); color:var(--sand); }
+    /* ── Section intro ── */
+    .section-intro { margin-bottom: 36px; }
+    .section-intro h2 {
+      font-family: 'Playfair Display', serif; font-size: 1.45rem;
+      font-weight: 600; color: var(--title); margin-bottom: 5px; line-height: 1.2;
+    }
+    .section-intro p { font-size: 0.9rem; color: rgba(230,232,236,0.55); font-weight: 300; }
 
-  /* ALTRO DIETA */
-  #altroField { display:none; margin-top:10px; }
-  #altroField textarea { resize:none; height:72px; font-size:14px; line-height:1.5; }
+    /* ── Form panel ── */
+    .form-panel {
+      border: 1px solid rgba(196,201,212,0.12); border-radius: var(--r);
+      overflow: hidden; background: rgba(196,201,212,0.06); margin-bottom: 0;
+    }
+    .form-grid { display: grid; grid-template-columns: 1fr 1fr; }
 
-  /* AUTOCOMPLETE */
-  .autocomplete-wrap { position:relative; }
-  .autocomplete-list { position:absolute; top:calc(100% + 4px); left:0; right:0; background:var(--surface); border:1.5px solid var(--soft-blue); border-radius:8px; max-height:200px; overflow-y:auto; z-index:50; box-shadow:0 4px 16px rgba(11,28,45,0.12); display:none; }
-  .autocomplete-list.open { display:block; }
-  .autocomplete-item { padding:12px 16px; font-size:14px; color:var(--text-main); cursor:pointer; border-bottom:1px solid var(--border); -webkit-tap-highlight-color:transparent; }
-  .autocomplete-item:last-child { border-bottom:none; }
-  .autocomplete-item:hover, .autocomplete-item.highlighted { background:rgba(175,198,233,0.18); }
+    .fg {
+      padding: 20px 22px; background: rgba(11,28,45,0.4);
+      border-right: 1px solid rgba(196,201,212,0.1);
+      border-bottom: 1px solid rgba(196,201,212,0.1);
+      transition: background 0.2s;
+      display: flex; flex-direction: column;
+    }
+    .fg:focus-within { background: rgba(175,198,233,0.04); }
+    .fg.full { grid-column: 1 / -1; border-right: none; }
+    .fg.right { border-right: none; }
+    .fg.last-row { border-bottom: none; }
+    .fg.divider {
+      grid-column: 1 / -1; padding: 0; height: 1px;
+      background: rgba(196,201,212,0.1); border: none;
+    }
 
-  /* CHECKBOX CUSTOM */
-  .checkbox-row { display:flex; align-items:flex-start; gap:12px; cursor:pointer; -webkit-tap-highlight-color:transparent; }
-  .checkbox-box { width:24px; height:24px; min-width:24px; border:2px solid var(--border); border-radius:5px; background:var(--bg); display:flex; align-items:center; justify-content:center; transition:all 0.18s; margin-top:1px; }
-  .checkbox-box.checked { background:var(--night-blue); border-color:var(--night-blue); }
-  .checkbox-box .checkmark { display:none; width:6px; height:11px; border:2px solid var(--sand); border-top:none; border-left:none; transform:rotate(45deg) translateY(-1px); }
-  .checkbox-box.checked .checkmark { display:block; }
-  .checkbox-text { font-size:13px; color:var(--text-muted); line-height:1.65; padding-top:2px; }
-  .checkbox-text a { color:var(--soft-blue); text-decoration:underline; }
-  .field.has-error .checkbox-box { border-color:var(--error); }
+    .f-label {
+      font-size: 0.68rem; font-weight: 700; letter-spacing: 0.1em;
+      text-transform: uppercase; color: rgba(175,198,233,0.55); margin-bottom: 8px;
+    }
+    .f-label .req { color: var(--accent); margin-left: 2px; }
 
-  /* SUBMIT */
-  .btn-submit { width:100%; padding:15px; background:var(--night-blue); color:var(--sand); border:none; border-radius:10px; font-family:'DM Sans',sans-serif; font-size:15px; font-weight:500; cursor:pointer; transition:background 0.2s,transform 0.1s; letter-spacing:0.4px; margin-top:8px; }
-  .btn-submit:hover { background:#142840; }
-  .btn-submit:active { transform:scale(0.99); }
-  .btn-submit:disabled { opacity:0.55; cursor:not-allowed; }
+    input[type="text"], input[type="email"], select, textarea {
+      background: transparent; border: none;
+      border-bottom: 1px solid rgba(196,201,212,0.2); border-radius: 0;
+      padding: 4px 0 10px; color: var(--body);
+      font-family: 'DM Sans', sans-serif; font-size: 0.97rem; font-weight: 400;
+      width: 100%; outline: none; -webkit-appearance: none; appearance: none;
+      transition: border-color 0.25s;
+    }
+    input[type="text"]:focus, input[type="email"]:focus, select:focus { border-color: var(--accent); }
+    input::placeholder { color: rgba(196,201,212,0.25); font-weight: 300; }
 
-  /* SEND ERROR */
-  .send-error { display:none; background:#fdf0f0; border:1px solid #e0a0a0; color:#8B2020; border-radius:8px; padding:12px 16px; font-size:13px; line-height:1.6; margin-top:12px; }
-  .send-error.visible { display:block; }
+    select {
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='11' height='7' viewBox='0 0 11 7'%3E%3Cpath d='M1 1l4.5 4.5L10 1' stroke='%23AFC6E9' stroke-width='1.4' fill='none' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 0 center; padding-right: 20px; cursor: pointer;
+    }
+    select option { background: #0d2236; color: var(--body); }
 
-  /* SUCCESS */
-  .success-state { display:none; text-align:center; padding:24px 0; }
-  .success-icon { width:68px; height:68px; border-radius:50%; margin:0 auto 20px; display:flex; align-items:center; justify-content:center; font-size:26px; }
-  .success-icon.confirmed { background:rgba(175,198,233,0.18); color:var(--night-blue); border:2px solid var(--soft-blue); }
-  .success-icon.waitlisted { background:var(--waitlist-bg); border:2px solid var(--waitlist-bd); }
-  .success-state h2 { font-family:'Playfair Display',serif; font-size:1.6rem; margin-bottom:12px; color:var(--text-main); }
-  .success-state p { font-size:15px; color:var(--text-muted); line-height:1.75; max-width:380px; margin:0 auto; }
-  .success-tag { display:inline-block; margin-top:20px; padding:8px 20px; border-radius:100px; font-size:13px; font-weight:500; }
-  .success-tag.confirmed { background:rgba(175,198,233,0.18); color:var(--night-blue); border:1px solid var(--soft-blue); }
-  .success-tag.waitlisted { background:var(--waitlist-bg); color:var(--waitlist-tx); border:1px solid var(--waitlist-bd); }
+    textarea {
+      resize: vertical; min-height: 72px;
+      border: 1px solid rgba(196,201,212,0.2); border-radius: var(--r-sm);
+      padding: 10px 12px; background: rgba(255,255,255,0.03); outline: none;
+      font-family: 'DM Sans', sans-serif; font-size: 0.97rem; color: var(--body);
+      width: 100%; transition: border-color 0.25s; margin-top: 4px;
+    }
+    textarea:focus { border-color: var(--accent); }
+    textarea::placeholder { color: rgba(196,201,212,0.25); font-weight: 300; }
 
-  /* MODAL */
-  .modal-overlay { display:none; position:fixed; inset:0; background:rgba(11,28,45,0.55); z-index:100; justify-content:center; align-items:center; padding:16px; }
-  .modal-overlay.open { display:flex; }
-  .modal-box { background:var(--surface); border-radius:14px; padding:32px; max-width:560px; width:100%; max-height:80vh; overflow-y:auto; position:relative; border:1px solid var(--border); }
-  .modal-box h3 { font-family:'Playfair Display',serif; font-size:1.3rem; margin-bottom:16px; color:var(--text-main); }
-  .modal-box p, .modal-box li { font-size:13px; color:var(--text-muted); line-height:1.8; margin-bottom:10px; }
-  .modal-box li { margin-left:16px; }
-  .modal-box h4 { font-size:13px; font-weight:600; color:var(--text-main); margin:16px 0 6px; }
-  .btn-close-modal { position:absolute; top:16px; right:16px; background:var(--bg); border:1px solid var(--border); border-radius:50%; width:32px; height:32px; font-size:14px; cursor:pointer; display:flex; align-items:center; justify-content:center; color:var(--text-main); }
+    /* ── Autocomplete ── */
+    .ac-wrap { position: relative; }
+    .ac-list {
+      position: absolute; top: calc(100% + 8px);
+      left: -22px; right: -22px;
+      background: #0c2030; border: 1px solid rgba(196,201,212,0.2);
+      border-radius: var(--r-sm); max-height: 200px; overflow-y: auto;
+      z-index: 200; box-shadow: 0 16px 40px rgba(0,0,0,0.5); display: none;
+    }
+    .ac-list.open { display: block; }
+    .ac-item {
+      padding: 10px 16px; font-size: 0.88rem; color: rgba(230,232,236,0.75);
+      cursor: pointer; border-bottom: 1px solid rgba(196,201,212,0.06);
+      transition: background 0.12s;
+    }
+    .ac-item:last-child { border-bottom: none; }
+    .ac-item:hover, .ac-item.hi { background: rgba(175,198,233,0.08); color: var(--title); }
+    .ac-item b { color: var(--accent); font-weight: 600; }
 
-  /* VERSION BADGE */
-  .version-badge { display:inline-flex; align-items:center; gap:6px; background:var(--night-blue); color:var(--gold); font-size:10px; font-weight:500; letter-spacing:1.5px; text-transform:uppercase; padding:4px 12px; border-radius:100px; margin-bottom:10px; }
-  .version-dot { width:6px; height:6px; border-radius:50%; background:var(--gold); animation:blink 1.4s ease-in-out infinite; }
-  @keyframes blink { 0%,100%{opacity:1} 50%{opacity:0.2} }
+    /* ── Chips ── */
+    .chip-group { display: flex; flex-wrap: wrap; gap: 7px; margin-top: 4px; }
+    .chip {
+      display: inline-block; padding: 7px 14px;
+      border: 1px solid rgba(196,201,212,0.18); border-radius: 100px;
+      font-size: 0.83rem; font-weight: 500; color: rgba(230,232,236,0.5);
+      background: transparent; cursor: pointer; user-select: none;
+      transition: all 0.2s; -webkit-tap-highlight-color: transparent;
+    }
+    .chip:hover { border-color: rgba(196,169,98,0.35); color: rgba(230,232,236,0.8); }
+    .chip.sel { border-color: rgba(196,169,98,0.6); color: var(--title); background: rgba(196,169,98,0.08); }
 
-  /* FOOTER */
-  footer { text-align:center; padding:20px; font-size:12px; color:var(--text-muted); border-top:1px solid var(--border); background:var(--surface); }
-  .back-link {
-    display: inline-flex; align-items: center; gap: 6px;
-    font-size: 13px; color: rgba(175,198,233,0.60);
-    text-decoration: none; margin-bottom: 28px;
-    transition: color 0.2s;
-  }
-  .back-link:hover { color: var(--soft-blue); }
-</style>
+    /* ── Privacy row ── */
+    /*
+       Structure:
+       .prv-wrap (full-width padded container)
+         .prv-row (flex, cursor pointer — toggles checkbox)
+           .chk-box (visual checkbox)
+           .prv-text (plain text + separate modal-trigger button)
+    */
+    .prv-wrap {
+      padding: 18px 22px;
+      background: rgba(11,28,45,0.4);
+      border-bottom: none;
+    }
+    .prv-row {
+      display: flex; align-items: flex-start; gap: 14px;
+      cursor: pointer; -webkit-tap-highlight-color: transparent;
+      border-radius: var(--r-sm); padding: 8px;
+      transition: background 0.2s;
+      user-select: none;
+    }
+    .prv-row:hover { background: rgba(175,198,233,0.04); }
+    .prv-row.err { background: rgba(210,90,80,0.05); }
+
+    .chk-box {
+      flex-shrink: 0; width: 20px; height: 20px;
+      border: 1.5px solid rgba(196,201,212,0.35); border-radius: 4px;
+      background: transparent; display: flex; align-items: center; justify-content: center;
+      transition: all 0.2s; margin-top: 2px; pointer-events: none;
+    }
+    .chk-box.on { background: var(--accent); border-color: var(--accent); }
+    .chk-box svg { display: none; }
+    .chk-box.on svg { display: block; }
+
+    .prv-text {
+      font-size: 0.86rem; color: rgba(230,232,236,0.6); line-height: 1.65; font-weight: 300;
+    }
+
+    /* The modal trigger: a plain inline button, styled as a link */
+    .prv-modal-btn {
+      display: inline;
+      background: none; border: none; padding: 0;
+      font-family: 'DM Sans', sans-serif; font-size: inherit; font-weight: 400;
+      color: var(--info); text-decoration: underline; text-underline-offset: 3px;
+      cursor: pointer; line-height: inherit;
+      /* Larger tap area without affecting layout */
+      position: relative;
+    }
+
+    /* ── Error toast ── */
+    .err-toast {
+      display: none; background: rgba(196,169,98,0.06);
+      border: 1px solid rgba(196,169,98,0.2); border-radius: var(--r-sm);
+      padding: 16px 20px; margin-top: 16px;
+    }
+    .err-toast.show { display: block; }
+    .err-toast-title { font-size: 0.9rem; font-weight: 600; color: var(--title); margin-bottom: 8px; }
+    .err-toast ul { list-style: none; }
+    .err-toast li { font-size: 0.85rem; color: rgba(230,232,236,0.7); padding: 2px 0; font-weight: 300; }
+    .err-toast li::before { content: "→ "; color: var(--accent); font-weight: 600; }
+
+    /* ── Submit button ── */
+    .btn-submit {
+      width: 100%; margin-top: 20px; padding: 16px 28px;
+      background: linear-gradient(135deg, #c4a962, #d8bb72, #c4a962);
+      color: #0B1C2D; font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      border: none; border-radius: var(--r-sm); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; gap: 10px;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-submit:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+    .spin { animation: spinAnim 0.8s linear infinite; display: none; }
+    @keyframes spinAnim { to { transform: rotate(360deg); } }
+
+    /* ── Confirm screen ── */
+    .confirm-screen { display: none; text-align: center; padding: 70px 0 40px; }
+    .conf-ring {
+      width: 88px; height: 88px; margin: 0 auto 28px;
+      border: 1.5px solid rgba(196,169,98,0.4); border-radius: 50%;
+      display: flex; align-items: center; justify-content: center; font-size: 2.2rem;
+      position: relative;
+    }
+    .conf-ring::before {
+      content: ''; position: absolute; inset: 6px; border-radius: 50%;
+      border: 1px solid rgba(196,169,98,0.15);
+    }
+    .conf-title {
+      font-family: 'Playfair Display', serif; font-size: clamp(1.7rem, 4vw, 2.1rem);
+      font-weight: 700; color: var(--title); margin-bottom: 20px; line-height: 1.2;
+    }
+    .conf-body { font-size: 1rem; color: rgba(230,232,236,0.7); line-height: 1.75; max-width: 420px; margin: 0 auto; font-weight: 300; }
+    .btn-cal {
+      display: inline-flex; align-items: center; gap: 9px; margin-top: 36px;
+      padding: 13px 24px; background: transparent; border: 1px solid rgba(196,169,98,0.35);
+      border-radius: 100px; color: var(--accent); font-family: 'DM Sans', sans-serif;
+      font-size: 0.87rem; font-weight: 600; letter-spacing: 0.04em; cursor: pointer;
+      transition: background 0.2s, border-color 0.2s, transform 0.2s;
+    }
+    .btn-cal:hover { background: rgba(196,169,98,0.08); border-color: rgba(196,169,98,0.6); transform: translateY(-1px); }
+
+    /* ── Modal ── */
+    .modal-bg {
+      display: none; position: fixed; inset: 0;
+      background: rgba(5,12,22,0.88); z-index: 1000;
+      align-items: center; justify-content: center;
+      padding: 20px; backdrop-filter: blur(4px);
+    }
+    .modal-bg.open { display: flex; }
+    .modal-box {
+      background: #0c2030; border: 1px solid rgba(196,201,212,0.16);
+      border-radius: var(--r); max-width: 540px; width: 100%;
+      max-height: 82vh; overflow-y: auto; padding: 36px; position: relative;
+    }
+    .modal-close {
+      position: absolute; top: 16px; right: 18px;
+      background: none; border: none; color: rgba(230,232,236,0.3);
+      font-size: 1.6rem; cursor: pointer; padding: 4px 8px; line-height: 1;
+      transition: color 0.2s;
+    }
+    .modal-close:hover { color: var(--body); }
+    .modal-title { font-family: 'Playfair Display', serif; font-size: 1.25rem; color: var(--title); margin-bottom: 22px; padding-right: 36px; }
+    .modal-body { font-size: 0.86rem; color: rgba(230,232,236,0.65); line-height: 1.75; font-weight: 300; }
+    .modal-body h4 {
+      font-size: 0.72rem; font-weight: 700; letter-spacing: 0.1em; text-transform: uppercase;
+      color: var(--accent); opacity: 0.7; margin: 20px 0 6px;
+    }
+    .modal-body h4:first-child { margin-top: 0; }
+    .modal-body a { color: var(--info); }
+
+    /* ── Footer ── */
+    footer {
+      position: relative; z-index: 1; padding: 24px 28px;
+      text-align: center; border-top: 1px solid rgba(196,201,212,0.07);
+    }
+    .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .badge {
+      display: inline-flex; align-items: center; gap: 6px; padding: 4px 12px;
+      border-radius: 100px; background: rgba(196,169,98,0.08);
+      border: 1px solid rgba(196,169,98,0.22); color: rgba(196,169,98,0.65);
+      font-size: 10px; font-weight: 400; letter-spacing: 1.5px; text-transform: uppercase;
+    }
+    .footer-copy { font-size: 0.75rem; color: rgba(196,201,212,0.3); letter-spacing: 0.02em; }
+    .footer-copy a { color: rgba(175,198,233,0.35); text-decoration: none; }
+    .footer-copy a:hover { color: rgba(175,198,233,0.6); }
+    .footer-ev-link { font-size: 0.72rem; color: rgba(175,198,233,0.3); text-decoration: underline; text-underline-offset: 3px; transition: color 0.2s; }
+    .footer-ev-link:hover { color: rgba(175,198,233,0.6); }
+
+    /* ── Utils ── */
+    .hidden { display: none !important; }
+    .mt-14 { margin-top: 14px; }
+
+    /* ── Responsive ── */
+    @media (max-width: 540px) {
+      .form-grid { grid-template-columns: 1fr; }
+      .fg { border-right: none; }
+      .fg.full, .fg.right { grid-column: 1; }
+      .info-box { grid-template-columns: 1fr; max-width: 240px; }
+      .ic { flex-direction: row; text-align: left; gap: 12px; padding: 12px 14px; }
+      .ac-list { left: 0; right: 0; }
+    }
+  </style>
 </head>
 <body>
 
-<header>
-  <div class="logo-placeholder"><span>Logo</span></div>
-  <p class="header-eyebrow">Bresseo · Teolo · Padova</p>
-  <h1>Liberi dal<br><em>Successo</em></h1>
-  <p class="header-sub">Un evento comunitario su identità, benessere e il coraggio di accettarci per quello che siamo.</p>
-  <div class="header-meta">
-    <a href="https://maps.google.com/?q=Sala+Polivalente+Bresseo+Teolo+Padova" target="_blank" class="meta-pill">📍 Sala Polivalente, Bresseo</a>
-    <span class="meta-pill">📅 Giugno 2026</span>
-    <span class="meta-pill">🎟 Ingresso gratuito</span>
-  </div>
-</header>
-
-<div class="counter-bar">
-  <div class="counter-inner">
-    <p class="counter-label" id="counterLabel"><strong>200</strong> posti disponibili su 200</p>
-    <div class="progress-track">
-      <div class="progress-fill" id="progressFill" style="width:0%"></div>
-    </div>
-  </div>
-</div>
-
 <main>
-  <div class="form-card">
+  <div class="container">
 
-    <div class="status-banner waitlist" id="waitlistBanner" style="display:none;">
-      ⏳ <strong>I posti confermati sono esauriti.</strong> Puoi comunque iscriverti alla lista d'attesa: ti contatteremo se si libera un posto.
-    </div>
+    <a class="back-link reveal d1" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#AFC6E9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="10,4 6,8 10,12"/>
+      </svg>
+      Torna all'evento
+    </a>
 
-    <div id="formSection">
-      <a href="index.html" class="back-link">← Torna all'evento</a>
-      <h2 class="form-title">Iscriviti all'evento</h2>
-      <p class="form-subtitle">Compila il modulo per riservare il tuo posto. Riceverai una conferma via email.</p>
-
-      <div class="field-group">
-        <p class="section-divider">Dati personali</p>
-
-        <div class="two-col">
-          <div class="field" id="field-nome">
-            <label for="nome">Nome <span class="req">*</span></label>
-            <input type="text" id="nome" placeholder="Es. Marco" autocomplete="given-name">
-            <span class="field-error">Campo obbligatorio</span>
-          </div>
-          <div class="field" id="field-cognome">
-            <label for="cognome">Cognome <span class="req">*</span></label>
-            <input type="text" id="cognome" placeholder="Es. Rossi" autocomplete="family-name">
-            <span class="field-error">Campo obbligatorio</span>
-          </div>
+    <header class="site-header reveal d2">
+      <div class="logo-ring">Logo</div>
+      <p class="eyebrow">Bresseo · 20 Giugno 2026</p>
+      <h1 class="site-title">Liberi dal<br><em>Successo</em></h1>
+      <div class="ornament">
+        <span class="orn-line"></span>
+        <span class="orn-dia"></span>
+        <span class="orn-line"></span>
+      </div>
+      <div class="info-box">
+        <a class="ic" href="https://maps.google.com/?q=Sala+Polivalente+Bresseo+Teolo+Padova" target="_blank" rel="noopener">
+          <span class="ic-icon">📍</span>
+          <span class="ic-lbl">Dove</span>
+          <span class="ic-val">Sala Polivalente<br>Bresseo, Teolo</span>
+        </a>
+        <a class="ic" id="js-ics-btn" href="#">
+          <span class="ic-icon">📅</span>
+          <span class="ic-lbl">Quando</span>
+          <span class="ic-val">20 Giugno 2026<br>ore 17:30</span>
+        </a>
+        <div class="ic">
+          <span class="ic-icon">🎟</span>
+          <span class="ic-lbl">Accesso</span>
+          <span class="ic-val">Ingresso<br>gratuito</span>
         </div>
+      </div>
+    </header>
 
-        <div class="field" id="field-email">
-          <label for="email">Email <span class="req">*</span></label>
-          <input type="email" id="email" placeholder="tua@email.it" autocomplete="email">
-          <span class="field-error">Inserisci un'email valida</span>
+    <div class="reveal d3">
+      <div class="spots-widget">
+        <div class="spots-head">
+          <span class="spots-lbl">⚡ Posti limitati</span>
+          <span class="spots-right">Assicurati un posto</span>
         </div>
-
-        <div class="field" id="field-eta">
-          <label for="eta">Fascia d'età <span class="req">*</span></label>
-          <select id="eta">
-            <option value="">Seleziona...</option>
-            <option value="Meno di 18 anni">Meno di 18 anni</option>
-            <option value="18-25 anni">18 – 25 anni</option>
-            <option value="26-35 anni">26 – 35 anni</option>
-            <option value="36-50 anni">36 – 50 anni</option>
-            <option value="51-65 anni">51 – 65 anni</option>
-            <option value="Più di 65 anni">Più di 65 anni</option>
-          </select>
-          <span class="field-error">Campo obbligatorio</span>
-        </div>
-
-        <div class="field" id="field-comune">
-          <label for="comune">Comune di provenienza <span class="req">*</span></label>
-          <div class="autocomplete-wrap">
-            <input type="text" id="comune" placeholder="Inizia a scrivere il tuo comune..." autocomplete="off" autocorrect="off" spellcheck="false">
-            <div class="autocomplete-list" id="autocompleteList"></div>
-          </div>
-          <span class="field-error">Campo obbligatorio</span>
-        </div>
-
-        <p class="section-divider">Informazioni aggiuntive</p>
-
-        <div class="field">
-          <label>Esigenze alimentari</label>
-          <div class="radio-group">
-            <div class="radio-chip"><input type="radio" name="dieta" id="d-nessuna" value="Nessuna" checked><label for="d-nessuna">Nessuna</label></div>
-            <div class="radio-chip"><input type="radio" name="dieta" id="d-vegetariano" value="Vegetariano"><label for="d-vegetariano">Vegetariano</label></div>
-            <div class="radio-chip"><input type="radio" name="dieta" id="d-vegano" value="Vegano"><label for="d-vegano">Vegano</label></div>
-            <div class="radio-chip"><input type="radio" name="dieta" id="d-gluten" value="Senza glutine"><label for="d-gluten">Senza glutine</label></div>
-            <div class="radio-chip"><input type="radio" name="dieta" id="d-altro" value="altro"><label for="d-altro">Altro</label></div>
-          </div>
-          <div id="altroField">
-            <textarea id="altroText" placeholder="Descrivi la tua esigenza alimentare..."></textarea>
-          </div>
-        </div>
-
-        <p class="section-divider">Privacy</p>
-
-        <div class="field" id="field-privacy">
-          <div class="checkbox-row" id="privacyRow">
-            <div class="checkbox-box" id="checkboxBox"><div class="checkmark"></div></div>
-            <div class="checkbox-text">
-              Ho letto e accetto l'<a href="#" id="privacyLink">Informativa sulla Privacy</a>. Acconsento al trattamento dei miei dati personali per la gestione dell'iscrizione all'evento. <span class="req">*</span>
-            </div>
-          </div>
-          <input type="checkbox" id="privacyCheck" style="display:none;">
-          <span class="field-error" id="privacyError" style="display:none; margin-top:4px;">Devi accettare l'informativa per procedere.</span>
-        </div>
-
-        <button class="btn-submit" id="btnSubmit">Invia iscrizione</button>
-        <div class="send-error" id="sendError">
-          ⚠️ Si è verificato un problema nell'invio. Riprova oppure scrivici a
-          <a href="/cdn-cgi/l/email-protection#4e22272c2b3c272a2f223d3b2d2d2b3d3d210e29232f2722602d2123" style="color:var(--error)"><span class="__cf_email__" data-cfemail="92fefbf0f7e0fbf6f3fee1e7f1f1f7e1e1fdd2f5fff3fbfebcf1fdff">[email&#160;protected]</span></a>
-        </div>
+        <p class="spots-sub">Iscriviti ora — l'ingresso è gratuito.</p>
+      </div>
+      <div class="waitlist-banner" id="js-wbanner">
+        <b>L'evento ha raggiunto la capienza massima.</b><br>
+        Puoi comunque iscriverti alla lista d'attesa: ti contatteremo in caso di disponibilità.
       </div>
     </div>
 
-    <div class="success-state" id="successSection">
-      <div class="success-icon confirmed" id="successIcon">✓</div>
-      <h2 id="successTitle">Iscrizione confermata!</h2>
-      <p id="successText">Grazie per esserti iscritto a <strong>Liberi dal Successo</strong>. Riceverai una email di conferma all'indirizzo che hai indicato.</p>
-      <span class="success-tag confirmed" id="successTag">Posto confermato</span>
+    <div class="section-intro reveal d4">
+      <h2>Prenota il tuo posto</h2>
+      <p>Iscrizione gratuita e aperta a tutti.</p>
+    </div>
+
+    <form id="js-form" novalidate class="reveal d5">
+      <div class="form-panel">
+        <div class="form-grid">
+
+          <div class="fg">
+            <label class="f-label" for="f-nome">Nome <span class="req">*</span></label>
+            <input type="text" id="f-nome" placeholder="Il tuo nome" autocomplete="given-name" />
+          </div>
+
+          <div class="fg right">
+            <label class="f-label" for="f-cognome">Cognome <span class="req">*</span></label>
+            <input type="text" id="f-cognome" placeholder="Il tuo cognome" autocomplete="family-name" />
+          </div>
+
+          <div class="fg full">
+            <label class="f-label" for="f-email">Email <span class="req">*</span></label>
+            <input type="email" id="f-email" placeholder="nome@esempio.it" autocomplete="email" inputmode="email" />
+          </div>
+
+          <div class="fg">
+            <label class="f-label" for="f-eta">Fascia d'età</label>
+            <select id="f-eta">
+              <option value="">Seleziona</option>
+              <option value="under18">Meno di 18</option>
+              <option value="18-25">18–25</option>
+              <option value="26-35">26–35</option>
+              <option value="36-50">36–50</option>
+              <option value="51-65">51–65</option>
+              <option value="over65">Più di 65</option>
+            </select>
+          </div>
+
+          <div class="fg right">
+            <label class="f-label" for="f-comune">Comune</label>
+            <div class="ac-wrap">
+              <input type="text" id="f-comune" placeholder="Inizia a digitare…" autocomplete="off" />
+              <div class="ac-list" id="js-aclist"></div>
+            </div>
+          </div>
+
+          <div class="fg divider"></div>
+
+        </div><!-- /form-grid -->
+
+        <!-- Consenso foto/video -->
+        <div class="prv-wrap" style="border-bottom: 1px solid rgba(196,201,212,0.1);">
+          <div class="prv-row" id="js-fotorow">
+            <div class="chk-box" id="js-fotochk">
+              <svg width="11" height="9" viewBox="0 0 12 10" fill="none"
+                   stroke="#0B1C2D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="1,5 4.5,8.5 11,1"/>
+              </svg>
+            </div>
+            <span class="prv-text">
+              Acconsento alla ripresa fotografica e video durante l'evento e alla pubblicazione del materiale per finalità di comunicazione del progetto.
+            </span>
+          </div>
+        </div>
+
+        <!-- Privacy: fuori dalla grid, struttura separata e pulita -->
+        <div class="prv-wrap">
+          <!--
+            .prv-row gestisce SOLO il toggle del checkbox.
+            Il pulsante modale è dentro .prv-text ma stoppa la propagazione.
+          -->
+          <div class="prv-row" id="js-prvrow">
+            <div class="chk-box" id="js-chkbox">
+              <svg width="11" height="9" viewBox="0 0 12 10" fill="none"
+                   stroke="#0B1C2D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <polyline points="1,5 4.5,8.5 11,1"/>
+              </svg>
+            </div>
+            <span class="prv-text">
+              Ho letto e accetto l'<button type="button" class="prv-modal-btn" id="js-prv-modal-btn">informativa sulla privacy</button>.
+              I dati saranno trattati esclusivamente per la gestione dell'evento.
+            </span>
+          </div>
+        </div>
+
+      </div><!-- /form-panel -->
+
+      <div class="err-toast" id="js-toast">
+        <p class="err-toast-title">😅 &nbsp;Quasi tutto a posto! Controlla:</p>
+        <ul id="js-toast-list"></ul>
+      </div>
+
+      <button type="submit" class="btn-submit" id="js-btn">
+        <span id="js-btn-txt">Invia iscrizione</span>
+        <svg class="spin" id="js-spinner" width="17" height="17" viewBox="0 0 24 24"
+             fill="none" stroke="#0B1C2D" stroke-width="2.5" stroke-linecap="round">
+          <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
+        </svg>
+      </button>
+    </form>
+
+    <div class="confirm-screen" id="js-confirm">
+      <div class="conf-ring" id="js-conf-icon">✓</div>
+      <h2 class="conf-title" id="js-conf-title">Iscrizione confermata!</h2>
+      <p class="conf-body" id="js-conf-body"></p>
+      <button class="btn-cal" id="js-btn-cal" type="button">
+        <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+          <rect x="3" y="4" width="18" height="18" rx="2"/>
+          <line x1="16" y1="2" x2="16" y2="6"/>
+          <line x1="8" y1="2" x2="8" y2="6"/>
+          <line x1="3" y1="10" x2="21" y2="10"/>
+        </svg>
+        Aggiungi al calendario
+      </button>
     </div>
 
   </div>
 </main>
 
-<!-- PRIVACY MODAL -->
-<div class="modal-overlay" id="privacyModal">
+<footer class="reveal d6">
+  <div class="footer-inner">
+    <span class="badge">v0.4 · 15.03.2026</span>
+    <span class="footer-copy">
+      © 2026 Liberi dal Successo ·
+      <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#108;&#105;&#98;&#101;&#114;&#105;&#100;&#97;&#108;&#115;&#117;&#99;&#99;&#101;&#115;&#115;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#108;&#105;&#98;&#101;&#114;&#105;&#100;&#97;&#108;&#115;&#117;&#99;&#99;&#101;&#115;&#115;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
+    </span>
+    <a class="footer-ev-link" href="index.html">Vedi i dettagli dell'evento →</a>
+  </div>
+</footer>
+
+<!-- Privacy Modal -->
+<div class="modal-bg" id="js-modal">
   <div class="modal-box">
-    <button class="btn-close-modal" id="closeModalBtn">✕</button>
-    <h3>Informativa sulla Privacy</h3>
-    <p>Ai sensi del Regolamento (UE) 2016/679 (GDPR) e del D.Lgs. 196/2003 come modificato dal D.Lgs. 101/2018, ti forniamo le seguenti informazioni sul trattamento dei tuoi dati personali.</p>
-    <h4>Titolare del trattamento</h4>
-    <p>Iniziativa culturale "Liberi dal Successo" – Bresseo, Teolo (PD)<br>Email: <a href="/cdn-cgi/l/email-protection#b5d9dcd7d0c7dcd1d4d9c6c0d6d6d0c6c6daf5d2d8d4dcd99bd6dad8" style="color:var(--soft-blue)"><span class="__cf_email__" data-cfemail="14787d7671667d707578676177777167677b547379757d783a777b79">[email&#160;protected]</span></a></p>
-    <h4>Dati raccolti</h4>
-    <p>Nome, cognome, indirizzo email, fascia d'età, comune di provenienza ed eventuali esigenze alimentari.</p>
-    <h4>Finalità del trattamento</h4>
-    <p>I tuoi dati vengono raccolti esclusivamente per:</p>
-    <ul>
-      <li><strong>Gestione delle iscrizioni:</strong> registrare la partecipazione e verificare la disponibilità dei posti.</li>
-      <li><strong>Comunicazioni sull'evento:</strong> inviare informazioni pratiche (orari, luogo, aggiornamenti) legate alla tua iscrizione.</li>
-    </ul>
-    <p>I tuoi dati <strong>non verranno utilizzati</strong> per newsletter, attività promozionali o finalità commerciali.</p>
-    <h4>Base giuridica</h4>
-    <p>Consenso espresso (art. 6 par. 1 lett. a GDPR) e misure precontrattuali (art. 6 par. 1 lett. b GDPR).</p>
-    <h4>Conservazione</h4>
-    <p>I dati saranno conservati fino a 12 mesi dopo l'evento, poi cancellati definitivamente.</p>
-    <h4>Condivisione</h4>
-    <p>I dati non saranno ceduti a terzi. Accessibili solo al team organizzativo.</p>
-    <h4>I tuoi diritti</h4>
-    <p>Puoi accedere, correggere, cancellare i tuoi dati o revocare il consenso scrivendo a <a href="/cdn-cgi/l/email-protection#f79b9e9592859e93969b8482949492848498b7909a969e9bd994989a" style="color:var(--soft-blue)"><span class="__cf_email__" data-cfemail="ec80858e899e85888d809f998f8f899f9f83ac8b818d8580c28f8381">[email&#160;protected]</span></a></p>
-    <h4>Reclami</h4>
-    <p>Puoi rivolgerti al Garante: <a href="https://www.garanteprivacy.it" target="_blank" style="color:var(--soft-blue)">www.garanteprivacy.it</a></p>
+    <button class="modal-close" id="js-modal-close" type="button">×</button>
+    <h3 class="modal-title">Informativa sulla Privacy</h3>
+    <div class="modal-body">
+      <h4>Titolare del trattamento</h4>
+      <p><strong>Gianmarco Gomiero</strong>, organizzatore dell'evento "Liberi dal Successo".<br>
+      Email: <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#108;&#105;&#98;&#101;&#114;&#105;&#100;&#97;&#108;&#115;&#117;&#99;&#99;&#101;&#115;&#115;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#108;&#105;&#98;&#101;&#114;&#105;&#100;&#97;&#108;&#115;&#117;&#99;&#99;&#101;&#115;&#115;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a></p>
+      <h4>Dati raccolti</h4>
+      <p>Nome, cognome, indirizzo email, fascia d'età e comune di provenienza. Previo consenso esplicito: materiale fotografico e video realizzato durante l'evento.</p>
+      <h4>Finalità del trattamento</h4>
+      <p>I dati sono trattati esclusivamente per la gestione delle iscrizioni all'evento "Liberi dal Successo" (Bresseo, 20 Giugno 2026) e per comunicazioni organizzative legate all'evento.</p>
+      <h4>Consenso foto e video</h4>
+      <p>Previo consenso esplicito, potranno essere scattate fotografie e realizzate riprese video durante l'evento. Il materiale potrà essere utilizzato esclusivamente per la comunicazione del progetto "Liberi dal Successo" sui canali ufficiali. Il consenso è facoltativo e può essere revocato in qualsiasi momento scrivendo al titolare.</p>
+      <h4>Base giuridica</h4>
+      <p>Il trattamento si basa sul consenso dell'interessato, ai sensi dell'art. 6, par. 1, lett. a) del Regolamento UE 2016/679 (GDPR).</p>
+      <h4>Conservazione</h4>
+      <p>I dati sono conservati su Google Sheets (Google LLC), conforme al GDPR. Non saranno ceduti a terzi né usati per finalità commerciali. Saranno cancellati entro 30 giorni dall'evento.</p>
+      <h4>I tuoi diritti</h4>
+      <p>Puoi richiedere accesso, rettifica o cancellazione scrivendo a: <a href="/cdn-cgi/l/email-protection#c2aeaba0a7b0aba6a3aeb1b7a1a1a7b1b1ad82a5afa3abaeeca1adaf"><span class="__cf_email__" data-cfemail="1874717a7d6a717c79746b6d7b7b7d6b6b77587f75797174367b7775">[email&#160;protected]</span></a></p>
+    </div>
   </div>
 </div>
 
-<footer>
-  <div class="version-badge"><div class="version-dot"></div>Beta · v0.3 · 07.03.2026</div><br>
-  © 2026 Liberi dal Successo · Bresseo, Teolo (PD) ·
-  <a href="/cdn-cgi/l/email-protection#0d61646f687f64696c617e786e6e687e7e624d6a606c6461236e6260" style="color:var(--text-muted)"><span class="__cf_email__" data-cfemail="c2aeaba0a7b0aba6a3aeb1b7a1a1a7b1b1ad82a5afa3abaeeca1adaf">[email&#160;protected]</span></a>
-</footer>
-
 <script data-cfasync="false" src="/cdn-cgi/scripts/5c5dd728/cloudflare-static/email-decode.min.js"></script><script>
-var SCRIPT_URL = "https://script.google.com/macros/s/AKfycbxXQ179jJhZCjUpVygaqGAYQN8NabHrSbCAz-cZQQpnxp8WFh_u0LKLHUs9kyL-6gDFnw/exec";
-var MAX_CONFIRMED = 200;
-var currentCount = 0;
+(function () {
+  'use strict';
 
-// ── COMUNI ─────────────────────────────────────────────────────
-var COMUNI = ["Abano Terme","Abbiategrasso","Acerra","Acireale","Acqui Terme","Agrigento","Alba","Albano Laziale","Alessandria","Altamura","Ancona","Andria","Anzio","Aosta","Arezzo","Arona","Ascoli Piceno","Assisi","Asti","Augusta","Aversa","Avezzano","Avola","Avellino","Bari","Barletta","Bassano del Grappa","Belluno","Benevento","Bergamo","Biella","Bologna","Bolzano","Brescia","Bressanone","Brindisi","Busto Arsizio","Cagliari","Caltanissetta","Campobasso","Carrara","Casale Monferrato","Caserta","Cassino","Catania","Catanzaro","Cesena","Chieti","Cinisello Balsamo","Civitavecchia","Como","Conegliano","Cosenza","Cremona","Crotone","Cuneo","Faenza","Fano","Ferrara","Firenze","Foggia","Foligno","Forlì","Frosinone","Gallarate","Gela","Genova","Grosseto","Imola","Imperia","Isernia","L'Aquila","La Spezia","Latina","Lecce","Lecco","Legnano","Livorno","Lodi","Lucca","Macerata","Mantova","Marsala","Massa","Matera","Messina","Milano","Modena","Monza","Napoli","Novara","Nuoro","Olbia","Oristano","Padova","Palermo","Parma","Pavia","Perugia","Pesaro","Pescara","Piacenza","Pisa","Pistoia","Pordenone","Potenza","Pozzuoli","Prato","Ragusa","Ravenna","Reggio Calabria","Reggio Emilia","Rimini","Roma","Rovigo","Salerno","Sassari","Savona","Siena","Siracusa","Sondrio","Taranto","Terni","Torino","Trento","Treviso","Trieste","Udine","Varese","Venezia","Verbania","Vercelli","Verona","Viareggio","Vicenza","Vigevano","Viterbo","Agna","Albignasego","Arquà Petrarca","Arzergrande","Bagnoli di Sopra","Baone","Battaglia Terme","Bovolenta","Brugine","Candiana","Cartura","Casale di Scodosia","Castelbaldo","Cervarese Santa Croce","Chioggia","Cittadella","Codevigo","Conselve","Correzzola","Due Carrare","Este","Fontaniva","Galzignano Terme","Lozzo Atestino","Maserà di Padova","Masi","Monselice","Montagnana","Montegrotto Terme","Noventa Padovana","Ospedaletto Euganeo","Pernumia","Piove di Sacco","Ponte San Nicolò","Pozzonovo","Rovolon","Rubano","Saccolongo","Saonara","Selvazzano Dentro","Solesino","Stanghella","Teolo","Tombolo","Trebaseleghe","Tribano","Urbana","Veggiano","Vescovana","Villa Estense","Villafranca Padovana","Villanova di Camposampiero"].sort();
+  /* ── COMUNI ───────────────────────────────────────────────────────── */
+  var COMUNI = [
+    "Abano Terme","Adria","Agrigento","Albignasego","Alessandria","Ancona",
+    "Anguillara Veneta","Aosta","Arezzo","Arquà Petrarca","Arzignano",
+    "Ascoli Piceno","Asti","Avellino","Badia Polesine","Baone","Barbona",
+    "Bari","Barletta","Bassano del Grappa","Battaglia Terme","Belluno",
+    "Benevento","Bergamo","Biella","Bologna","Bolzano","Bovolenta","Bovolone",
+    "Brescia","Bresseo","Brindisi","Brugine","Bussolengo","Cagliari","Caldiero",
+    "Caltanissetta","Campobasso","Candiana","Caorle","Carbonia","Cartura",
+    "Casalserugo","Caserta","Castelfranco Veneto","Castelbaldo","Castelmassa",
+    "Catania","Catanzaro","Cerea","Cervarese Santa Croce","Chieti","Chioggia",
+    "Cittadella","Codevigo","Como","Conegliano","Conselve","Cosenza","Cremona",
+    "Crotone","Cuneo","Dolo","Due Carrare","Enna","Este","Ferrara","Fermo",
+    "Fiesso Umbertiano","Firenze","Foggia","Fontaniva","Forlì","Fratta Polesine",
+    "Frosinone","Galzignano Terme","Genova","Gorizia","Grantorto","Granze",
+    "Grezzana","Grosseto","Illasi","Imperia","Isola della Scala","Isernia",
+    "Jesolo","La Spezia","L'Aquila","Latina","Lavagno","Lecce","Lecco","Legnago",
+    "Lendinara","Limena","Livorno","Lodi","Lonigo","Loreggia","Lucca","Macerata",
+    "Mantova","Masera di Padova","Masi","Massa","Massanzago","Matera",
+    "Megliadino San Fidenzio","Megliadino San Vitale","Merlara","Mestrino",
+    "Messina","Mestre","Mezzane di Sotto","Milano","Mirano","Modena",
+    "Mogliano Veneto","Monselice","Montagnana","Montebelluna",
+    "Montecchio Maggiore","Montegrotto Terme","Monza","Napoli","Negrar",
+    "Noventa Padovana","Noventa Vicentina","Novara","Nuoro","Occhiobello",
+    "Oristano","Ospedaletto Euganeo","Padova","Palermo","Parma","Pavia",
+    "Pernumia","Perugia","Pesaro","Pescantina","Pescara","Piacenza",
+    "Piacenza d'Adige","Piazzola sul Brenta","Piombino Dese","Piove di Sacco",
+    "Pisa","Pistoia","Polverara","Ponso","Pontelongo","Pordenone","Portogruaro",
+    "Potenza","Pozzonovo","Prato","Ragusa","Ravenna","Reggio Calabria",
+    "Reggio Emilia","Rieti","Rimini","Roma","Rovigo","Rovolon","Rubano",
+    "Saccolongo","Salerno","San Bonifacio","San Donà di Piave",
+    "San Giorgio delle Pertiche","San Giovanni Lupatoto","San Martino di Lupari",
+    "San Pietro Viminario","Santa Giustina in Colle","Sant'Elena","Sant'Urbano",
+    "Sassari","Saonara","Savona","Schio","Selvazzano Dentro","Siena","Siracusa",
+    "Soave","Solesino","Sommacampagna","Sona","Sondrio","Stanghella","Taranto",
+    "Teolo","Teramo","Terni","Thiene","Tombolo","Torino","Torreglia","Trapani",
+    "Trebaseleghe","Trento","Treviso","Tribano","Trieste","Udine","Urbana",
+    "Valdagno","Varese","Veggiano","Venezia","Verbania","Vercelli","Verona",
+    "Vescovana","Vibo Valentia","Vicenza","Vighizzolo d'Este","Vigodarzere",
+    "Vigonza","Villa del Conte","Villadose","Villafranca di Verona",
+    "Villafranca Padovana","Villanova di Camposampiero","Viterbo",
+    "Vittorio Veneto","Vo'"
+  ];
+  COMUNI.sort(function (a, b) { return a.localeCompare(b, 'it'); });
 
-// ── COUNTER ────────────────────────────────────────────────────
-function updateCounter(n) {
-  currentCount = n || 0;
-  var remaining = Math.max(0, MAX_CONFIRMED - currentCount);
-  var pct = Math.min(100, (currentCount / MAX_CONFIRMED) * 100);
-  document.getElementById('progressFill').style.width = pct + '%';
-  if (currentCount >= MAX_CONFIRMED) {
-    document.getElementById('counterLabel').innerHTML = '<strong>Posti esauriti</strong> · Lista d\'attesa aperta';
-    document.getElementById('waitlistBanner').style.display = 'block';
-  } else {
-    document.getElementById('counterLabel').innerHTML = '<strong>' + remaining + '</strong> posti disponibili su ' + MAX_CONFIRMED;
+  /* ── REFS ─────────────────────────────────────────────────────────── */
+  var MAX        = 200;
+  var reg        = 0;
+  var prvOk      = false;
+
+  var form       = document.getElementById('js-form');
+  var confirmDiv = document.getElementById('js-confirm');
+  var fNome      = document.getElementById('f-nome');
+  var fCognome   = document.getElementById('f-cognome');
+  var fEmail     = document.getElementById('f-email');
+  var fEta       = document.getElementById('f-eta');
+  var fComune    = document.getElementById('f-comune');
+  var acList     = document.getElementById('js-aclist');
+  var prvRow     = document.getElementById('js-prvrow');
+  var chkBox     = document.getElementById('js-chkbox');
+  var fotoRow    = document.getElementById('js-fotorow');
+  var fotoChk    = document.getElementById('js-fotochk');
+  var modalBtn   = document.getElementById('js-prv-modal-btn');
+  var toast      = document.getElementById('js-toast');
+  var toastUl    = document.getElementById('js-toast-list');
+  var btn        = document.getElementById('js-btn');
+  var btnTxt     = document.getElementById('js-btn-txt');
+  var spinner    = document.getElementById('js-spinner');
+  var modal      = document.getElementById('js-modal');
+  var modalX     = document.getElementById('js-modal-close');
+  var wBanner    = document.getElementById('js-wbanner');
+
+  /* ── ICS header ── */
+  document.getElementById('js-ics-btn').addEventListener('click', function (e) {
+    e.preventDefault();
+    downloadIcs();
+  });
+
+  /* ── Spots ── */
+  function updateSpots() {
+    if (reg >= MAX) wBanner.style.display = 'block';
   }
-}
 
-// ── AUTOCOMPLETE ───────────────────────────────────────────────
-var comuneInput = document.getElementById('comune');
-var acList = document.getElementById('autocompleteList');
+  /* ── Autocomplete ── */
+  var acItems = [], acActive = -1;
 
-function showSuggestions() {
-  var val = comuneInput.value.trim().toLowerCase();
-  acList.innerHTML = '';
-  if (val.length < 2) { acList.classList.remove('open'); return; }
-  var matches = COMUNI.filter(function(c) { return c.toLowerCase().indexOf(val) === 0; }).slice(0, 8);
-  if (!matches.length) { acList.classList.remove('open'); return; }
-  matches.forEach(function(comune) {
-    var item = document.createElement('div');
-    item.className = 'autocomplete-item';
-    item.textContent = comune;
-    function pick(e) {
-      e.preventDefault();
-      comuneInput.value = comune;
-      acList.classList.remove('open');
-      document.getElementById('field-comune').classList.remove('has-error');
+  function escHtml(s) {
+    return s.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+  }
+
+  function acRender(q) {
+    acList.innerHTML = '';
+    acActive = -1;
+    q = q.trim().toLowerCase();
+    if (q.length < 2) { acList.classList.remove('open'); return; }
+    acItems = COMUNI.filter(function (c) { return c.toLowerCase().indexOf(q) !== -1; }).slice(0, 8);
+    if (!acItems.length) { acList.classList.remove('open'); return; }
+    acItems.forEach(function (c, i) {
+      var div = document.createElement('div');
+      div.className = 'ac-item';
+      var idx = c.toLowerCase().indexOf(q);
+      div.innerHTML = escHtml(c.slice(0, idx)) + '<b>' + escHtml(c.slice(idx, idx + q.length)) + '</b>' + escHtml(c.slice(idx + q.length));
+      div.addEventListener('mousedown', function (e) { e.preventDefault(); acPick(i); });
+      div.addEventListener('touchstart', function (e) { e.preventDefault(); acPick(i); }, { passive: false });
+      acList.appendChild(div);
+    });
+    acList.classList.add('open');
+  }
+
+  function acPick(i) {
+    fComune.value = acItems[i];
+    acList.classList.remove('open');
+    acList.innerHTML = '';
+  }
+
+  function acHi(i) {
+    var els = acList.querySelectorAll('.ac-item');
+    els.forEach(function (el) { el.classList.remove('hi'); });
+    if (i >= 0 && i < els.length) {
+      els[i].classList.add('hi');
+      els[i].scrollIntoView({ block: 'nearest' });
     }
-    item.addEventListener('touchstart', pick, { passive: false });
-    item.addEventListener('mousedown', pick);
-    acList.appendChild(item);
+  }
+
+  fComune.addEventListener('input', function () { acRender(this.value); });
+  fComune.addEventListener('keydown', function (e) {
+    if (!acList.classList.contains('open')) return;
+    if (e.key === 'ArrowDown') { e.preventDefault(); acActive = Math.min(acActive + 1, acItems.length - 1); acHi(acActive); }
+    else if (e.key === 'ArrowUp') { e.preventDefault(); acActive = Math.max(acActive - 1, 0); acHi(acActive); }
+    else if (e.key === 'Enter' && acActive >= 0) { e.preventDefault(); acPick(acActive); }
+    else if (e.key === 'Escape') { acList.classList.remove('open'); }
   });
-  acList.classList.add('open');
-}
+  document.addEventListener('click', function (e) {
+    if (!e.target.closest('.ac-wrap')) acList.classList.remove('open');
+  });
 
-comuneInput.addEventListener('input', showSuggestions);
-comuneInput.addEventListener('keyup', function(e) {
-  if (['ArrowDown','ArrowUp','Enter','Escape'].indexOf(e.key) === -1) showSuggestions();
-});
-document.addEventListener('touchstart', function(e) {
-  if (!e.target.closest('.autocomplete-wrap')) acList.classList.remove('open');
-});
-document.addEventListener('click', function(e) {
-  if (!e.target.closest('.autocomplete-wrap')) acList.classList.remove('open');
-});
+  /* ── Foto/video checkbox ── */
+  var fotoOk = false;
+  fotoRow.addEventListener('click', function () {
+    fotoOk = !fotoOk;
+    fotoChk.classList.toggle('on', fotoOk);
+  });
+  fotoRow.addEventListener('keydown', function (e) {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); fotoOk = !fotoOk; fotoChk.classList.toggle('on', fotoOk); }
+  });
 
-// ── DIETA ALTRO ────────────────────────────────────────────────
-document.querySelectorAll('input[name="dieta"]').forEach(function(radio) {
-  radio.addEventListener('change', function() {
-    var field = document.getElementById('altroField');
-    if (this.value === 'altro') {
-      field.style.display = 'block';
-      document.getElementById('altroText').focus();
-    } else {
-      field.style.display = 'none';
-      document.getElementById('altroText').value = '';
+  /* ── Privacy checkbox ────────────────────────────────────────────────
+     prvRow click  → toggle checkbox (but NOT when clicking the modal button)
+     modalBtn click → open modal, stop propagation so prvRow doesn't toggle
+  ─────────────────────────────────────────────────────────────────── */
+  function togglePrivacy() {
+    prvOk = !prvOk;
+    chkBox.classList.toggle('on', prvOk);
+    if (prvOk) prvRow.classList.remove('err');
+  }
+
+  prvRow.addEventListener('click', function (e) {
+    /* if the click came from the modal button, do nothing here */
+    if (e.target === modalBtn || modalBtn.contains(e.target)) return;
+    togglePrivacy();
+  });
+
+  prvRow.addEventListener('keydown', function (e) {
+    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); togglePrivacy(); }
+  });
+
+  /* ── Modal ── */
+  function openModal()  { modal.classList.add('open');    document.body.style.overflow = 'hidden'; }
+  function closeModal() { modal.classList.remove('open'); document.body.style.overflow = ''; }
+
+  modalBtn.addEventListener('click', function (e) {
+    e.stopPropagation(); /* prevent prvRow from toggling */
+    openModal();
+  });
+
+  modalX.addEventListener('click', closeModal);
+  modal.addEventListener('click', function (e) { if (e.target === modal) closeModal(); });
+  document.addEventListener('keydown', function (e) { if (e.key === 'Escape') closeModal(); });
+
+  /* ── Trim on blur ── */
+  [fNome, fCognome, fEmail, fComune].forEach(function (el) {
+    el.addEventListener('blur', function () { this.value = this.value.trim(); });
+  });
+
+  /* ── Validation ── */
+  var EMAIL_RE = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+
+  function validate() {
+    [fNome, fCognome, fEmail, fComune].forEach(function (el) { el.value = el.value.trim(); });
+    var errors = [];
+    if (!fNome.value)                              errors.push('Il campo <strong>Nome</strong> è obbligatorio');
+    if (!fCognome.value)                           errors.push('Il campo <strong>Cognome</strong> è obbligatorio');
+    if (!fEmail.value || !EMAIL_RE.test(fEmail.value)) errors.push('<strong>Email</strong> non valida');
+    if (!prvOk) {
+      errors.push("Accetta l'<strong>informativa sulla privacy</strong> per procedere");
+      prvRow.classList.add('err');
     }
-  });
-});
-
-// ── PRIVACY CHECKBOX ───────────────────────────────────────────
-var privacyCheck = document.getElementById('privacyCheck');
-var checkboxBox  = document.getElementById('checkboxBox');
-
-document.getElementById('privacyRow').addEventListener('click', function(e) {
-  if (e.target.id === 'privacyLink') return; // let link open modal
-  privacyCheck.checked = !privacyCheck.checked;
-  checkboxBox.classList.toggle('checked', privacyCheck.checked);
-  if (privacyCheck.checked) {
-    document.getElementById('field-privacy').classList.remove('has-error');
-    document.getElementById('privacyError').style.display = 'none';
-  }
-});
-
-document.getElementById('privacyLink').addEventListener('click', function(e) {
-  e.preventDefault();
-  e.stopPropagation();
-  document.getElementById('privacyModal').classList.add('open');
-  document.body.style.overflow = 'hidden';
-});
-
-document.getElementById('closeModalBtn').addEventListener('click', function() {
-  document.getElementById('privacyModal').classList.remove('open');
-  document.body.style.overflow = '';
-});
-
-document.getElementById('privacyModal').addEventListener('click', function(e) {
-  if (e.target === this) {
-    this.classList.remove('open');
-    document.body.style.overflow = '';
-  }
-});
-
-// ── VALIDATION ─────────────────────────────────────────────────
-function validateEmail(e) { return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(e); }
-
-function validateForm() {
-  var valid = true;
-
-  var nome = document.getElementById('nome').value.trim();
-  document.getElementById('field-nome').classList.toggle('has-error', !nome);
-  if (!nome) valid = false;
-
-  var cognome = document.getElementById('cognome').value.trim();
-  document.getElementById('field-cognome').classList.toggle('has-error', !cognome);
-  if (!cognome) valid = false;
-
-  var email = document.getElementById('email').value.trim();
-  var emailOk = validateEmail(email);
-  document.getElementById('field-email').classList.toggle('has-error', !emailOk);
-  if (!emailOk) valid = false;
-
-  var eta = document.getElementById('eta').value;
-  document.getElementById('field-eta').classList.toggle('has-error', !eta);
-  if (!eta) valid = false;
-
-  var comune = document.getElementById('comune').value.trim();
-  document.getElementById('field-comune').classList.toggle('has-error', !comune);
-  if (!comune) valid = false;
-
-  if (!privacyCheck.checked) {
-    document.getElementById('field-privacy').classList.add('has-error');
-    document.getElementById('privacyError').style.display = 'block';
-    valid = false;
+    if (errors.length) {
+      toastUl.innerHTML = errors.map(function (e) { return '<li>' + e + '</li>'; }).join('');
+      toast.classList.add('show');
+      setTimeout(function () { toast.scrollIntoView({ behavior: 'smooth', block: 'nearest' }); }, 50);
+      return false;
+    }
+    toast.classList.remove('show');
+    return true;
   }
 
-  return valid;
-}
+  /* ── ICS ── */
+  function downloadIcs() {
+    var lines = [
+      'BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//Liberi dal Successo//IT',
+      'BEGIN:VEVENT',
+      'UID:liberidalsuccesso-20260620@bresseo',
+      'DTSTAMP:20260307T000000Z',
+      'DTSTART:20260620T153000Z',
+      'DTEND:20260620T173000Z',
+      'SUMMARY:Liberi dal Successo',
+      'DESCRIPTION:Non per imparare ad avere successo — ma per imparare ad essere noi stessi. Ingresso gratuito.',
+      'LOCATION:Sala Polivalente\\, Bresseo\\, Teolo (PD)',
+      'END:VEVENT', 'END:VCALENDAR'
+    ];
+    var blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+    var url  = URL.createObjectURL(blob);
+    var a    = document.createElement('a');
+    a.href = url; a.download = 'liberi-dal-successo-20giugno2026.ics';
+    document.body.appendChild(a); a.click(); document.body.removeChild(a);
+    setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+  }
 
-// ── SUBMIT ─────────────────────────────────────────────────────
-document.getElementById('btnSubmit').addEventListener('click', function() {
-  if (!validateForm()) return;
+  /* ── Submit ── */
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxXQ179jJhZCjUpVygaqGAYQN8NabHrSbCAz-cZQQpnxp8WFh_u0LKLHUs9kyL-6gDFnw/exec';
 
-  var btn = document.getElementById('btnSubmit');
-  var sendError = document.getElementById('sendError');
-  btn.disabled = true;
-  btn.textContent = 'Invio in corso...';
-  sendError.classList.remove('visible');
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!validate()) return;
 
-  var isWaitlist = currentCount >= MAX_CONFIRMED;
+    var isWait = (reg >= MAX);
 
-  var dietaRaw = document.querySelector('input[name="dieta"]:checked').value;
-  var dieta = dietaRaw === 'altro'
-    ? ('Altro: ' + (document.getElementById('altroText').value.trim() || '—'))
-    : dietaRaw;
+    var payload = {
+      nome: fNome.value, cognome: fCognome.value, email: fEmail.value,
+      eta: fEta.value, comune: fComune.value,
+      consenso_foto: fotoOk ? 'Sì' : 'No',
+      tipo: isWait ? "Lista d'attesa" : 'Confermato'
+    };
 
-  var payload = {
-    nome:    document.getElementById('nome').value.trim(),
-    cognome: document.getElementById('cognome').value.trim(),
-    email:   document.getElementById('email').value.trim(),
-    eta:     document.getElementById('eta').value,
-    comune:  document.getElementById('comune').value.trim(),
-    dieta:   dieta,
-    tipo:    isWaitlist ? 'Lista d\'attesa' : 'Confermato'
-  };
+    btn.disabled = true;
+    btnTxt.textContent = '';
+    spinner.style.display = 'block';
 
-  fetch(SCRIPT_URL, {
-    method: 'POST',
-    mode: 'no-cors',
-    headers: { 'Content-Type': 'application/json' },
-    body: JSON.stringify(payload)
-  })
-  .then(function() {
-    updateCounter(currentCount + 1);
-    showSuccess(isWaitlist);
-  })
-  .catch(function() {
-    btn.disabled = false;
-    btn.textContent = 'Invia iscrizione';
-    sendError.classList.add('visible');
-  });
-});
+    fetch(ENDPOINT, {
+      method: 'POST', mode: 'no-cors',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(payload)
+    })
+    .catch(function () {})
+    .finally(function () {
+      if (!isWait) reg++;
+      updateSpots();
 
-// ── SUCCESS ────────────────────────────────────────────────────
-function showSuccess(isWaitlist) {
-  document.getElementById('formSection').style.display = 'none';
-  document.getElementById('successSection').style.display = 'block';
-  var icon  = document.getElementById('successIcon');
-  var title = document.getElementById('successTitle');
-  var text  = document.getElementById('successText');
-  var tag   = document.getElementById('successTag');
-  if (isWaitlist) {
-    icon.textContent = '⏳'; icon.className = 'success-icon waitlisted';
-    title.textContent = 'Sei in lista d\'attesa!';
-    text.innerHTML = 'I posti confermati sono esauriti, ma ti abbiamo aggiunto alla lista d\'attesa di <strong>Liberi dal Successo</strong>. Ti contatteremo via email se si libera
+      form.style.display       = 'none';
+      confirmDiv.style.display = 'block';
+
+      var confIcon  = document.getElementById('js-conf-icon');
+      var confTitle = document.getElementById('js-conf-title');
+      var confBody  = document.getElementById('js-conf-body');
+      var calBtn    = document.getElementById('js-btn-cal');
+
+      calBtn.removeEventListener('click', downloadIcs);
+      calBtn.addEventListener('click', downloadIcs);
+
+      if (isWait) {
+        confIcon.textContent  = '📋';
+        confTitle.textContent = "Sei in lista d'attesa";
+        calBtn.style.display  = 'none';
+        confBody.innerHTML =
+          "Grazie per il tuo interesse per <span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br>" +
+          "L'evento ha raggiunto la capienza massima, ma sei in lista d'attesa.<br>" +
+          "Ti contatteremo a <strong style='color:var(--info);'>" + escHtml(payload.email) + "</strong> in caso di disponibilità.";
+      } else {
+        confTitle.textContent = 'Iscrizione confermata!';
+        calBtn.style.display  = 'inline-flex';
+        confBody.innerHTML =
+          "Grazie per esserti iscritto a <span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br>" +
+          "Ti aspettiamo il <s
