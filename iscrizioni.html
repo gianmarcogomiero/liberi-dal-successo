@@ -519,6 +519,20 @@
             </div>
           </div>
 
+          <div class="fg full">
+            <label class="f-label" for="f-posti">Numero posti <span class="req">*</span></label>
+            <select id="f-posti">
+              <option value="1">1</option>
+              <option value="2">2</option>
+              <option value="3">3</option>
+              <option value="4">4</option>
+            </select>
+            <p style="font-size: 0.72rem; color: rgba(230,232,236,0.35); margin-top: 6px;">* Per prenotare più di 4 posti, compila nuovamente il form.</p>
+          </div>
+
+          <div id="js-accompagnatori" class="full" style="display:none;">
+          </div>
+
           <div class="fg divider"></div>
 
         </div><!-- /form-grid -->
@@ -594,7 +608,7 @@
 
 <footer class="reveal d6">
   <div class="footer-inner">
-    <span class="badge">v0.4 · 15.03.2026</span>
+    <span class="badge">v0.5 · 04.04.2026</span>
     <span class="footer-copy">
       © 2026 Liberi dal Successo ·
       <a href="&#109;&#97;&#105;&#108;&#116;&#111;&#58;&#108;&#105;&#98;&#101;&#114;&#105;&#100;&#97;&#108;&#115;&#117;&#99;&#99;&#101;&#115;&#115;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;">&#108;&#105;&#98;&#101;&#114;&#105;&#100;&#97;&#108;&#115;&#117;&#99;&#99;&#101;&#115;&#115;&#111;&#64;&#103;&#109;&#97;&#105;&#108;&#46;&#99;&#111;&#109;</a>
@@ -688,6 +702,8 @@
   var fCognome   = document.getElementById('f-cognome');
   var fEmail     = document.getElementById('f-email');
   var fEta       = document.getElementById('f-eta');
+  var fPosti     = document.getElementById('f-posti');
+  var accWrap    = document.getElementById('js-accompagnatori');
   var fComune    = document.getElementById('f-comune');
   var acList     = document.getElementById('js-aclist');
   var prvRow     = document.getElementById('js-prvrow');
@@ -703,6 +719,25 @@
   var modal      = document.getElementById('js-modal');
   var modalX     = document.getElementById('js-modal-close');
   var wBanner    = document.getElementById('js-wbanner');
+
+  /* ── Accompagnatori dinamici ── */
+  fPosti.addEventListener('change', function () {
+    var n = parseInt(this.value, 10);
+    accWrap.innerHTML = '';
+    if (n <= 1) { accWrap.style.display = 'none'; return; }
+    accWrap.style.display = 'block';
+    for (var i = 2; i <= n; i++) {
+      var row = document.createElement('div');
+      row.className = 'form-grid';
+      row.style.marginBottom = '12px';
+      row.innerHTML =
+        '<div class="fg"><label class="f-label" for="f-acc-nome-' + i + '">Nome accompagnatore ' + (i - 1) + '</label>' +
+        '<input type="text" id="f-acc-nome-' + i + '" placeholder="Nome" /></div>' +
+        '<div class="fg right"><label class="f-label" for="f-acc-cognome-' + i + '">Cognome accompagnatore ' + (i - 1) + '</label>' +
+        '<input type="text" id="f-acc-cognome-' + i + '" placeholder="Cognome" /></div>';
+      accWrap.appendChild(row);
+    }
+  });
 
   /* ── ICS header ── */
   document.getElementById('js-ics-btn').addEventListener('click', function (e) {
@@ -773,6 +808,7 @@
   fotoRow.addEventListener('click', function () {
     fotoOk = !fotoOk;
     fotoChk.classList.toggle('on', fotoOk);
+    if (fotoOk) fotoRow.classList.remove('err');
   });
   fotoRow.addEventListener('keydown', function (e) {
     if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); fotoOk = !fotoOk; fotoChk.classList.toggle('on', fotoOk); }
@@ -825,6 +861,10 @@
     if (!fNome.value)                              errors.push('Il campo <strong>Nome</strong> è obbligatorio');
     if (!fCognome.value)                           errors.push('Il campo <strong>Cognome</strong> è obbligatorio');
     if (!fEmail.value || !EMAIL_RE.test(fEmail.value)) errors.push('<strong>Email</strong> non valida');
+    if (!fotoOk) {
+      errors.push("Il <strong>consenso foto e video</strong> è obbligatorio");
+      fotoRow.classList.add('err');
+    }
     if (!prvOk) {
       errors.push("Accetta l'<strong>informativa sulla privacy</strong> per procedere");
       prvRow.classList.add('err');
@@ -862,7 +902,7 @@
   }
 
   /* ── Submit ── */
-  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbzy9It3-WuGXTJjopfDLpb5Dy8hTHklS0Uyy38o0ryMZB1jb3VhsDDXIH4aXdG8t2oBmA/exec';
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbwhOvJ6ijGf3UMFSEIqjJhzi-D3V7OdH5EgPFfBydm-LWG-bPOB3PleQEFCHpB0zI8ogw/exec';
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -874,6 +914,17 @@
       timestamp: new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' }),
       nome: fNome.value, cognome: fCognome.value, email: fEmail.value,
       eta: fEta.value, comune: fComune.value,
+      posti: fPosti.value,
+      accompagnatori: (function () {
+        var acc = [];
+        var n = parseInt(fPosti.value, 10);
+        for (var i = 2; i <= n; i++) {
+          var nome = (document.getElementById('f-acc-nome-' + i) || {}).value || '';
+          var cognome = (document.getElementById('f-acc-cognome-' + i) || {}).value || '';
+          if (nome.trim() || cognome.trim()) acc.push(nome.trim() + ' ' + cognome.trim());
+        }
+        return acc.join(', ');
+      })(),
       consenso_foto: fotoOk ? 'Sì' : 'No',
       tipo: isWait ? "Lista d'attesa" : 'Confermato'
     };
