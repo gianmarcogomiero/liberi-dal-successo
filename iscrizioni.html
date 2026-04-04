@@ -575,7 +575,7 @@
       </div><!-- /form-panel -->
 
       <div class="err-toast" id="js-toast">
-        <p class="err-toast-title">😅 &nbsp;Quasi tutto a posto! Controlla:</p>
+        <p class="err-toast-title">Ehi, ci sei quasi! Dai un'occhiata:</p>
         <ul id="js-toast-list"></ul>
       </div>
 
@@ -858,15 +858,16 @@
   function validate() {
     [fNome, fCognome, fEmail, fComune].forEach(function (el) { el.value = el.value.trim(); });
     var errors = [];
-    if (!fNome.value)                              errors.push('Il campo <strong>Nome</strong> è obbligatorio');
-    if (!fCognome.value)                           errors.push('Il campo <strong>Cognome</strong> è obbligatorio');
-    if (!fEmail.value || !EMAIL_RE.test(fEmail.value)) errors.push('<strong>Email</strong> non valida');
+    if (!fNome.value)    errors.push('Come ti chiami? Il <strong>nome</strong> ci serve per conoscerti!');
+    if (!fCognome.value) errors.push('Manca il <strong>cognome</strong> — promesso, non lo usiamo per spam ;)');
+    if (!fEmail.value)   errors.push('Ops, ti sei dimenticato la <strong>mail</strong>! Senza non possiamo confermarti il posto.');
+    else if (!EMAIL_RE.test(fEmail.value)) errors.push('Hmm, la <strong>mail</strong> non sembra completa — controlla che ci sia la @, il dominio e tutto il resto!');
     if (!fotoOk) {
-      errors.push("Il <strong>consenso foto e video</strong> è obbligatorio");
+      errors.push('Per partecipare serve il <strong>consenso foto e video</strong> — tranquillo, niente di strano!');
       fotoRow.classList.add('err');
     }
     if (!prvOk) {
-      errors.push("Accetta l'<strong>informativa sulla privacy</strong> per procedere");
+      errors.push("Manca la spunta sull'<strong>informativa privacy</strong> — un clic e sei a bordo!");
       prvRow.classList.add('err');
     }
     if (errors.length) {
@@ -967,4 +968,19 @@
         calBtn.style.display  = 'inline-flex';
         confBody.innerHTML =
           "Grazie per esserti iscritto a <span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br>" +
-          "Ti aspettiamo il <s
+          "Ti aspettiamo il <strong style='color:var(--info);'>20 Giugno 2026</strong> alle ore <strong style='color:var(--info);'>17:30 – 22:00</strong><br>" +
+          "alla Sala Polivalente di Bresseo, Teolo.<br><br>" +
+          "Riceverai una mail di conferma con tutti i dettagli.<br><br>" +
+          "<em style='color:var(--accent);'>Non per imparare ad avere successo.<br>Ma per imparare ad essere noi stessi.</em>";
+      }
+
+      confirmDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+
+  /* ── INIT ── */
+  updateSpots();
+})();
+</script>
+</body>
+</html>
