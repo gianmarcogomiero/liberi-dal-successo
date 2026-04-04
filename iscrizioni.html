@@ -1,6 +1,14 @@
 <!DOCTYPE html>
 <html lang="it">
 <head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H7C5JNC6SG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H7C5JNC6SG');
+  </script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Iscrizione — Liberi dal Successo</title>
@@ -854,7 +862,7 @@
   }
 
   /* ── Submit ── */
-  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxXQ179jJhZCjUpVygaqGAYQN8NabHrSbCAz-cZQQpnxp8WFh_u0LKLHUs9kyL-6gDFnw/exec';
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbzy9It3-WuGXTJjopfDLpb5Dy8hTHklS0Uyy38o0ryMZB1jb3VhsDDXIH4aXdG8t2oBmA/exec';
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -863,6 +871,7 @@
     var isWait = (reg >= MAX);
 
     var payload = {
+      timestamp: new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' }),
       nome: fNome.value, cognome: fCognome.value, email: fEmail.value,
       eta: fEta.value, comune: fComune.value,
       consenso_foto: fotoOk ? 'Sì' : 'No',

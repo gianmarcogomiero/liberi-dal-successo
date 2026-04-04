@@ -1,0 +1,465 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H7C5JNC6SG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H7C5JNC6SG');
+  </script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Collabora — Liberi dal Successo</title>
+  <meta name="description" content="Collabora con Liberi dal Successo — diventa volontario, ospite o media partner per un evento gratuito che ridefinisce il successo. 20 Giugno 2026, Bresseo, Teolo." />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #0B1C2D;
+      --title:   #D9CFC3;
+      --info:    #AFC6E9;
+      --body:    #E6E8EC;
+      --accent:  #C4A962;
+      --surface: rgba(255,255,255,0.035);
+      --surf2:   rgba(255,255,255,0.07);
+      --r:       14px;
+      --r-sm:    9px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--body);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 36px 20px 60px;
+    }
+
+    /* ── Back link ── */
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.04em;
+      color: var(--info); text-decoration: none;
+      padding: 32px 0 0; opacity: 0.55;
+      transition: opacity 0.25s, gap 0.25s;
+    }
+    .back-link:hover { opacity: 0.9; gap: 11px; }
+
+    /* ── Header ── */
+    .site-header { text-align: center; padding: 48px 0 40px; }
+    .logo-ring { margin: 0 auto 24px; text-align: center; position: relative; }
+    .logo-img { display: block; margin: 0 auto; max-width: 100px; height: auto; }
+    .eyebrow {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); opacity: 0.75; margin-bottom: 12px;
+    }
+    .site-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 700;
+      color: var(--title); line-height: 1.15; letter-spacing: -0.01em;
+    }
+    .site-title em { font-style: italic; color: var(--accent); font-weight: 600; }
+
+    /* ── Ornament ── */
+    .ornament { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 28px auto 0; opacity: 0.6; }
+    .orn-line { width: 44px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+    .orn-dia { width: 7px; height: 7px; border: 1px solid var(--accent); transform: rotate(45deg); }
+
+    /* ── Intro ── */
+    .page-intro {
+      text-align: center; margin: 48px 0 56px;
+    }
+    .page-intro p {
+      font-size: 1.05rem; color: rgba(230,232,236,0.7); line-height: 1.75; font-weight: 300;
+      max-width: 520px; margin: 0 auto;
+    }
+
+    /* ── Role sections ── */
+    .role-section { margin-bottom: 52px; }
+    .role-header {
+      display: flex; align-items: center; gap: 14px;
+      margin-bottom: 16px;
+    }
+    .role-icon { font-size: 1.4rem; }
+    .role-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.35rem; font-weight: 600; color: var(--title); line-height: 1.2;
+    }
+    .role-desc {
+      font-size: 0.95rem; color: rgba(230,232,236,0.65); line-height: 1.75; font-weight: 300;
+      margin-bottom: 16px;
+    }
+    .role-list {
+      list-style: none; padding: 0;
+    }
+    .role-list li {
+      padding: 10px 0;
+      border-bottom: 1px solid rgba(175,198,233,0.08);
+      font-size: 0.93rem; color: rgba(230,232,236,0.78);
+      display: flex; align-items: baseline; gap: 10px;
+    }
+    .role-list li::before {
+      content: '→';
+      color: var(--accent); opacity: 0.7; font-size: 0.85rem; flex-shrink: 0;
+    }
+
+    /* ── Divider ── */
+    .sep {
+      border: none; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(175,198,233,0.12), transparent);
+      margin: 52px 0;
+    }
+
+    /* ── Form section ── */
+    .form-section { margin-top: 8px; }
+    .form-section h2 {
+      font-family: 'Playfair Display', serif; font-size: 1.45rem;
+      font-weight: 600; color: var(--title); margin-bottom: 5px; line-height: 1.2;
+    }
+    .form-section .form-sub {
+      font-size: 0.88rem; color: rgba(230,232,236,0.45); font-weight: 300; margin-bottom: 32px;
+    }
+
+    .form-panel {
+      background: var(--surface); border: 1px solid rgba(175,198,233,0.08);
+      border-radius: var(--r); padding: 32px 28px;
+    }
+    @media (max-width: 500px) { .form-panel { padding: 24px 18px; } }
+
+    .form-grid {
+      display: grid; grid-template-columns: 1fr 1fr; gap: 22px 20px;
+    }
+    @media (max-width: 500px) { .form-grid { grid-template-columns: 1fr; } }
+    .span-2 { grid-column: 1 / -1; }
+
+    .f-group { display: flex; flex-direction: column; }
+    .f-label {
+      font-size: 0.78rem; font-weight: 600; letter-spacing: 0.06em; text-transform: uppercase;
+      color: var(--info); opacity: 0.7; margin-bottom: 7px;
+    }
+    .f-input, .f-select, .f-textarea {
+      background: transparent; border: none;
+      border-bottom: 1px solid rgba(196,201,212,0.2); border-radius: 0;
+      padding: 4px 0 10px; color: var(--body);
+      font-family: 'DM Sans', sans-serif; font-size: 0.97rem; font-weight: 400;
+      outline: none; transition: border-color 0.25s;
+    }
+    .f-input:focus, .f-select:focus, .f-textarea:focus { border-color: var(--accent); }
+    .f-input::placeholder, .f-textarea::placeholder { color: rgba(196,201,212,0.3); }
+
+    .f-select {
+      appearance: none; -webkit-appearance: none;
+      background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 24 24' fill='none' stroke='%23AFC6E9' stroke-width='2'%3E%3Cpolyline points='6 9 12 15 18 9'/%3E%3C/svg%3E");
+      background-repeat: no-repeat; background-position: right 0 center;
+      padding-right: 20px; cursor: pointer;
+    }
+    .f-select option { background: #0B1C2D; color: var(--body); }
+
+    .f-textarea {
+      resize: vertical; min-height: 80px;
+      border: 1px solid rgba(196,201,212,0.2); border-radius: var(--r-sm);
+      padding: 10px 12px; background: rgba(255,255,255,0.03);
+      width: 100%; margin-top: 4px;
+    }
+
+    /* ── Checkbox ── */
+    .prv-row { display: flex; gap: 10px; align-items: flex-start; margin-top: 8px; }
+    .prv-row input[type=checkbox] {
+      flex-shrink: 0; width: 16px; height: 16px; margin-top: 3px;
+      accent-color: var(--accent); cursor: pointer;
+    }
+    .prv-text { font-size: 0.82rem; color: rgba(230,232,236,0.5); line-height: 1.55; }
+    .prv-text a { color: var(--info); text-decoration: underline; text-underline-offset: 3px; }
+
+    /* ── Submit button ── */
+    .btn-submit {
+      width: 100%; margin-top: 24px; padding: 16px 28px;
+      background: linear-gradient(135deg, #c4a962, #d8bb72, #c4a962);
+      color: #0B1C2D; font-family: 'DM Sans', sans-serif;
+      font-size: 0.95rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
+      border: none; border-radius: var(--r-sm); cursor: pointer;
+      transition: opacity 0.2s, transform 0.2s;
+    }
+    .btn-submit:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+
+    /* ── Confirmation ── */
+    .confirm-screen {
+      display: none; text-align: center; padding: 60px 20px;
+    }
+    .conf-ring {
+      width: 64px; height: 64px; border-radius: 50%;
+      border: 2px solid var(--accent); margin: 0 auto 28px;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 1.6rem; color: var(--accent);
+    }
+    .conf-title {
+      font-family: 'Playfair Display', serif; font-size: clamp(1.5rem, 4vw, 1.9rem);
+      font-weight: 700; color: var(--title); margin-bottom: 20px; line-height: 1.2;
+    }
+    .conf-body {
+      font-size: 1rem; color: rgba(230,232,236,0.7); line-height: 1.75;
+      max-width: 420px; margin: 0 auto; font-weight: 300;
+    }
+
+    /* ── Error toast ── */
+    .error-toast {
+      display: none; background: rgba(220,60,60,0.12); border: 1px solid rgba(220,60,60,0.3);
+      border-radius: var(--r-sm); padding: 10px 14px; margin-top: 14px;
+      font-size: 0.84rem; color: #e8a0a0; text-align: center;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center; padding: 48px 20px 36px;
+      font-size: 0.75rem; color: rgba(230,232,236,0.28); letter-spacing: 0.02em;
+    }
+    footer a { color: rgba(175,198,233,0.45); text-decoration: none; }
+    footer a:hover { color: var(--info); }
+    .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .badge {
+      display: inline-block; padding: 4px 12px; border-radius: 100px;
+      background: rgba(175,198,233,0.06); border: 1px solid rgba(175,198,233,0.1);
+      font-size: 0.68rem; font-weight: 500; color: rgba(175,198,233,0.35);
+      letter-spacing: 0.08em; margin-bottom: 8px;
+    }
+    .footer-ev-link {
+      display: inline-block; margin-top: 6px; font-size: 0.78rem;
+      color: rgba(196,169,98,0.55); font-weight: 500;
+    }
+    .footer-ev-link:hover { color: var(--accent); }
+
+    /* ── Animations ── */
+    .reveal { opacity: 0; transform: translateY(18px); animation: revUp 0.65s cubic-bezier(0.22,1,0.36,1) forwards; }
+    @keyframes revUp { to { opacity: 1; transform: translateY(0); } }
+    .d1 { animation-delay: 0.08s; } .d2 { animation-delay: 0.18s; }
+    .d3 { animation-delay: 0.28s; } .d4 { animation-delay: 0.38s; }
+    .d5 { animation-delay: 0.48s; } .d6 { animation-delay: 0.58s; }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="container">
+
+    <a class="back-link reveal d1" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#AFC6E9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="10,4 6,8 10,12"/>
+      </svg>
+      Torna all'evento
+    </a>
+
+    <header class="site-header reveal d2">
+      <div class="logo-ring">
+        <img src="Loghi/colorato 1.png" alt="Liberi dal Successo" class="logo-img" />
+      </div>
+      <p class="eyebrow">Bresseo · 20 Giugno 2026</p>
+      <h1 class="site-title">Collabora con<br><em>Noi</em></h1>
+      <div class="ornament">
+        <span class="orn-line"></span>
+        <span class="orn-dia"></span>
+        <span class="orn-line"></span>
+      </div>
+    </header>
+
+    <div class="page-intro reveal d3">
+      <p>
+        Liberi dal Successo nasce dalla passione, non da un budget.<br>
+        Se ti rispecchi nel progetto, c'è un posto anche per te.
+      </p>
+    </div>
+
+    <!-- ── VOLONTARIO ── -->
+    <div class="role-section reveal d3">
+      <div class="role-header">
+        <span class="role-icon">🤝</span>
+        <h2 class="role-title">Se vuoi essere volontario</h2>
+      </div>
+      <p class="role-desc">
+        Non servono competenze specifiche — serve voglia di esserci.
+      </p>
+      <ul class="role-list">
+        <li>Dai una mano nell'organizzazione</li>
+        <li>Supporta accoglienza e food</li>
+        <li>Contribuisci alla comunicazione</li>
+        <li>Porta la tua esperienza sul palco</li>
+        <li>Inventati un ruolo :)</li>
+      </ul>
+    </div>
+
+    <!-- ── OSPITE / SPEAKER ── -->
+    <div class="role-section reveal d4">
+      <div class="role-header">
+        <span class="role-icon">🎤</span>
+        <h2 class="role-title">Se vuoi essere ospite</h2>
+      </div>
+      <p class="role-desc">
+        Vuoi portare la tua voce e la tua storia sul palco?<br>
+        Il formato è breve, informale, autentico — non cerchiamo curriculum, cerchiamo verità.
+      </p>
+    </div>
+
+    <!-- ── MEDIA ── -->
+    <div class="role-section reveal d4">
+      <div class="role-header">
+        <span class="role-icon">📸</span>
+        <h2 class="role-title">Se sei un media</h2>
+      </div>
+      <p class="role-desc">
+        Questa è una storia sociale positiva che merita spazio.<br>
+        Vieni a raccontarla — copertura dell'evento, interviste, contenuti.
+      </p>
+    </div>
+
+    <hr class="sep reveal d5" />
+
+    <!-- ── FORM ── -->
+    <div class="form-section reveal d5">
+      <h2>Scrivici</h2>
+      <p class="form-sub">Ti rispondiamo entro pochi giorni.</p>
+
+      <form id="js-form" class="form-panel" novalidate>
+        <div class="form-grid">
+          <div class="f-group">
+            <label class="f-label" for="f-nome">Nome</label>
+            <input type="text" id="f-nome" class="f-input" placeholder="Il tuo nome" autocomplete="given-name" />
+          </div>
+          <div class="f-group">
+            <label class="f-label" for="f-email">Email</label>
+            <input type="email" id="f-email" class="f-input" placeholder="nome@esempio.it" autocomplete="email" inputmode="email" />
+          </div>
+          <div class="f-group span-2">
+            <label class="f-label" for="f-ruolo">Come vuoi collaborare</label>
+            <select id="f-ruolo" class="f-select">
+              <option value="" disabled selected>Scegli un ruolo…</option>
+              <option value="Volontario">Volontario</option>
+              <option value="Ospite / Speaker">Ospite / Speaker</option>
+              <option value="Media">Media</option>
+              <option value="Altro">Altro</option>
+            </select>
+          </div>
+          <div class="f-group span-2">
+            <label class="f-label" for="f-messaggio">Messaggio</label>
+            <textarea id="f-messaggio" class="f-textarea" placeholder="Raccontaci brevemente come vorresti contribuire…" rows="3"></textarea>
+          </div>
+        </div>
+
+        <div style="margin-top: 20px;">
+          <div class="prv-row">
+            <input type="checkbox" id="f-privacy" />
+            <span class="prv-text">
+              Acconsento al trattamento dei dati personali per essere ricontattato in merito alla collaborazione.
+            </span>
+          </div>
+        </div>
+
+        <div class="error-toast" id="js-error"></div>
+
+        <button type="submit" class="btn-submit" id="js-btn">
+          <span id="js-btn-txt">Invia</span>
+        </button>
+      </form>
+
+      <div class="confirm-screen" id="js-confirm">
+        <div class="conf-ring">✓</div>
+        <h2 class="conf-title">Messaggio inviato!</h2>
+        <p class="conf-body">
+          Grazie per il tuo interesse.<br>
+          Ti risponderemo il prima possibile a <strong id="js-conf-email" style="color: var(--info);"></strong>.
+        </p>
+      </div>
+    </div>
+
+  </div>
+</main>
+
+<footer class="reveal d6">
+  <div class="footer-inner">
+    <span class="badge">v0.4 · 15.03.2026</span>
+    <span class="footer-copy">
+      © 2026 Liberi dal Successo ·
+      <a href="mailto:liberidalsuccesso@gmail.com">liberidalsuccesso@gmail.com</a>
+    </span>
+    <a class="footer-ev-link" href="index.html">Vedi i dettagli dell'evento →</a>
+  </div>
+</footer>
+
+<script>
+  'use strict';
+
+  var form     = document.getElementById('js-form');
+  var fNome    = document.getElementById('f-nome');
+  var fEmail   = document.getElementById('f-email');
+  var fRuolo   = document.getElementById('f-ruolo');
+  var fMsg     = document.getElementById('f-messaggio');
+  var fPrivacy = document.getElementById('f-privacy');
+  var btnTxt   = document.getElementById('js-btn-txt');
+  var btn      = document.getElementById('js-btn');
+  var errBox   = document.getElementById('js-error');
+  var confBox  = document.getElementById('js-confirm');
+  var confEmail = document.getElementById('js-conf-email');
+
+  var emailRe = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
+
+  function showErr(msg) {
+    errBox.textContent = msg;
+    errBox.style.display = 'block';
+    setTimeout(function () { errBox.style.display = 'none'; }, 4000);
+  }
+
+  form.addEventListener('submit', function (e) {
+    e.preventDefault();
+    errBox.style.display = 'none';
+
+    var nome = fNome.value.trim();
+    var email = fEmail.value.trim();
+    var ruolo = fRuolo.value;
+    var msg = fMsg.value.trim();
+
+    if (!nome) return showErr('Inserisci il tuo nome.');
+    if (!emailRe.test(email)) return showErr('Inserisci un indirizzo email valido.');
+    if (!ruolo) return showErr('Seleziona come vuoi collaborare.');
+    if (!fPrivacy.checked) return showErr('Acconsenti al trattamento dei dati per proseguire.');
+
+    btn.disabled = true;
+    btnTxt.textContent = 'Invio in corso…';
+
+    var payload = {
+      timestamp: new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' }),
+      nome: nome,
+      email: email,
+      ruolo: ruolo,
+      messaggio: msg,
+      tipo: 'Collaborazione'
+    };
+
+    var ENDPOINT = 'https://script.google.com/macros/s/AKfycbzy9It3-WuGXTJjopfDLpb5Dy8hTHklS0Uyy38o0ryMZB1jb3VhsDDXIH4aXdG8t2oBmA/exec';
+
+    fetch(ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
+      body: JSON.stringify(payload)
+    })
+    .then(function (r) { return r.json(); })
+    .then(function () {
+      form.style.display = 'none';
+      confEmail.textContent = email;
+      confBox.style.display = 'block';
+    })
+    .catch(function () {
+      showErr('Errore di rete. Riprova tra poco.');
+      btn.disabled = false;
+      btnTxt.textContent = 'Invia';
+    });
+  });
+</script>
+</body>
+</html>
