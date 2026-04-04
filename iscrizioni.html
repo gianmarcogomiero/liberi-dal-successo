@@ -82,14 +82,15 @@
       margin: 28px auto 0; opacity: 0.6;
     }
     .logo-ring {
-      width: 68px; height: 68px; border: 1.5px dashed rgba(196,169,98,0.45); border-radius: 50%;
-      margin: 0 auto 24px; display: flex; align-items: center; justify-content: center;
-      color: rgba(196,169,98,0.35); font-size: 0.6rem; font-weight: 600;
-      letter-spacing: 0.1em; text-transform: uppercase; position: relative;
+      margin: 0 auto 24px;
+      text-align: center;
+      position: relative;
     }
-    .logo-ring::before {
-      content: ''; position: absolute; inset: -6px; border-radius: 50%;
-      border: 1px solid rgba(196,169,98,0.1);
+    .logo-img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100px;
+      height: auto;
     }
     .eyebrow {
       font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
@@ -422,7 +423,9 @@
     </a>
 
     <header class="site-header reveal d2">
-      <div class="logo-ring">Logo</div>
+      <div class="logo-ring">
+        <img src="Loghi/colorato 1.png" alt="Liberi dal Successo" class="logo-img" />
+      </div>
       <p class="eyebrow">Bresseo · 20 Giugno 2026</p>
       <h1 class="site-title">Liberi dal<br><em>Successo</em></h1>
       <div class="ornament">

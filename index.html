@@ -69,16 +69,17 @@
       pointer-events: none;
     }
 
-    /* Logo placeholder */
+    /* Logo */
     .logo-wrap {
-      width: 80px; height: 80px;
-      border-radius: 50%;
-      border: 1.5px dashed rgba(175,198,233,0.25);
-      display: flex; align-items: center; justify-content: center;
       margin: 0 auto 40px;
-      font-size: 10px; letter-spacing: 2px; text-transform: uppercase;
-      color: rgba(175,198,233,0.35);
+      text-align: center;
       position: relative; z-index: 1;
+    }
+    .logo-img {
+      display: block;
+      margin: 0 auto;
+      max-width: 100px;
+      height: auto;
     }
 
     .hero-eyebrow {
@@ -413,7 +414,9 @@
 
   <!-- ══════════ HERO ══════════ -->
   <div class="hero">
-    <div class="logo-wrap">Logo</div>
+    <div class="logo-wrap">
+      <img src="Loghi/colorato 1.png" alt="Liberi dal Successo" class="logo-img" />
+    </div>
 
     <p class="hero-eyebrow">Bresseo · Teolo · Padova</p>
 
