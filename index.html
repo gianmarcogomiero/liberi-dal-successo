@@ -463,14 +463,14 @@
       background: rgba(11,28,45,0.95); backdrop-filter: blur(12px);
       border-left: 1px solid rgba(175,198,233,0.1);
       padding: 80px 28px 40px;
-      transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+      transform: translateX(100%); pointer-events: none; transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
     }
-    .mob-drawer.open { transform: translateX(0); }
+    .mob-drawer.open { transform: translateX(0); pointer-events: auto; }
     .mob-overlay {
       display: none; position: fixed; inset: 0; z-index: 180;
-      background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.3s;
+      background: rgba(0,0,0,0.4); opacity: 0; pointer-events: none; transition: opacity 0.3s;
     }
-    .mob-overlay.open { opacity: 1; }
+    .mob-overlay.open { opacity: 1; pointer-events: auto; }
 
     .mob-drawer a {
       display: block; padding: 12px 0;
