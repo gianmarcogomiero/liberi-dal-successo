@@ -409,12 +409,38 @@
       border: 1px solid rgba(196,169,98,0.25);
       border-radius: 100px;
     }
+    /* ── SIDE NAV ── */
+    html { scroll-behavior: smooth; }
+    .side-nav {
+      position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
+      z-index: 100; display: flex; flex-direction: column; gap: 14px;
+    }
+    .side-nav a {
+      display: flex; align-items: center; justify-content: flex-end; gap: 10px;
+      text-decoration: none;
+    }
+    .side-nav-label {
+      font-size: 10px; letter-spacing: 1.2px; text-transform: uppercase;
+      color: rgba(175,198,233,0); font-family: 'DM Sans', sans-serif;
+      transition: color 0.25s; white-space: nowrap; pointer-events: none;
+    }
+    .side-nav a:hover .side-nav-label { color: rgba(175,198,233,0.6); }
+    .side-nav-dot {
+      width: 8px; height: 8px; border-radius: 50%; flex-shrink: 0;
+      border: 1.5px solid rgba(175,198,233,0.25); background: transparent;
+      transition: background 0.25s, border-color 0.25s;
+    }
+    .side-nav a:hover .side-nav-dot { border-color: rgba(175,198,233,0.5); }
+    .side-nav a.active .side-nav-dot {
+      background: var(--gold); border-color: var(--gold);
+    }
+    @media (max-width: 768px) { .side-nav { display: none; } }
 </style>
 </head>
 <body>
 
   <!-- ══════════ HERO ══════════ -->
-  <div class="hero">
+  <div class="hero" id="hero">
     <div class="logo-wrap">
       <img src="Loghi/colorato-trasparente.svg" alt="Liberi dal Successo" class="logo-img" />
     </div>
@@ -453,7 +479,7 @@
   </div>
 
   <!-- ══════════ CITAZIONE ══════════ -->
-  <div class="quote-section">
+  <div class="quote-section" id="citazione">
     <p class="quote-attr">Il messaggio dell'evento</p>
     <p class="quote-text">
       "Il vero successo non è dimostrare qualcosa.<br>
@@ -493,7 +519,7 @@
   </div>
 
   <!-- ══════════ TEMI ══════════ -->
-  <div class="section">
+  <div class="section" id="temi">
     <p class="section-tag">I temi</p>
     <div class="chips">
       <span class="chip">Identità</span>
@@ -510,7 +536,7 @@
   <hr class="section-sep" />
 
   <!-- ══════════ FORMAT ══════════ -->
-  <div class="section">
+  <div class="section" id="formato">
     <p class="section-tag">Come è strutturato</p>
     <div class="format-grid">
       <div class="format-item">
@@ -545,10 +571,10 @@
 
     <div class="passione-box">
       <p class="passione-text">
-        Non lo organizziamo perché è il nostro lavoro.<br>
-        Lo facciamo perché ci riguarda.<br>
-        <strong>E quando qualcosa ti riguarda davvero,<br>
-        riesce a muovere anche gli altri.</strong>
+        Non lo organizziamo per professione.<br>
+        Lo facciamo per passione.<br>
+        E quando c'è passione, nasce energia.<br>
+        E l'energia muove le persone.
       </p>
       <div class="passione-tags">
         <span class="passione-tag">Voci del territorio</span>
@@ -561,7 +587,7 @@
   <hr class="section-sep" />
 
   <!-- ══════════ A CHI È RIVOLTO ══════════ -->
-  <div class="section">
+  <div class="section" id="pubblico">
     <p class="section-tag">A chi è rivolto</p>
     <p class="problem-lead" style="font-size: clamp(1.1rem, 3vw, 1.4rem); margin-bottom: 28px;">
       L'evento è aperto a tutti, dai 16 anni in su.<br>
@@ -586,7 +612,7 @@
   <hr class="section-sep" />
 
   <!-- ══════════ PERCHÉ ESISTE ══════════ -->
-  <div class="section">
+  <div class="section" id="missione">
     <p class="section-tag">Perché esiste questo evento</p>
     <p class="passione-text" style="max-width: 540px; margin: 0 auto; text-align: center;">
       L'obiettivo non è darti risposte. È farti sentire che non sei l'unico a fare certe domande.
@@ -597,7 +623,7 @@
   <hr class="section-sep" />
 
   <!-- ══════════ INFO EVENTO ══════════ -->
-  <div class="section">
+  <div class="section" id="info">
     <p class="section-tag">Informazioni pratiche</p>
     <div class="info-box">
       <div class="info-grid">
@@ -639,7 +665,7 @@
   </div>
 
   <!-- ══════════ CTA FINALE ══════════ -->
-  <div class="cta-section">
+  <div class="cta-section" id="cta">
     <h2 class="cta-title">
       Ci vediamo il<br>
       <span class="gold">20 Giugno</span>
@@ -652,9 +678,22 @@
     <a href="collabora.html" class="btn-outline" style="margin-top: 12px;">Collabora con noi</a>
   </div>
 
+  <!-- ══════════ SIDE NAV ══════════ -->
+  <nav class="side-nav" id="js-sidenav">
+    <a href="#hero"><span class="side-nav-label">Home</span><span class="side-nav-dot"></span></a>
+    <a href="#citazione"><span class="side-nav-label">Messaggio</span><span class="side-nav-dot"></span></a>
+    <a href="#perche"><span class="side-nav-label">Perché</span><span class="side-nav-dot"></span></a>
+    <a href="#temi"><span class="side-nav-label">Temi</span><span class="side-nav-dot"></span></a>
+    <a href="#formato"><span class="side-nav-label">Formato</span><span class="side-nav-dot"></span></a>
+    <a href="#pubblico"><span class="side-nav-label">Per chi</span><span class="side-nav-dot"></span></a>
+    <a href="#missione"><span class="side-nav-label">Missione</span><span class="side-nav-dot"></span></a>
+    <a href="#info"><span class="side-nav-label">Info</span><span class="side-nav-dot"></span></a>
+    <a href="#cta"><span class="side-nav-label">Iscriviti</span><span class="side-nav-dot"></span></a>
+  </nav>
+
   <!-- ══════════ FOOTER ══════════ -->
   <footer>
-    <div class="version-badge">v0.6 · 04.04.2026</div>
+    <div class="version-badge">v0.7 · 04.04.2026</div>
     <br>
     © 2026 Liberi dal Successo · Bresseo, Teolo (PD) ·
     <a href="mailto:liberidalsuccesso@gmail.com">liberidalsuccesso@gmail.com</a>
@@ -678,3 +717,39 @@
         'DESCRIPTION:Un evento per ridefinire il significato di successo. Ingresso gratuito.',
         'LOCATION:Sala Polivalente\\, Bresseo\\, Teolo (PD)',
         'URL:https://liberidalsuccesso.it',
+        'END:VEVENT',
+        'END:VCALENDAR'
+      ];
+      var blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
+      var url  = URL.createObjectURL(blob);
+      var a    = document.createElement('a');
+      a.href = url; a.download = 'liberi-dal-successo-20giugno2026.ics';
+      document.body.appendChild(a); a.click(); document.body.removeChild(a);
+      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
+    });
+
+    // Side nav: highlight active section
+    (function () {
+      var nav = document.getElementById('js-sidenav');
+      var links = nav.querySelectorAll('a');
+      var ids = [];
+      links.forEach(function (a) { ids.push(a.getAttribute('href').slice(1)); });
+
+      var observer = new IntersectionObserver(function (entries) {
+        entries.forEach(function (entry) {
+          if (entry.isIntersecting) {
+            links.forEach(function (a) { a.classList.remove('active'); });
+            var active = nav.querySelector('a[href="#' + entry.target.id + '"]');
+            if (active) active.classList.add('active');
+          }
+        });
+      }, { rootMargin: '-40% 0px -55% 0px' });
+
+      ids.forEach(function (id) {
+        var el = document.getElementById(id);
+        if (el) observer.observe(el);
+      });
+    })();
+  </script>
+</body>
+</html>
