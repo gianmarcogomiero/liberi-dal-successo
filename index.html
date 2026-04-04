@@ -434,6 +434,55 @@
       background: var(--gold); border-color: var(--gold);
     }
     @media (max-width: 900px) { .side-nav { display: none; } }
+
+    /* ── MOBILE NAV ── */
+    .mob-nav-btn {
+      display: none; position: fixed; top: 16px; right: 16px; z-index: 200;
+      width: 40px; height: 40px; border-radius: 50%;
+      background: rgba(11,28,45,0.85); backdrop-filter: blur(8px);
+      border: 1px solid rgba(175,198,233,0.15);
+      cursor: pointer; align-items: center; justify-content: center;
+    }
+    .mob-nav-btn span {
+      display: block; width: 18px; height: 1.5px; background: var(--sand);
+      position: relative; transition: all 0.3s;
+    }
+    .mob-nav-btn span::before, .mob-nav-btn span::after {
+      content: ''; position: absolute; left: 0; width: 100%; height: 1.5px;
+      background: var(--sand); transition: all 0.3s;
+    }
+    .mob-nav-btn span::before { top: -6px; }
+    .mob-nav-btn span::after { top: 6px; }
+    .mob-nav-btn.open span { background: transparent; }
+    .mob-nav-btn.open span::before { top: 0; transform: rotate(45deg); }
+    .mob-nav-btn.open span::after { top: 0; transform: rotate(-45deg); }
+
+    .mob-drawer {
+      display: none; position: fixed; top: 0; right: 0; bottom: 0;
+      width: 240px; z-index: 190;
+      background: rgba(11,28,45,0.95); backdrop-filter: blur(12px);
+      border-left: 1px solid rgba(175,198,233,0.1);
+      padding: 80px 28px 40px;
+      transform: translateX(100%); transition: transform 0.3s cubic-bezier(0.22,1,0.36,1);
+    }
+    .mob-drawer.open { transform: translateX(0); }
+    .mob-overlay {
+      display: none; position: fixed; inset: 0; z-index: 180;
+      background: rgba(0,0,0,0.4); opacity: 0; transition: opacity 0.3s;
+    }
+    .mob-overlay.open { opacity: 1; }
+
+    .mob-drawer a {
+      display: block; padding: 12px 0;
+      font-size: 13px; font-weight: 500; letter-spacing: 0.8px; text-transform: uppercase;
+      color: rgba(217,207,195,0.55); text-decoration: none;
+      border-bottom: 1px solid rgba(175,198,233,0.06);
+      transition: color 0.2s;
+    }
+    .mob-drawer a:hover, .mob-drawer a.active { color: var(--gold); }
+    .mob-drawer a:last-child { border-bottom: none; }
+
+    @media (max-width: 900px) { .mob-nav-btn { display: flex; } .mob-drawer, .mob-overlay { display: block; } }
 </style>
 </head>
 <body>
@@ -682,6 +731,21 @@
     <p style="font-size: 12px; color: rgba(217,207,195,0.40); margin-top: 20px; letter-spacing: 1px;">Ingresso gratuito · Apericena inclusa</p>
   </div>
 
+  <!-- ══════════ MOBILE NAV ══════════ -->
+  <button class="mob-nav-btn" id="js-mob-btn" aria-label="Menu"><span></span></button>
+  <div class="mob-overlay" id="js-mob-overlay"></div>
+  <nav class="mob-drawer" id="js-mob-drawer">
+    <a href="#hero">Home</a>
+    <a href="#citazione">Messaggio</a>
+    <a href="#perche">Perché</a>
+    <a href="#temi">Temi</a>
+    <a href="#formato">Formato</a>
+    <a href="#pubblico">Per chi</a>
+    <a href="#missione">Missione</a>
+    <a href="#info">Info</a>
+    <a href="#cta">Iscriviti</a>
+  </nav>
+
   <!-- ══════════ SIDE NAV ══════════ -->
   <nav class="side-nav" id="js-sidenav">
     <a href="#hero"><span class="side-nav-label">Home</span><span class="side-nav-dot"></span></a>
@@ -753,6 +817,31 @@
         var el = document.getElementById(id);
         if (el) observer.observe(el);
       });
+    })();
+
+    // Mobile nav
+    (function () {
+      var btn = document.getElementById('js-mob-btn');
+      var drawer = document.getElementById('js-mob-drawer');
+      var overlay = document.getElementById('js-mob-overlay');
+      var links = drawer.querySelectorAll('a');
+
+      function toggle() {
+        var open = drawer.classList.toggle('open');
+        btn.classList.toggle('open', open);
+        overlay.classList.toggle('open', open);
+        document.body.style.overflow = open ? 'hidden' : '';
+      }
+      function close() {
+        drawer.classList.remove('open');
+        btn.classList.remove('open');
+        overlay.classList.remove('open');
+        document.body.style.overflow = '';
+      }
+
+      btn.addEventListener('click', toggle);
+      overlay.addEventListener('click', close);
+      links.forEach(function (a) { a.addEventListener('click', close); });
     })();
   </script>
 </body>
