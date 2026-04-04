@@ -747,9 +747,9 @@
            target="_blank" rel="noopener" class="action-btn">
           📍 Apri in Google Maps
         </a>
-        <button class="action-btn" id="calBtn">
+        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Liberi+dal+Successo&dates=20260620T153000Z/20260620T200000Z&details=Non+per+imparare+ad+avere+successo+%E2%80%94+ma+per+imparare+ad+essere+noi+stessi.%0A%0AIngresso+gratuito+%C2%B7+Apericena+inclusa%0A%0Ahttps://liberidalsuccesso.it&location=Sala+Polivalente%2C+Bresseo%2C+Teolo+(PD)" target="_blank" rel="noopener" class="action-btn">
           📅 Salva nel calendario
-        </button>
+        </a>
         <a href="iscrizioni.html" class="action-btn">
           🎟 Iscriviti all'evento
         </a>
@@ -820,30 +820,6 @@
   </footer>
 
   <script>
-    // Salva nel calendario → genera .ics
-    document.getElementById('calBtn').addEventListener('click', function () {
-      var lines = [
-        'BEGIN:VCALENDAR',
-        'VERSION:2.0',
-        'PRODID:-//Liberi dal Successo//IT',
-        'BEGIN:VEVENT',
-        'DTSTART:20260620T153000Z',
-        'DTEND:20260620T200000Z',
-        'SUMMARY:Liberi dal Successo',
-        'DESCRIPTION:Un evento per ridefinire il significato di successo. Ingresso gratuito.',
-        'LOCATION:Sala Polivalente\\, Bresseo\\, Teolo (PD)',
-        'URL:https://liberidalsuccesso.it',
-        'END:VEVENT',
-        'END:VCALENDAR'
-      ];
-      var blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
-      var url  = URL.createObjectURL(blob);
-      var a    = document.createElement('a');
-      a.href = url; a.download = 'liberi-dal-successo-20giugno2026.ics';
-      document.body.appendChild(a); a.click(); document.body.removeChild(a);
-      setTimeout(function () { URL.revokeObjectURL(url); }, 1000);
-    });
-
     // Side nav: highlight active section
     (function () {
       var nav = document.getElementById('js-sidenav');
