@@ -1,0 +1,357 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <meta charset="UTF-8" />
+  <link rel="icon" type="image/svg+xml" href="Loghi/colorato-trasparente.svg" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Identità Visiva — Liberi dal Successo</title>
+  <meta name="description" content="L'identità visiva di Liberi dal Successo: il significato del logo, la palette colori e il tono autentico del progetto." />
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H7C5JNC6SG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('js', new Date());
+    gtag('config', 'G-H7C5JNC6SG');
+  </script>
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:      #0B1C2D;
+      --title:   #D9CFC3;
+      --info:    #AFC6E9;
+      --body:    #E6E8EC;
+      --accent:  #C4A962;
+      --surface: rgba(255,255,255,0.035);
+      --r:       14px;
+      --r-sm:    9px;
+    }
+
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      background: var(--bg);
+      color: var(--body);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 16px;
+      -webkit-font-smoothing: antialiased;
+    }
+
+    .container {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 36px 20px 60px;
+    }
+
+    /* ── Back link ── */
+    .back-link {
+      display: inline-flex; align-items: center; gap: 8px;
+      font-size: 0.82rem; font-weight: 500; letter-spacing: 0.04em;
+      color: var(--info); text-decoration: none;
+      padding: 32px 0 0; opacity: 0.55;
+      transition: opacity 0.25s, gap 0.25s;
+    }
+    .back-link:hover { opacity: 0.9; gap: 11px; }
+
+    /* ── Header ── */
+    .site-header { text-align: center; padding: 48px 0 40px; }
+    .logo-ring { margin: 0 auto 24px; text-align: center; position: relative; }
+    .logo-img { display: block; margin: 0 auto; max-width: 120px; height: auto; }
+    .eyebrow {
+      font-size: 0.7rem; font-weight: 600; letter-spacing: 0.18em; text-transform: uppercase;
+      color: var(--accent); opacity: 0.75; margin-bottom: 12px;
+    }
+    .site-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.8rem, 5vw, 2.6rem); font-weight: 700;
+      color: var(--title); line-height: 1.15; letter-spacing: -0.01em;
+    }
+    .site-title em { font-style: italic; color: var(--accent); font-weight: 600; }
+
+    /* ── Ornament ── */
+    .ornament { display: flex; align-items: center; justify-content: center; gap: 12px; margin: 28px auto 0; opacity: 0.6; }
+    .orn-line { width: 44px; height: 1px; background: linear-gradient(90deg, transparent, var(--accent), transparent); }
+    .orn-dia { width: 7px; height: 7px; border: 1px solid var(--accent); transform: rotate(45deg); }
+
+    /* ── Sections ── */
+    .section { padding: 48px 0; }
+    .section-tag {
+      font-size: 10px; letter-spacing: 2.5px; text-transform: uppercase;
+      color: var(--info); opacity: 0.55; margin-bottom: 20px;
+    }
+    .section-title {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.3rem, 3.5vw, 1.6rem); font-weight: 600;
+      color: var(--title); margin-bottom: 24px; line-height: 1.3;
+    }
+    .section-text {
+      font-size: 0.95rem; color: rgba(230,232,236,0.7); line-height: 1.8; font-weight: 300;
+    }
+    .sep {
+      border: none; height: 1px;
+      background: linear-gradient(90deg, transparent, rgba(175,198,233,0.12), transparent);
+    }
+
+    /* ── Logo elements ── */
+    .logo-elements {
+      display: flex; flex-direction: column; gap: 32px;
+      margin-top: 28px;
+    }
+    .logo-el {
+      display: flex; gap: 20px; align-items: flex-start;
+    }
+    .logo-el-icon {
+      flex-shrink: 0; width: 44px; height: 44px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      font-size: 18px;
+    }
+    .logo-el-icon.gold { background: rgba(196,169,98,0.12); border: 1px solid rgba(196,169,98,0.25); }
+    .logo-el-icon.blue { background: rgba(175,198,233,0.08); border: 1px solid rgba(175,198,233,0.2); }
+    .logo-el-icon.grey { background: rgba(230,232,236,0.06); border: 1px solid rgba(230,232,236,0.12); }
+    .logo-el-title {
+      font-family: 'Playfair Display', serif;
+      font-size: 1.05rem; font-weight: 600; color: var(--title); margin-bottom: 6px;
+    }
+    .logo-el-desc {
+      font-size: 0.9rem; color: rgba(230,232,236,0.6); line-height: 1.7; font-weight: 300;
+    }
+
+    /* ── Palette ── */
+    .palette-grid {
+      display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+      gap: 16px; margin-top: 28px;
+    }
+    .palette-item {
+      text-align: center; padding: 20px 12px;
+      background: var(--surface); border: 1px solid rgba(175,198,233,0.06);
+      border-radius: var(--r);
+    }
+    .palette-swatch {
+      width: 48px; height: 48px; border-radius: 50%;
+      margin: 0 auto 14px;
+      border: 2px solid rgba(255,255,255,0.08);
+    }
+    .palette-name {
+      font-size: 0.82rem; font-weight: 600; color: var(--title); margin-bottom: 4px;
+    }
+    .palette-hex {
+      font-size: 0.72rem; color: rgba(230,232,236,0.4); letter-spacing: 0.5px;
+      font-family: monospace; margin-bottom: 8px;
+    }
+    .palette-use {
+      font-size: 0.78rem; color: rgba(230,232,236,0.5); line-height: 1.5; font-weight: 300;
+    }
+
+    /* ── Note cromatica ── */
+    .note-box {
+      margin-top: 32px; padding: 24px 28px;
+      background: rgba(175,198,233,0.04);
+      border: 1px solid rgba(175,198,233,0.1);
+      border-radius: var(--r);
+    }
+    .note-box p {
+      font-size: 0.9rem; color: rgba(230,232,236,0.6); line-height: 1.75; font-weight: 300;
+      font-style: italic;
+    }
+
+    /* ── Quote ── */
+    .id-quote {
+      text-align: center; padding: 48px 0;
+    }
+    .id-quote p {
+      font-family: 'Playfair Display', serif;
+      font-style: italic;
+      font-size: clamp(1.05rem, 2.8vw, 1.25rem);
+      color: rgba(217,207,195,0.75);
+      line-height: 1.8;
+      max-width: 480px; margin: 0 auto;
+    }
+
+    /* ── Footer ── */
+    footer {
+      text-align: center; padding: 48px 20px 36px;
+      font-size: 0.75rem; color: rgba(230,232,236,0.28); letter-spacing: 0.02em;
+    }
+    footer a { color: rgba(175,198,233,0.45); text-decoration: none; }
+    footer a:hover { color: var(--info); }
+    .footer-inner { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+    .badge {
+      display: inline-block; padding: 4px 12px; border-radius: 100px;
+      background: rgba(175,198,233,0.06); border: 1px solid rgba(175,198,233,0.1);
+      font-size: 0.68rem; font-weight: 500; color: rgba(175,198,233,0.35);
+      letter-spacing: 0.08em; margin-bottom: 8px;
+    }
+    .footer-ev-link {
+      display: inline-block; margin-top: 6px; font-size: 0.78rem;
+      color: rgba(196,169,98,0.55); font-weight: 500;
+    }
+    .footer-ev-link:hover { color: var(--accent); }
+
+    /* ── Animations ── */
+    .reveal { opacity: 0; transform: translateY(18px); animation: revUp 0.65s cubic-bezier(0.22,1,0.36,1) forwards; }
+    @keyframes revUp { to { opacity: 1; transform: translateY(0); } }
+    .d1 { animation-delay: 0.08s; } .d2 { animation-delay: 0.18s; }
+    .d3 { animation-delay: 0.28s; } .d4 { animation-delay: 0.38s; }
+    .d5 { animation-delay: 0.48s; } .d6 { animation-delay: 0.58s; }
+  </style>
+</head>
+<body>
+
+<main>
+  <div class="container">
+
+    <a class="back-link reveal d1" href="index.html">
+      <svg width="14" height="14" viewBox="0 0 16 16" fill="none" stroke="#AFC6E9" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="10,4 6,8 10,12"/>
+      </svg>
+      Torna all'evento
+    </a>
+
+    <header class="site-header reveal d2">
+      <div class="logo-ring">
+        <img src="Loghi/colorato-trasparente.svg" alt="Liberi dal Successo" class="logo-img" />
+      </div>
+      <p class="eyebrow">Identità Visiva</p>
+      <h1 class="site-title">Il linguaggio<br>di <em>Liberi dal Successo</em></h1>
+      <div class="ornament">
+        <span class="orn-line"></span>
+        <span class="orn-dia"></span>
+        <span class="orn-line"></span>
+      </div>
+    </header>
+
+    <!-- ── IL LOGO ── -->
+    <div class="section reveal d3">
+      <p class="section-tag">Il concetto del logo</p>
+      <h2 class="section-title">Ogni elemento racconta qualcosa</h2>
+      <p class="section-text">
+        Il simbolo non è decorativo. È un racconto visivo che unisce tre idee
+        fondamentali del progetto: l'individuo, il percorso e la comunità.
+      </p>
+
+      <div class="logo-elements">
+        <div class="logo-el">
+          <div class="logo-el-icon gold">●</div>
+          <div>
+            <p class="logo-el-title">Il punto dorato al centro</p>
+            <p class="logo-el-desc">
+              Rappresenta l'individuo. La persona è al centro del proprio percorso,
+              unica e irripetibile. Il gold richiama il valore autentico che ognuno porta con sé.
+            </p>
+          </div>
+        </div>
+
+        <div class="logo-el">
+          <div class="logo-el-icon blue">◎</div>
+          <div>
+            <p class="logo-el-title">La spirale di Fibonacci</p>
+            <p class="logo-el-desc">
+              Simboleggia il viaggio interiore. Una traiettoria mai lineare che si evolve,
+              si allarga e si trasforma — come ogni percorso di crescita personale.
+            </p>
+          </div>
+        </div>
+
+        <div class="logo-el">
+          <div class="logo-el-icon grey">○</div>
+          <div>
+            <p class="logo-el-title">I cerchi che crescono</p>
+            <p class="logo-el-desc">
+              Rappresentano la comunità che si espande. Ogni persona porta la propria storia,
+              allargando lo spazio condiviso. Nessuno è spettatore — tutti contribuiscono.
+            </p>
+          </div>
+        </div>
+      </div>
+
+      <div class="note-box">
+        <p>
+          L'alternanza di azzurro e bianco nel logo richiama il binomio tra comunità e chiarezza,
+          tra il collettivo e l'autenticità personale.
+        </p>
+      </div>
+    </div>
+
+    <hr class="sep" />
+
+    <!-- ── PALETTE ── -->
+    <div class="section reveal d4">
+      <p class="section-tag">La palette colori</p>
+      <h2 class="section-title">Cinque colori, un'unica voce</h2>
+      <p class="section-text">
+        Ogni colore ha un ruolo preciso. Insieme creano un'atmosfera intima e accogliente,
+        lontana dal rumore visivo tipico degli eventi.
+      </p>
+
+      <div class="palette-grid">
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #0B1C2D;"></div>
+          <p class="palette-name">Deep Night Blue</p>
+          <p class="palette-hex">#0B1C2D</p>
+          <p class="palette-use">Sfondo principale</p>
+        </div>
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #D9CFC3;"></div>
+          <p class="palette-name">Sand Beige</p>
+          <p class="palette-hex">#D9CFC3</p>
+          <p class="palette-use">Titoli</p>
+        </div>
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #C4A962;"></div>
+          <p class="palette-name">Matte Gold</p>
+          <p class="palette-hex">#C4A962</p>
+          <p class="palette-use">Accenti e separatori</p>
+        </div>
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #E6E8EC;"></div>
+          <p class="palette-name">Soft Gray</p>
+          <p class="palette-hex">#E6E8EC</p>
+          <p class="palette-use">Testo corpo</p>
+        </div>
+        <div class="palette-item">
+          <div class="palette-swatch" style="background: #AFC6E9;"></div>
+          <p class="palette-name">Powder Blue</p>
+          <p class="palette-hex">#AFC6E9</p>
+          <p class="palette-use">Info secondarie</p>
+        </div>
+      </div>
+    </div>
+
+    <hr class="sep" />
+
+    <!-- ── TONO ── -->
+    <div class="section reveal d5">
+      <p class="section-tag">Tono e stile</p>
+      <h2 class="section-title">Autentico, non patinato</h2>
+      <p class="section-text">
+        L'identità visiva di Liberi dal Successo non nasce da un brief creativo.
+        Nasce dall'esigenza di raccontare qualcosa di vero senza urlare.<br><br>
+        Il design è pulito, lo spazio respira, i colori parlano piano.
+        Non cerchiamo l'effetto — cerchiamo la connessione.<br><br>
+        Ogni scelta grafica riflette lo spirito dell'evento:
+        niente di costruito, tutto di sentito.
+      </p>
+    </div>
+
+    <div class="id-quote reveal d5">
+      <p>
+        Il vero successo è avere il coraggio di accettarsi.
+      </p>
+    </div>
+
+  </div>
+</main>
+
+<footer class="reveal d6">
+  <div class="footer-inner">
+    <span class="badge">v0.7 · 04.04.2026</span>
+    <span class="footer-copy">
+      © 2026 Liberi dal Successo ·
+      <a href="mailto:liberidalsuccesso@gmail.com">liberidalsuccesso@gmail.com</a>
+    </span>
+    <a class="footer-ev-link" href="index.html">Vedi i dettagli dell'evento →</a>
+  </div>
+</footer>
+
+</body>
+</html>
