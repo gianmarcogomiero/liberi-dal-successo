@@ -169,7 +169,6 @@
     .info-cell-value {
       font-size: 13px; color: rgba(217,207,195,0.78);
       text-align: center; line-height: 1.5;
-      white-space: nowrap;
     }
     @media (max-width: 480px) {
       .info-strip { flex-wrap: wrap; max-width: 300px; }
@@ -411,7 +410,7 @@
     /* ── SIDE NAV ── */
     html { scroll-behavior: smooth; }
     .side-nav {
-      position: fixed; right: 18px; top: 50%; transform: translateY(-50%);
+      position: fixed; right: 10px; top: 50%; transform: translateY(-50%);
       z-index: 100; display: flex; flex-direction: column; gap: 14px;
     }
     .side-nav a {
@@ -433,7 +432,7 @@
     .side-nav a.active .side-nav-dot {
       background: var(--gold); border-color: var(--gold);
     }
-    @media (max-width: 768px) { .side-nav { display: none; } }
+    @media (max-width: 900px) { .side-nav { display: none; } }
 </style>
 </head>
 <body>
