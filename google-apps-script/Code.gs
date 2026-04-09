@@ -17,14 +17,15 @@
  *
  * Setup CallMeBot (una tantum): https://www.callmebot.com/blog/free-api-whatsapp-messages/
  * — Aggiungi il numero del bot in rubrica, invia il messaggio di attivazione, ricevi apikey.
- * — Imposta qui sotto numero (solo cifre, prefisso internazionale senza +) e apikey,
- *   oppure in Progetto → Impostazioni → Proprietà dello script: WHATSAPP_PHONE, CALLMEBOT_APIKEY.
+ * — NON committare numero né apikey nel repository: usa solo Progetto → Impostazioni →
+ *   Proprietà dello script → Aggiungi proprietà: WHATSAPP_PHONE (solo cifre, es. 39347…),
+ *   CALLMEBOT_APIKEY (chiave CallMeBot). Le variabili sotto restano vuote nel codice pubblico.
  */
 
-/** Es. Italia: 393xxxxxxxxxx (39 + cellulare senza zero iniziale). */
-var WHATSAPP_PHONE_INTERNATIONAL = '393474836611';
+/** Lasciare vuoto nel repo; valore reale solo in Proprietà dello script WHATSAPP_PHONE. */
+var WHATSAPP_PHONE_INTERNATIONAL = '';
 
-/** Api key ricevuta da CallMeBot dopo l’attivazione. */
+/** Lasciare vuoto nel repo; valore reale solo in Proprietà CALLMEBOT_APIKEY. */
 var WHATSAPP_CALLMEBOT_APIKEY = '';
 
 /** Riga 1 dei fogli = intestazioni; le righe dati partono dalla 2. */
