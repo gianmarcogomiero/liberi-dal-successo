@@ -22,7 +22,7 @@
  */
 
 /** Es. Italia: 393xxxxxxxxxx (39 + cellulare senza zero iniziale). */
-var WHATSAPP_PHONE_INTERNATIONAL = '';
+var WHATSAPP_PHONE_INTERNATIONAL = '393474836611';
 
 /** Api key ricevuta da CallMeBot dopo l’attivazione. */
 var WHATSAPP_CALLMEBOT_APIKEY = '';
