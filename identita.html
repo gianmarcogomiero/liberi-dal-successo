@@ -201,36 +201,6 @@
 </head>
 <body>
 
-<!-- ══════════ WIP SPLASH (protezione password) ══════════ -->
-<div id="wip-splash" style="position:fixed;inset:0;z-index:9999;background:#0B1C2D;display:flex;align-items:center;justify-content:center;padding:24px;">
-  <div style="max-width:380px;width:100%;text-align:center;font-family:'DM Sans',sans-serif;">
-    <img src="Loghi/colorato-trasparente.svg" alt="Liberi dal Successo" style="width:90px;height:auto;margin:0 auto 28px;display:block;" />
-    <p style="font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:rgba(175,198,233,0.55);margin-bottom:14px;">Work in progress</p>
-    <h1 style="font-family:'Playfair Display',serif;font-size:1.8rem;font-weight:700;color:#D9CFC3;line-height:1.25;margin-bottom:12px;">Ci stiamo ancora<br><em style="color:#C4A962;font-weight:600;">lavorando</em></h1>
-    <p style="font-size:0.88rem;color:rgba(230,232,236,0.55);line-height:1.7;font-weight:300;margin-bottom:32px;">Il sito non è ancora pronto per il pubblico.<br>Se hai la password, entra pure.</p>
-    <form id="wip-form" onsubmit="return false;" style="display:flex;flex-direction:column;gap:12px;">
-      <input type="password" id="wip-pw" placeholder="Password" autocomplete="off" style="background:rgba(255,255,255,0.04);border:1px solid rgba(175,198,233,0.18);border-radius:9px;padding:12px 14px;color:#E6E8EC;font-family:'DM Sans',sans-serif;font-size:0.95rem;outline:none;text-align:center;letter-spacing:1px;" />
-      <button type="submit" id="wip-btn" style="background:linear-gradient(135deg,#c4a962,#d8bb72,#c4a962);color:#0B1C2D;font-family:'DM Sans',sans-serif;font-size:0.88rem;font-weight:700;letter-spacing:0.06em;text-transform:uppercase;border:none;border-radius:9px;padding:13px 24px;cursor:pointer;transition:opacity 0.2s,transform 0.2s;">Entra</button>
-    </form>
-    <p id="wip-err" style="display:none;font-size:0.82rem;color:#e8a0a0;margin-top:14px;">Password sbagliata — riprova 😊</p>
-  </div>
-</div>
-<script>
-  (function(){
-    var KEY='lds_wip_ok';
-    var PW='20260620LdS';
-    var splash=document.getElementById('wip-splash');
-    if(sessionStorage.getItem(KEY)==='1'||localStorage.getItem(KEY)==='1'){splash.style.display='none';return;}
-    document.body.style.overflow='hidden';
-    document.getElementById('wip-form').addEventListener('submit',function(){
-      var v=document.getElementById('wip-pw').value;
-      if(v===PW){localStorage.setItem(KEY,'1');splash.style.display='none';document.body.style.overflow='';}
-      else{document.getElementById('wip-err').style.display='block';document.getElementById('wip-pw').value='';}
-    });
-  })();
-</script>
-<!-- ══════════ /WIP SPLASH ══════════ -->
-
 <main>
   <div class="container">
 
