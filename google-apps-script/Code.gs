@@ -17,7 +17,7 @@
  */
 
 /** Email per avvisi interni (nuova iscrizione / collaborazione). Cambia qui se serve. */
-var ADMIN_NOTIFY_EMAIL = 'gianmarco@gmail.com';
+var ADMIN_NOTIFY_EMAIL = 'gianmarcogomiero@gmail.com';
 
 /** Riga 1 dei fogli = intestazioni; le righe dati partono dalla 2. */
 var SHEET_HAS_HEADER_ROW = true;
