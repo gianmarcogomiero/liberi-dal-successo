@@ -66,7 +66,9 @@ function doPost(e) {
       try {
         var sheetIscrForCount = ss.getSheetByName('Iscrizioni');
         sendAdminNotifyCollaborazione(data, sheetCollab, sheetIscrForCount);
-      } catch (adminErr) {}
+      } catch (adminErr) {
+        Logger.log('sendAdminNotifyCollaborazione: ' + (adminErr && adminErr.message ? adminErr.message : adminErr));
+      }
     } else {
       var sheetIscr = ss.getSheetByName('Iscrizioni');
       if (!sheetIscr) {
@@ -88,7 +90,9 @@ function doPost(e) {
       try {
         var sheetCollabForCount = ss.getSheetByName('Collabora');
         sendAdminNotifyIscrizione(data, sheetIscr, sheetCollabForCount);
-      } catch (adminErr) {}
+      } catch (adminErr) {
+        Logger.log('sendAdminNotifyIscrizione: ' + (adminErr && adminErr.message ? adminErr.message : adminErr));
+      }
     }
 
     return jsonOut({ success: true, result: 'ok' });
@@ -164,10 +168,18 @@ function getWhatsAppConfig_() {
   return { phone: phone, apikey: apikey };
 }
 
-/** Invia messaggio WhatsApp tramite https://www.callmebot.com/ (UrlFetch). */
+/**
+ * Invia messaggio WhatsApp tramite https://www.callmebot.com/ (UrlFetch).
+ * Se mancano proprietà o CallMeBot risponde errore, scrive in Logger (Esecuzioni).
+ */
 function sendWhatsAppAdmin(text) {
   var c = getWhatsAppConfig_();
-  if (!c.phone || !c.apikey) return;
+  if (!c.phone || !c.apikey) {
+    Logger.log(
+      '[WhatsApp] NON inviato: imposta Proprietà dello script WHATSAPP_PHONE (solo cifre, es. 393474836611) e CALLMEBOT_APIKEY.'
+    );
+    return { sent: false, reason: 'missing_config' };
+  }
   var body = String(text);
   if (body.length > 4000) body = body.substring(0, 3997) + '...';
   var url =
@@ -177,7 +189,31 @@ function sendWhatsAppAdmin(text) {
     encodeURIComponent(body) +
     '&apikey=' +
     encodeURIComponent(c.apikey);
-  UrlFetchApp.fetch(url, { muteHttpExceptions: true, followRedirects: true });
+  try {
+    var resp = UrlFetchApp.fetch(url, { muteHttpExceptions: true, followRedirects: true });
+    var code = resp.getResponseCode();
+    var txt = resp.getContentText() || '';
+    Logger.log('[WhatsApp] HTTP ' + code + ' — ' + txt.substring(0, 400));
+    var ok = code === 200 && /queued|Message sent|sent/i.test(txt);
+    if (!ok) {
+      Logger.log(
+        '[WhatsApp] Possibile errore API. Controlla apikey, che il bot non sia in Stop, e il numero su CallMeBot.'
+      );
+    }
+    return { sent: ok, httpCode: code, responseSnippet: txt.substring(0, 300) };
+  } catch (fetchErr) {
+    Logger.log('[WhatsApp] UrlFetch errore: ' + (fetchErr && fetchErr.message ? fetchErr.message : fetchErr));
+    return { sent: false, reason: 'fetch_error' };
+  }
+}
+
+/**
+ * Esegui dal menu Apps Script (Run) dopo aver salvato le Proprietà.
+ * Invia un messaggio di test e controlla Visualizzazione → Log / Esecuzioni.
+ */
+function testWhatsAppIntegration() {
+  var r = sendWhatsAppAdmin('Test Liberi dal Successo — se leggi questo, Apps Script + CallMeBot sono OK.');
+  Logger.log('testWhatsAppIntegration result: ' + JSON.stringify(r));
 }
 
 function sendAdminNotifyIscrizione(data, sheetIscr, sheetCollab) {
