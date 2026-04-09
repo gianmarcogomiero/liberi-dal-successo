@@ -10,7 +10,17 @@
  * distribuisci lo script mentre sei loggato con quell’account (o un account
  * con “Invia come” verificato verso quell’indirizzo). Il campo `name` nel
  * sendEmail è solo il nome visualizzato accanto al mittente.
+ *
+ * NOTIFICHE ORGANIZZATORE: a ogni iscrizione o richiesta collaborazione viene
+ * inviata un’email a ADMIN_NOTIFY_EMAIL (modifica sotto). In caso di errore
+ * invio, la richiesta utente resta comunque salvata.
  */
+
+/** Email per avvisi interni (nuova iscrizione / collaborazione). Cambia qui se serve. */
+var ADMIN_NOTIFY_EMAIL = 'gianmarco@gmail.com';
+
+/** Riga 1 dei fogli = intestazioni; le righe dati partono dalla 2. */
+var SHEET_HAS_HEADER_ROW = true;
 
 function doPost(e) {
   try {
@@ -44,6 +54,10 @@ function doPost(e) {
         data.messaggio || ''
       ]);
       sendCollabEmail(data);
+      try {
+        var sheetIscrForCount = ss.getSheetByName('Iscrizioni');
+        sendAdminNotifyCollaborazione(data, sheetCollab, sheetIscrForCount);
+      } catch (adminErr) {}
     } else {
       var sheetIscr = ss.getSheetByName('Iscrizioni');
       if (!sheetIscr) {
@@ -62,6 +76,10 @@ function doPost(e) {
         data.tipo
       ]);
       sendConfirmEmail(data);
+      try {
+        var sheetCollabForCount = ss.getSheetByName('Collabora');
+        sendAdminNotifyIscrizione(data, sheetIscr, sheetCollabForCount);
+      } catch (adminErr) {}
     }
 
     return jsonOut({ success: true, result: 'ok' });
@@ -95,6 +113,180 @@ function escapeHtml(s) {
 function escapeIcsText(s) {
   if (s == null || s === undefined) return '';
   return String(s).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+}
+
+/** Numero righe dati (esclusa intestazione). */
+function countDataRows(sheet) {
+  if (!sheet) return 0;
+  var lr = sheet.getLastRow();
+  if (lr === 0) return 0;
+  if (SHEET_HAS_HEADER_ROW) return lr <= 1 ? 0 : lr - 1;
+  return lr;
+}
+
+/** Somma colonna posti (colonna G = 7) nel foglio Iscrizioni. */
+function sumPostiColumn(sheet) {
+  if (!sheet) return 0;
+  var lr = sheet.getLastRow();
+  var start = SHEET_HAS_HEADER_ROW ? 2 : 1;
+  if (lr < start) return 0;
+  var values = sheet.getRange(start, 7, lr, 7).getValues();
+  var t = 0;
+  for (var i = 0; i < values.length; i++) {
+    var v = values[i][0];
+    if (v === '' || v == null) continue;
+    var n = parseFloat(String(v).replace(',', '.').replace(/\s/g, ''));
+    if (!isNaN(n)) t += n;
+  }
+  return t;
+}
+
+// ── NOTIFICHE ORGANIZZATORE ──
+function sendAdminNotifyIscrizione(data, sheetIscr, sheetCollab) {
+  if (!ADMIN_NOTIFY_EMAIL || !String(ADMIN_NOTIFY_EMAIL).trim()) return;
+  var nIscr = countDataRows(sheetIscr);
+  var nCollab = countDataRows(sheetCollab);
+  var postiTot = sumPostiColumn(sheetIscr);
+  var nome = escapeHtml(data.nome) + ' ' + escapeHtml(data.cognome);
+  var subject =
+    '[Liberi dal Successo] Nuova iscrizione — ' +
+    String(data.nome || '').trim() +
+    ' ' +
+    String(data.cognome || '').trim();
+
+  var bodyHtml =
+    '<p style="font-size:15px;color:#0B1C2D;line-height:1.7;margin:0 0 12px;"><strong>Nuova iscrizione</strong></p>' +
+    '<table style="border-collapse:collapse;font-size:14px;color:#333;">' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Nome</td><td>' +
+    nome +
+    '</td></tr>' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Email</td><td>' +
+    escapeHtml(data.email) +
+    '</td></tr>' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Tipo</td><td>' +
+    escapeHtml(data.tipo) +
+    '</td></tr>' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Posti</td><td>' +
+    escapeHtml(data.posti) +
+    '</td></tr>' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Età / Comune</td><td>' +
+    escapeHtml(data.eta) +
+    ' · ' +
+    escapeHtml(data.comune) +
+    '</td></tr>' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;vertical-align:top;">Accompagnatori</td><td>' +
+    escapeHtml(data.accompagnatori || '—') +
+    '</td></tr>' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Consenso foto</td><td>' +
+    escapeHtml(data.consenso_foto) +
+    '</td></tr>' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Invio</td><td>' +
+    escapeHtml(data.timestamp || '') +
+    '</td></tr>' +
+    '</table>' +
+    '<p style="font-size:15px;margin:20px 0 8px;"><strong>Totali nel foglio</strong></p>' +
+    '<ul style="margin:0;padding-left:20px;font-size:14px;color:#333;line-height:1.6;">' +
+    '<li>Iscrizioni (righe nel foglio Iscrizioni): <strong>' +
+    nIscr +
+    '</strong></li>' +
+    '<li>Posti richiesti (somma colonna posti): <strong>' +
+    postiTot +
+    '</strong></li>' +
+    '<li>Richieste collaborazione (righe in Collabora): <strong>' +
+    nCollab +
+    '</strong></li>' +
+    '</ul>';
+
+  var plain =
+    'Nuova iscrizione\n' +
+    'Nome: ' +
+    String(data.nome || '') +
+    ' ' +
+    String(data.cognome || '') +
+    '\nEmail: ' +
+    String(data.email || '') +
+    '\nTipo: ' +
+    String(data.tipo || '') +
+    '\nPosti: ' +
+    String(data.posti || '') +
+    '\n\nTotali: iscrizioni (righe)=' +
+    nIscr +
+    ', posti somma=' +
+    postiTot +
+    ', collaborazioni=' +
+    nCollab;
+
+  GmailApp.sendEmail(ADMIN_NOTIFY_EMAIL, subject, plain, {
+    htmlBody:
+      '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:sans-serif;padding:16px;">' +
+      bodyHtml +
+      '</body></html>',
+    name: 'Liberi dal Successo — avviso'
+  });
+}
+
+function sendAdminNotifyCollaborazione(data, sheetCollab, sheetIscr) {
+  if (!ADMIN_NOTIFY_EMAIL || !String(ADMIN_NOTIFY_EMAIL).trim()) return;
+  var nIscr = countDataRows(sheetIscr);
+  var nCollab = countDataRows(sheetCollab);
+  var postiTot = sheetIscr ? sumPostiColumn(sheetIscr) : 0;
+  var subject =
+    '[Liberi dal Successo] Nuova collaborazione — ' + String(data.nome || '').trim();
+
+  var bodyHtml =
+    '<p style="font-size:15px;color:#0B1C2D;line-height:1.7;margin:0 0 12px;"><strong>Nuova richiesta di collaborazione</strong></p>' +
+    '<table style="border-collapse:collapse;font-size:14px;color:#333;">' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Nome</td><td>' +
+    escapeHtml(data.nome) +
+    '</td></tr>' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Email</td><td>' +
+    escapeHtml(data.email) +
+    '</td></tr>' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Ruolo</td><td>' +
+    escapeHtml(data.ruolo) +
+    '</td></tr>' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;vertical-align:top;">Messaggio</td><td>' +
+    escapeHtml(data.messaggio || '—') +
+    '</td></tr>' +
+    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Invio</td><td>' +
+    escapeHtml(data.timestamp || '') +
+    '</td></tr>' +
+    '</table>' +
+    '<p style="font-size:15px;margin:20px 0 8px;"><strong>Totali nel foglio</strong></p>' +
+    '<ul style="margin:0;padding-left:20px;font-size:14px;color:#333;line-height:1.6;">' +
+    '<li>Iscrizioni (righe nel foglio Iscrizioni): <strong>' +
+    nIscr +
+    '</strong></li>' +
+    '<li>Posti richiesti (somma colonna posti): <strong>' +
+    postiTot +
+    '</strong></li>' +
+    '<li>Richieste collaborazione (righe in Collabora): <strong>' +
+    nCollab +
+    '</strong></li>' +
+    '</ul>';
+
+  var plain =
+    'Nuova collaborazione\n' +
+    'Nome: ' +
+    String(data.nome || '') +
+    '\nEmail: ' +
+    String(data.email || '') +
+    '\nRuolo: ' +
+    String(data.ruolo || '') +
+    '\n\nTotali: iscrizioni (righe)=' +
+    nIscr +
+    ', posti somma=' +
+    postiTot +
+    ', collaborazioni=' +
+    nCollab;
+
+  GmailApp.sendEmail(ADMIN_NOTIFY_EMAIL, subject, plain, {
+    htmlBody:
+      '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:sans-serif;padding:16px;">' +
+      bodyHtml +
+      '</body></html>',
+    name: 'Liberi dal Successo — avviso'
+  });
 }
 
 // ── EMAIL CONFERMA ISCRIZIONE ──
