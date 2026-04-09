@@ -20,6 +20,10 @@
  * — NON committare numero né apikey nel repository: usa solo Progetto → Impostazioni →
  *   Proprietà dello script → Aggiungi proprietà: WHATSAPP_PHONE (solo cifre, es. 39347…),
  *   CALLMEBOT_APIKEY (chiave CallMeBot). Le variabili sotto restano vuote nel codice pubblico.
+ *
+ * UrlFetch (CallMeBot): se vedi "You do not have permission to call UrlFetchApp.fetch",
+ * copia `appsscript.json` dal repo nel progetto (Visualizza → Mostra file manifest),
+ * salva, poi Autorizza di nuovo l’accesso (Esegui testWhatsAppIntegration e accetta i permessi).
  */
 
 /** Lasciare vuoto nel repo; valore reale solo in Proprietà dello script WHATSAPP_PHONE. */
