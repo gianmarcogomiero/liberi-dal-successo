@@ -214,7 +214,7 @@
     .info-strip {
       display: flex;
       margin: 32px auto 0;
-      max-width: 500px;
+      max-width: min(760px, 100%);
       border: 1px solid rgba(175,198,233,0.15);
       border-radius: 12px;
       overflow: hidden;
@@ -237,8 +237,15 @@
       font-size: 13px; color: rgba(217,207,195,0.78);
       text-align: center; line-height: 1.5;
     }
+    .info-line {
+      display: block;
+      white-space: nowrap;
+    }
+    @media (max-width: 380px) {
+      .info-line { white-space: normal; }
+    }
     @media (max-width: 480px) {
-      .info-strip { flex-wrap: wrap; max-width: 300px; }
+      .info-strip { flex-wrap: wrap; max-width: min(420px, 100%); }
       .info-cell { min-width: 50%; border-bottom: 1px solid rgba(175,198,233,0.12); }
       .info-cell:nth-child(even) { border-right: none; }
       .info-cell:last-child { border-bottom: none; }
@@ -684,7 +691,7 @@
     <div class="info-strip">
       <div class="info-cell">
         <span class="info-cell-label">📅</span>
-        <span class="info-cell-value">20 Giugno 2026<br>Ore 17:30 – 22:00</span>
+        <span class="info-cell-value"><span class="info-line">20 Giugno 2026</span><br><span class="info-line">Ore 17:30 – 22:00</span></span>
       </div>
       <div class="info-cell">
         <span class="info-cell-label">📍</span>
