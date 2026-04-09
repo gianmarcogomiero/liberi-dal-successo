@@ -11,13 +11,21 @@
  * con “Invia come” verificato verso quell’indirizzo). Il campo `name` nel
  * sendEmail è solo il nome visualizzato accanto al mittente.
  *
- * NOTIFICHE ORGANIZZATORE: a ogni iscrizione o richiesta collaborazione viene
- * inviata un’email a ADMIN_NOTIFY_EMAIL (modifica sotto). In caso di errore
- * invio, la richiesta utente resta comunque salvata.
+ * NOTIFICHE ORGANIZZATORE (WhatsApp): a ogni iscrizione o richiesta collaborazione
+ * viene inviato un messaggio WhatsApp tramite CallMeBot (vedi sotto). In caso di
+ * errore invio, la richiesta utente resta comunque salvata.
+ *
+ * Setup CallMeBot (una tantum): https://www.callmebot.com/blog/free-api-whatsapp-messages/
+ * — Aggiungi il numero del bot in rubrica, invia il messaggio di attivazione, ricevi apikey.
+ * — Imposta qui sotto numero (solo cifre, prefisso internazionale senza +) e apikey,
+ *   oppure in Progetto → Impostazioni → Proprietà dello script: WHATSAPP_PHONE, CALLMEBOT_APIKEY.
  */
 
-/** Email per avvisi interni (nuova iscrizione / collaborazione). Cambia qui se serve. */
-var ADMIN_NOTIFY_EMAIL = 'gianmarcogomiero@gmail.com';
+/** Es. Italia: 393xxxxxxxxxx (39 + cellulare senza zero iniziale). */
+var WHATSAPP_PHONE_INTERNATIONAL = '';
+
+/** Api key ricevuta da CallMeBot dopo l’attivazione. */
+var WHATSAPP_CALLMEBOT_APIKEY = '';
 
 /** Riga 1 dei fogli = intestazioni; le righe dati partono dalla 2. */
 var SHEET_HAS_HEADER_ROW = true;
@@ -141,152 +149,96 @@ function sumPostiColumn(sheet) {
   return t;
 }
 
-// ── NOTIFICHE ORGANIZZATORE ──
+// ── NOTIFICHE ORGANIZZATORE (WhatsApp via CallMeBot) ──
+function adminLine_(v) {
+  return String(v == null ? '' : v).replace(/\r|\n/g, ' ');
+}
+
+function getWhatsAppConfig_() {
+  var props = PropertiesService.getScriptProperties();
+  var phone = props.getProperty('WHATSAPP_PHONE') || WHATSAPP_PHONE_INTERNATIONAL;
+  var apikey = props.getProperty('CALLMEBOT_APIKEY') || WHATSAPP_CALLMEBOT_APIKEY;
+  phone = phone ? String(phone).replace(/\D/g, '') : '';
+  apikey = apikey ? String(apikey).trim() : '';
+  return { phone: phone, apikey: apikey };
+}
+
+/** Invia messaggio WhatsApp tramite https://www.callmebot.com/ (UrlFetch). */
+function sendWhatsAppAdmin(text) {
+  var c = getWhatsAppConfig_();
+  if (!c.phone || !c.apikey) return;
+  var body = String(text);
+  if (body.length > 4000) body = body.substring(0, 3997) + '...';
+  var url =
+    'https://api.callmebot.com/whatsapp.php?phone=' +
+    encodeURIComponent(c.phone) +
+    '&text=' +
+    encodeURIComponent(body) +
+    '&apikey=' +
+    encodeURIComponent(c.apikey);
+  UrlFetchApp.fetch(url, { muteHttpExceptions: true, followRedirects: true });
+}
+
 function sendAdminNotifyIscrizione(data, sheetIscr, sheetCollab) {
-  if (!ADMIN_NOTIFY_EMAIL || !String(ADMIN_NOTIFY_EMAIL).trim()) return;
   var nIscr = countDataRows(sheetIscr);
   var nCollab = countDataRows(sheetCollab);
   var postiTot = sumPostiColumn(sheetIscr);
-  var nome = escapeHtml(data.nome) + ' ' + escapeHtml(data.cognome);
-  var subject =
-    '[Liberi dal Successo] Nuova iscrizione — ' +
-    String(data.nome || '').trim() +
-    ' ' +
-    String(data.cognome || '').trim();
-
-  var bodyHtml =
-    '<p style="font-size:15px;color:#0B1C2D;line-height:1.7;margin:0 0 12px;"><strong>Nuova iscrizione</strong></p>' +
-    '<table style="border-collapse:collapse;font-size:14px;color:#333;">' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Nome</td><td>' +
-    nome +
-    '</td></tr>' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Email</td><td>' +
-    escapeHtml(data.email) +
-    '</td></tr>' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Tipo</td><td>' +
-    escapeHtml(data.tipo) +
-    '</td></tr>' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Posti</td><td>' +
-    escapeHtml(data.posti) +
-    '</td></tr>' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Età / Comune</td><td>' +
-    escapeHtml(data.eta) +
-    ' · ' +
-    escapeHtml(data.comune) +
-    '</td></tr>' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;vertical-align:top;">Accompagnatori</td><td>' +
-    escapeHtml(data.accompagnatori || '—') +
-    '</td></tr>' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Consenso foto</td><td>' +
-    escapeHtml(data.consenso_foto) +
-    '</td></tr>' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Invio</td><td>' +
-    escapeHtml(data.timestamp || '') +
-    '</td></tr>' +
-    '</table>' +
-    '<p style="font-size:15px;margin:20px 0 8px;"><strong>Totali nel foglio</strong></p>' +
-    '<ul style="margin:0;padding-left:20px;font-size:14px;color:#333;line-height:1.6;">' +
-    '<li>Iscrizioni (righe nel foglio Iscrizioni): <strong>' +
-    nIscr +
-    '</strong></li>' +
-    '<li>Posti richiesti (somma colonna posti): <strong>' +
-    postiTot +
-    '</strong></li>' +
-    '<li>Richieste collaborazione (righe in Collabora): <strong>' +
-    nCollab +
-    '</strong></li>' +
-    '</ul>';
-
-  var plain =
-    'Nuova iscrizione\n' +
+  var msg =
+    'Liberi dal Successo — nuova ISCRIZIONE\n\n' +
     'Nome: ' +
-    String(data.nome || '') +
+    adminLine_(data.nome) +
     ' ' +
-    String(data.cognome || '') +
+    adminLine_(data.cognome) +
     '\nEmail: ' +
-    String(data.email || '') +
+    adminLine_(data.email) +
     '\nTipo: ' +
-    String(data.tipo || '') +
+    adminLine_(data.tipo) +
     '\nPosti: ' +
-    String(data.posti || '') +
-    '\n\nTotali: iscrizioni (righe)=' +
+    adminLine_(data.posti) +
+    '\nEtà: ' +
+    adminLine_(data.eta) +
+    ' · Comune: ' +
+    adminLine_(data.comune) +
+    '\nAccompagnatori: ' +
+    adminLine_(data.accompagnatori || '—') +
+    '\nConsenso foto: ' +
+    adminLine_(data.consenso_foto) +
+    '\nInvio: ' +
+    adminLine_(data.timestamp || '') +
+    '\n\n— Totali aggiornati —\n' +
+    'Iscrizioni (righe foglio): ' +
     nIscr +
-    ', posti somma=' +
+    '\nPosti richiesti (somma): ' +
     postiTot +
-    ', collaborazioni=' +
+    '\nRichieste collaborazione: ' +
     nCollab;
-
-  GmailApp.sendEmail(ADMIN_NOTIFY_EMAIL, subject, plain, {
-    htmlBody:
-      '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:sans-serif;padding:16px;">' +
-      bodyHtml +
-      '</body></html>',
-    name: 'Liberi dal Successo — avviso'
-  });
+  sendWhatsAppAdmin(msg);
 }
 
 function sendAdminNotifyCollaborazione(data, sheetCollab, sheetIscr) {
-  if (!ADMIN_NOTIFY_EMAIL || !String(ADMIN_NOTIFY_EMAIL).trim()) return;
   var nIscr = countDataRows(sheetIscr);
   var nCollab = countDataRows(sheetCollab);
   var postiTot = sheetIscr ? sumPostiColumn(sheetIscr) : 0;
-  var subject =
-    '[Liberi dal Successo] Nuova collaborazione — ' + String(data.nome || '').trim();
-
-  var bodyHtml =
-    '<p style="font-size:15px;color:#0B1C2D;line-height:1.7;margin:0 0 12px;"><strong>Nuova richiesta di collaborazione</strong></p>' +
-    '<table style="border-collapse:collapse;font-size:14px;color:#333;">' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Nome</td><td>' +
-    escapeHtml(data.nome) +
-    '</td></tr>' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Email</td><td>' +
-    escapeHtml(data.email) +
-    '</td></tr>' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Ruolo</td><td>' +
-    escapeHtml(data.ruolo) +
-    '</td></tr>' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;vertical-align:top;">Messaggio</td><td>' +
-    escapeHtml(data.messaggio || '—') +
-    '</td></tr>' +
-    '<tr><td style="padding:4px 12px 4px 0;color:#666;">Invio</td><td>' +
-    escapeHtml(data.timestamp || '') +
-    '</td></tr>' +
-    '</table>' +
-    '<p style="font-size:15px;margin:20px 0 8px;"><strong>Totali nel foglio</strong></p>' +
-    '<ul style="margin:0;padding-left:20px;font-size:14px;color:#333;line-height:1.6;">' +
-    '<li>Iscrizioni (righe nel foglio Iscrizioni): <strong>' +
-    nIscr +
-    '</strong></li>' +
-    '<li>Posti richiesti (somma colonna posti): <strong>' +
-    postiTot +
-    '</strong></li>' +
-    '<li>Richieste collaborazione (righe in Collabora): <strong>' +
-    nCollab +
-    '</strong></li>' +
-    '</ul>';
-
-  var plain =
-    'Nuova collaborazione\n' +
+  var msg =
+    'Liberi dal Successo — nuova COLLABORAZIONE\n\n' +
     'Nome: ' +
-    String(data.nome || '') +
+    adminLine_(data.nome) +
     '\nEmail: ' +
-    String(data.email || '') +
+    adminLine_(data.email) +
     '\nRuolo: ' +
-    String(data.ruolo || '') +
-    '\n\nTotali: iscrizioni (righe)=' +
+    adminLine_(data.ruolo) +
+    '\nMessaggio: ' +
+    adminLine_(data.messaggio || '—') +
+    '\nInvio: ' +
+    adminLine_(data.timestamp || '') +
+    '\n\n— Totali aggiornati —\n' +
+    'Iscrizioni (righe foglio): ' +
     nIscr +
-    ', posti somma=' +
+    '\nPosti richiesti (somma): ' +
     postiTot +
-    ', collaborazioni=' +
+    '\nRichieste collaborazione: ' +
     nCollab;
-
-  GmailApp.sendEmail(ADMIN_NOTIFY_EMAIL, subject, plain, {
-    htmlBody:
-      '<!DOCTYPE html><html><head><meta charset="utf-8"></head><body style="font-family:sans-serif;padding:16px;">' +
-      bodyHtml +
-      '</body></html>',
-    name: 'Liberi dal Successo — avviso'
-  });
+  sendWhatsAppAdmin(msg);
 }
 
 // ── EMAIL CONFERMA ISCRIZIONE ──
