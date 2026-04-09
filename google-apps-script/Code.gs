@@ -1,0 +1,268 @@
+/**
+ * Liberi dal Successo — Web App (doPost)
+ * Incolla in Apps Script collegato al foglio Google Sheets.
+ * Deploy: Implementa come app web, accesso "Chiunque", esegui come "tu".
+ *
+ * Fogli richiesti: "Collabora", "Iscrizioni" (nomi esatti).
+ *
+ * MITTENTE EMAIL: GmailApp invia dall’account Google del progetto Apps Script
+ * (Deploy → Esegui come: io). Per usare liberidalsuccesso@gmail.com, crea e
+ * distribuisci lo script mentre sei loggato con quell’account (o un account
+ * con “Invia come” verificato verso quell’indirizzo). Il campo `name` nel
+ * sendEmail è solo il nome visualizzato accanto al mittente.
+ */
+
+function doPost(e) {
+  try {
+    if (!e || !e.postData || !e.postData.contents) {
+      return jsonOut({ success: false, message: 'Richiesta vuota o non valida.' });
+    }
+
+    var data;
+    try {
+      data = JSON.parse(e.postData.contents);
+    } catch (parseErr) {
+      return jsonOut({ success: false, message: 'JSON non valido.' });
+    }
+
+    if (!data || typeof data !== 'object') {
+      return jsonOut({ success: false, message: 'Dati mancanti.' });
+    }
+
+    var ss = SpreadsheetApp.getActiveSpreadsheet();
+
+    if (data.tipo === 'Collaborazione') {
+      var sheetCollab = ss.getSheetByName('Collabora');
+      if (!sheetCollab) {
+        return jsonOut({ success: false, message: 'Configurazione foglio Collabora mancante.' });
+      }
+      sheetCollab.appendRow([
+        data.timestamp || '',
+        data.nome,
+        data.email,
+        data.ruolo,
+        data.messaggio || ''
+      ]);
+      sendCollabEmail(data);
+    } else {
+      var sheetIscr = ss.getSheetByName('Iscrizioni');
+      if (!sheetIscr) {
+        return jsonOut({ success: false, message: 'Configurazione foglio Iscrizioni mancante.' });
+      }
+      sheetIscr.appendRow([
+        data.timestamp || '',
+        data.nome,
+        data.cognome,
+        data.email,
+        data.eta,
+        data.comune,
+        data.posti,
+        data.accompagnatori,
+        data.consenso_foto,
+        data.tipo
+      ]);
+      sendConfirmEmail(data);
+    }
+
+    return jsonOut({ success: true, result: 'ok' });
+  } catch (err) {
+    return jsonOut({
+      success: false,
+      message: err && err.message ? String(err.message) : 'Errore server. Riprova più tardi.'
+    });
+  }
+}
+
+/**
+ * Nota: ContentService non imposta il codice HTTP reale in tutti i casi;
+ * il client si affida al body JSON (success) e a response.ok quando possibile.
+ */
+function jsonOut(obj) {
+  return ContentService.createTextOutput(JSON.stringify(obj)).setMimeType(ContentService.MimeType.JSON);
+}
+
+/** Escape minimo per inserire testi utente in HTML email */
+function escapeHtml(s) {
+  if (s == null || s === undefined) return '';
+  return String(s)
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;');
+}
+
+/** Testo sicuro per ICS (una riga, senza interruzioni non gestite) */
+function escapeIcsText(s) {
+  if (s == null || s === undefined) return '';
+  return String(s).replace(/\\/g, '\\\\').replace(/;/g, '\\;').replace(/,/g, '\\,').replace(/\n/g, '\\n');
+}
+
+// ── EMAIL CONFERMA ISCRIZIONE ──
+function sendConfirmEmail(data) {
+  var isWait = data.tipo === "Lista d'attesa";
+  var subject = isWait
+    ? "Sei in lista d'attesa — Liberi dal Successo"
+    : 'Iscrizione confermata — Liberi dal Successo';
+
+  var nome = escapeHtml(data.nome);
+  var emailEsc = escapeHtml(data.email);
+
+  var detailsCal =
+    'Non+per+imparare+ad+avere+successo+%E2%80%94+ma+per+imparare+ad+essere+noi+stessi.' +
+    '%0A%0AIngresso+gratuito+%C2%B7+Rinfresco%0A%0Ahttps://liberidalsuccesso.it';
+
+  var gcalLink =
+    'https://calendar.google.com/calendar/render?action=TEMPLATE' +
+    '&text=Liberi+dal+Successo' +
+    '&dates=20260620T153000Z/20260620T200000Z' +
+    '&details=' +
+    detailsCal +
+    '&location=Sala+Polivalente%2C+Via+Alcide+De+Gasperi+22%2C+Bresseo%2C+Teolo+(PD)';
+
+  var accompTxt = '';
+  if (data.accompagnatori && String(data.accompagnatori).trim()) {
+    accompTxt =
+      '<tr><td style="padding:8px 0;color:#AFC6E9;font-size:13px;">Accompagnatori</td>' +
+      '<td style="padding:8px 0;color:#E6E8EC;font-size:14px;">' +
+      escapeHtml(data.accompagnatori) +
+      '</td></tr>';
+  }
+
+  var bodyHtml;
+
+  if (isWait) {
+    bodyHtml = buildEmail(
+      'Ciao ' + nome + ',',
+      "grazie per il tuo interesse per <strong style='color:#C4A962;'>Liberi dal Successo</strong>.",
+      "<p style='font-size:15px;color:#E6E8EC;line-height:1.8;'>I posti per la serata sono tutti occupati, ma <strong>sei in lista d'attesa</strong>.</p>" +
+        "<p style='font-size:15px;color:#E6E8EC;line-height:1.8;'>Ti contatteremo a <strong style='color:#AFC6E9;'>" +
+        emailEsc +
+        '</strong> se si libera un posto.</p>',
+      '',
+      ''
+    );
+  } else {
+    bodyHtml = buildEmail(
+      'Ciao ' + nome + ',',
+      "la tua iscrizione a <strong style='color:#C4A962;'>Liberi dal Successo</strong> è confermata!",
+      "<table style='width:100%;border-collapse:collapse;margin:24px 0;'>" +
+        "<tr><td style='padding:8px 0;color:#AFC6E9;font-size:13px;width:130px;'>Quando</td>" +
+        "<td style='padding:8px 0;color:#E6E8EC;font-size:14px;'>Sabato 20 Giugno 2026 · ore 17:30 – 22:00</td></tr>" +
+        "<tr><td style='padding:8px 0;color:#AFC6E9;font-size:13px;'>Dove</td>" +
+        "<td style='padding:8px 0;color:#E6E8EC;font-size:14px;'>Sala Polivalente, Bresseo, Teolo (PD)</td></tr>" +
+        "<tr><td style='padding:8px 0;color:#AFC6E9;font-size:13px;'>Accesso</td>" +
+        "<td style='padding:8px 0;color:#E6E8EC;font-size:14px;'>Gratuito · Rinfresco</td></tr>" +
+        "<tr><td style='padding:8px 0;color:#AFC6E9;font-size:13px;'>Posti</td>" +
+        "<td style='padding:8px 0;color:#E6E8EC;font-size:14px;'>" +
+        escapeHtml(data.posti) +
+        '</td></tr>' +
+        accompTxt +
+        '</table>',
+      '<a href="' +
+        gcalLink +
+        '" target="_blank" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#c4a962,#d8bb72,#c4a962);color:#0B1C2D;font-family:sans-serif;font-size:14px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;text-decoration:none;border-radius:8px;">Salva nel calendario</a>',
+      "<p style='font-size:14px;color:rgba(230,232,236,0.5);margin-top:20px;'>Seguici su Instagram per restare aggiornato: <a href='https://www.instagram.com/liberidalsuccesso/' style='color:#AFC6E9;'>@liberidalsuccesso</a></p>"
+    );
+  }
+
+  var icsDescPlain =
+    'Non per imparare ad avere successo — ma per imparare ad essere noi stessi.\n' +
+    'Ingresso gratuito · Rinfresco\n' +
+    'https://liberidalsuccesso.it';
+
+  var icsContent = [
+    'BEGIN:VCALENDAR',
+    'VERSION:2.0',
+    'PRODID:-//Liberi dal Successo//IT',
+    'METHOD:PUBLISH',
+    'BEGIN:VEVENT',
+    'UID:liberidalsuccesso-20260620@bresseo',
+    'DTSTAMP:' + Utilities.formatDate(new Date(), 'Europe/Rome', "yyyyMMdd'T'HHmmss'Z'"),
+    'DTSTART:20260620T153000Z',
+    'DTEND:20260620T200000Z',
+    'SUMMARY:Liberi dal Successo',
+    'DESCRIPTION:' + escapeIcsText(icsDescPlain),
+    'LOCATION:' + escapeIcsText('Sala Polivalente, Via Alcide De Gasperi 22, Bresseo, Teolo (PD)'),
+    'URL:https://liberidalsuccesso.it',
+    'BEGIN:VALARM',
+    'TRIGGER:-P20D',
+    'ACTION:DISPLAY',
+    'DESCRIPTION:Liberi dal Successo tra 20 giorni!',
+    'END:VALARM',
+    'BEGIN:VALARM',
+    'TRIGGER:-P7D',
+    'ACTION:DISPLAY',
+    'DESCRIPTION:Liberi dal Successo tra 1 settimana!',
+    'END:VALARM',
+    'END:VEVENT',
+    'END:VCALENDAR'
+  ].join('\r\n');
+
+  var icsBlob = Utilities.newBlob(icsContent, 'text/calendar', 'liberi-dal-successo.ics');
+
+  GmailApp.sendEmail(data.email, subject, '', {
+    htmlBody: bodyHtml,
+    name: 'Liberi dal Successo',
+    attachments: [icsBlob]
+  });
+}
+
+// ── EMAIL CONFERMA COLLABORAZIONE ──
+function sendCollabEmail(data) {
+  var subject = 'Grazie per il tuo interesse — Liberi dal Successo';
+  var nome = escapeHtml(data.nome);
+
+  var bodyHtml = buildEmail(
+    'Ciao ' + nome + ',',
+    "grazie per aver scritto a <strong style='color:#C4A962;'>Liberi dal Successo</strong>!",
+    "<p style='font-size:15px;color:#E6E8EC;line-height:1.8;'>Abbiamo ricevuto la tua disponibilità come <strong style='color:#AFC6E9;'>" +
+      escapeHtml(data.ruolo) +
+      '</strong>.</p>' +
+      "<p style='font-size:15px;color:#E6E8EC;line-height:1.8;'>Ti risponderemo di solito entro <strong>3–5 giorni lavorativi</strong>, salvo imprevisti.</p>",
+    '',
+    "<p style='font-size:14px;color:rgba(230,232,236,0.5);margin-top:20px;'>Seguici su Instagram: <a href='https://www.instagram.com/liberidalsuccesso/' style='color:#AFC6E9;'>@liberidalsuccesso</a></p>"
+  );
+
+  GmailApp.sendEmail(data.email, subject, '', {
+    htmlBody: bodyHtml,
+    name: 'Liberi dal Successo'
+  });
+}
+
+// ── TEMPLATE EMAIL HTML ──
+function buildEmail(greeting, intro, body, cta, footer) {
+  return (
+    '<!DOCTYPE html><html><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1.0"></head>' +
+    '<body style="margin:0;padding:0;background:#0a1520;font-family:sans-serif;">' +
+    '<table width="100%" cellpadding="0" cellspacing="0" style="background:#0a1520;padding:40px 16px;">' +
+    '<tr><td align="center">' +
+    '<table width="100%" cellpadding="0" cellspacing="0" style="max-width:520px;background:#0B1C2D;border-radius:16px;border:1px solid rgba(175,198,233,0.08);overflow:hidden;">' +
+    '<tr><td style="height:4px;background:linear-gradient(90deg,transparent,#C4A962,transparent);"></td></tr>' +
+    '<tr><td align="center" style="padding:36px 32px 20px;">' +
+    '<img src="https://liberidalsuccesso.it/Loghi/colorato%201.png" alt="Liberi dal Successo" width="80" style="display:block;" />' +
+    '</td></tr>' +
+    '<tr><td style="padding:0 32px 8px;">' +
+    '<h1 style="font-size:22px;color:#D9CFC3;font-weight:700;margin:0;">' +
+    greeting +
+    '</h1>' +
+    '</td></tr>' +
+    '<tr><td style="padding:0 32px 16px;">' +
+    '<p style="font-size:15px;color:#E6E8EC;line-height:1.8;margin:0;">' +
+    intro +
+    '</p>' +
+    '</td></tr>' +
+    '<tr><td style="padding:0 32px 24px;">' +
+    body +
+    '</td></tr>' +
+    (cta ? '<tr><td align="center" style="padding:8px 32px 32px;">' + cta + '</td></tr>' : '') +
+    '<tr><td style="padding:0 32px;"><div style="height:1px;background:linear-gradient(90deg,transparent,rgba(175,198,233,0.12),transparent);"></div></td></tr>' +
+    '<tr><td style="padding:24px 32px 32px;text-align:center;">' +
+    '<p style="font-size:13px;color:rgba(230,232,236,0.35);margin:0;line-height:1.7;">' +
+    '<em style="color:rgba(196,169,98,0.6);">Non per imparare ad avere successo.<br>Ma per imparare ad essere noi stessi.</em></p>' +
+    (footer || '') +
+    '<p style="font-size:11px;color:rgba(230,232,236,0.2);margin-top:16px;">© 2026 Liberi dal Successo · Bresseo, Teolo (PD)<br>' +
+    '<a href="https://liberidalsuccesso.it" style="color:rgba(175,198,233,0.3);">liberidalsuccesso.it</a></p>' +
+    '</td></tr>' +
+    '</table></td></tr></table></body></html>'
+  );
+}

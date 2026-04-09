@@ -71,6 +71,16 @@
       --gold  : #C4A962;
     }
 
+    /* Focus visibile (WCAG) */
+    :focus { outline: none; }
+    :focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+    }
+    .btn-main:focus-visible, .btn-outline:focus-visible, .action-btn:focus-visible {
+      outline-offset: 4px;
+    }
+
     body {
       font-family: 'DM Sans', sans-serif;
       background: var(--night);
@@ -164,7 +174,10 @@
       position: relative; z-index: 1;
     }
     .btn-main {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
       padding: 14px 34px;
       background: var(--sand); color: var(--night);
       font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 500;
@@ -175,7 +188,10 @@
     .btn-main:hover { transform: translateY(-2px); box-shadow: 0 8px 28px rgba(217,207,195,0.25); }
 
     .btn-outline {
-      display: inline-block;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 48px;
       padding: 14px 34px;
       background: transparent; color: var(--sand);
       font-family: 'DM Sans', sans-serif; font-size: 15px; font-weight: 400;
@@ -305,6 +321,104 @@
       color: rgba(175,198,233,0.38);
     }
 
+    /* ── SERATA (compact) ───────────────────────────────── */
+    .serata-section {
+      max-width: 680px;
+      margin: 0 auto;
+      padding: 48px 24px 40px;
+    }
+    .serata-h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.35rem, 3.5vw, 1.75rem);
+      font-weight: 600;
+      color: var(--sand);
+      margin-bottom: 14px;
+      line-height: 1.25;
+    }
+    .serata-lead {
+      font-size: 0.95rem;
+      color: rgba(217,207,195,0.72);
+      line-height: 1.65;
+      margin-bottom: 22px;
+      font-weight: 300;
+    }
+    .serata-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: grid;
+      gap: 12px;
+    }
+    .serata-list li {
+      display: flex;
+      align-items: flex-start;
+      gap: 12px;
+      font-size: 0.92rem;
+      color: rgba(217,207,195,0.82);
+      line-height: 1.5;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: rgba(175,198,233,0.05);
+      border: 1px solid rgba(175,198,233,0.1);
+    }
+    .serata-list li::before {
+      content: '·';
+      color: var(--gold);
+      font-weight: 700;
+      flex-shrink: 0;
+    }
+
+    /* Social proof sobria */
+    .social-proof {
+      max-width: 520px;
+      margin: 20px auto 0;
+      padding: 14px 18px;
+      font-size: 0.82rem;
+      color: rgba(217,207,195,0.55);
+      line-height: 1.55;
+      text-align: center;
+      border-radius: 10px;
+      border: 1px solid rgba(175,198,233,0.12);
+      background: rgba(175,198,233,0.04);
+    }
+    .social-proof[hidden] { display: none !important; }
+    .hero-strip-note {
+      max-width: 480px;
+      margin: 16px auto 0;
+      font-size: 0.78rem;
+      color: rgba(217,207,195,0.45);
+      text-align: center;
+      line-height: 1.5;
+    }
+    .hero-strip-note[hidden] { display: none !important; }
+
+    /* CTA sticky mobile */
+    .cta-sticky {
+      display: none;
+      position: fixed;
+      left: 12px;
+      right: 12px;
+      bottom: max(14px, env(safe-area-inset-bottom));
+      z-index: 170;
+      padding: 14px 20px;
+      min-height: 48px;
+      align-items: center;
+      justify-content: center;
+      border-radius: 100px;
+      background: var(--sand);
+      color: var(--night);
+      font-family: 'DM Sans', sans-serif;
+      font-size: 15px;
+      font-weight: 600;
+      text-decoration: none;
+      text-align: center;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+      letter-spacing: 0.02em;
+    }
+    @media (max-width: 900px) {
+      .cta-sticky { display: inline-flex; }
+    }
+
     /* ── TEMI ──────────────────────────────────────────── */
     .chips {
       display: flex; flex-wrap: wrap; gap: 10px; margin-top: 24px;
@@ -353,6 +467,11 @@
     .info-item-value { font-size: 16px; color: var(--sand); line-height: 1.4; }
     .info-item-value a { color: var(--blue); text-decoration: none; }
     .info-item-value a:hover { text-decoration: underline; }
+    .info-item-value a:focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 3px;
+      border-radius: 4px;
+    }
     .info-item-sub { font-size: 13px; color: rgba(217,207,195,0.50); margin-top: 3px; }
 
     .info-actions {
@@ -402,7 +521,7 @@
       text-align: center;
       font-size: 12px; color: rgba(217,207,195,0.35);
     }
-    footer a { color: rgba(175,198,233,0.50); text-decoration: none; }
+    footer a { color: rgba(175,198,233,0.68); text-decoration: none; }
     footer a:hover { color: var(--blue); }
 
     /* Version badge */
@@ -528,6 +647,8 @@
 </head>
 <body>
 
+<main id="main-content">
+
   <!-- ══════════ HERO ══════════ -->
   <div class="hero" id="hero">
     <div class="logo-wrap">
@@ -546,7 +667,7 @@
     </div>
 
     <div class="hero-cta">
-      <a href="iscrizioni.html" class="btn-main">Iscriviti — è gratuito</a>
+      <a href="iscrizioni.html" class="btn-main js-cta-primary">Partecipa gratuitamente</a>
       <a href="#perche" class="btn-outline">Scopri l'evento</a>
     </div>
 
@@ -569,6 +690,8 @@
         <span class="info-cell-value">Rinfresco</span>
       </div>
     </div>
+    <p class="hero-strip-note" id="js-hero-strip-note" hidden></p>
+    <div class="social-proof" id="js-social-proof" hidden aria-live="polite"></div>
   </div>
 
   <!-- ══════════ CITAZIONE ══════════ -->
@@ -579,6 +702,21 @@
       È avere il coraggio di <span class="gold">accettarsi</span> e imparare ad amarsi per come si è."
     </p>
   </div>
+
+  <!-- ══════════ COSA SUCCEDE IN SERATA ══════════ -->
+  <section class="serata-section" id="serata" aria-labelledby="serata-heading">
+    <p class="section-tag">La serata</p>
+    <h2 class="serata-h2" id="serata-heading">Cosa succede durante la serata</h2>
+    <p class="serata-lead">
+      Parole, musica, spazio per incontrarsi. C’è anche un <strong style="color: var(--sand); font-weight: 600;">rinfresco conviviale</strong> — un modo semplice per stare insieme, senza fretta.
+    </p>
+    <ul class="serata-list">
+      <li>Interventi brevi: storie vere, senza lezioni da auditorium</li>
+      <li>Musica live che accompagna la serata</li>
+      <li>Momenti di confronto e momenti interattivi — partecipare, non solo ascoltare</li>
+      <li>Rinfresco</li>
+    </ul>
+  </section>
 
   <!-- ══════════ PROBLEMA ══════════ -->
   <hr class="section-sep" />
@@ -733,7 +871,7 @@
         <div>
           <p class="info-item-label">Accesso</p>
           <p class="info-item-value">Gratuito e aperto a tutti</p>
-          <p class="info-item-sub">Consigliata l'iscrizione</p>
+          <p class="info-item-sub">Prenota il posto: ci aiuta a organizzare al meglio la sala</p>
         </div>
         <div>
           <p class="info-item-label">Contatti</p>
@@ -750,9 +888,7 @@
         <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Liberi+dal+Successo&dates=20260620T153000Z/20260620T200000Z&details=Non+per+imparare+ad+avere+successo+%E2%80%94+ma+per+imparare+ad+essere+noi+stessi.%0A%0AIngresso+gratuito+%C2%B7+Rinfresco%0A%0Ahttps://liberidalsuccesso.it&location=Sala+Polivalente%2C+Bresseo%2C+Teolo+(PD)" target="_blank" rel="noopener" class="action-btn">
           📅 Salva nel calendario
         </a>
-        <a href="iscrizioni.html" class="action-btn">
-          🎟 Iscriviti all'evento
-        </a>
+        <a href="iscrizioni.html" class="action-btn"><span aria-hidden="true">🎟</span> <span class="js-cta-primary">Partecipa gratuitamente</span></a>
         <a href="https://www.instagram.com/liberidalsuccesso/" target="_blank" rel="noopener" class="action-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg> Seguici su Instagram
         </a>
@@ -766,21 +902,25 @@
       Ci vediamo il<br>
       <span class="gold">20 Giugno</span>
     </h2>
+    <p class="cta-kicker" id="js-cta-kicker" style="font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: rgba(175,198,233,0.45); margin-bottom: 12px;">Un posto per te</p>
     <p class="cta-sub">
       Non per imparare ad avere successo.<br>
       Ma per imparare ad essere noi stessi.
     </p>
-    <a href="iscrizioni.html" class="btn-main">Prenota il tuo posto</a>
+    <a href="iscrizioni.html" class="btn-main js-cta-primary">Partecipa gratuitamente</a>
     <a href="collabora.html" class="btn-outline" style="margin-top: 12px;">Collabora con noi</a>
-    <p style="font-size: 12px; color: rgba(217,207,195,0.40); margin-top: 20px; letter-spacing: 1px;">Ingresso gratuito · Rinfresco</p>
+    <p style="font-size: 12px; color: rgba(217,207,195,0.48); margin-top: 20px; letter-spacing: 1px;">Ingresso gratuito · Rinfresco</p>
   </div>
+
+</main>
 
   <!-- ══════════ MOBILE NAV ══════════ -->
   <button class="mob-nav-btn" id="js-mob-btn" aria-label="Menu"><span></span></button>
   <div class="mob-overlay" id="js-mob-overlay"></div>
-  <nav class="mob-drawer" id="js-mob-drawer">
+  <nav class="mob-drawer" id="js-mob-drawer" aria-label="Sezioni">
     <a href="#hero">Home</a>
     <a href="#citazione">Messaggio</a>
+    <a href="#serata">Serata</a>
     <a href="#perche">Perché</a>
     <a href="#temi">Temi</a>
     <a href="#formato">Formato</a>
@@ -791,9 +931,10 @@
   </nav>
 
   <!-- ══════════ SIDE NAV ══════════ -->
-  <nav class="side-nav" id="js-sidenav">
+  <nav class="side-nav" id="js-sidenav" aria-label="Sezioni pagina">
     <a href="#hero"><span class="side-nav-label">Home</span><span class="side-nav-dot"></span></a>
     <a href="#citazione"><span class="side-nav-label">Messaggio</span><span class="side-nav-dot"></span></a>
+    <a href="#serata"><span class="side-nav-label">Serata</span><span class="side-nav-dot"></span></a>
     <a href="#perche"><span class="side-nav-label">Perché</span><span class="side-nav-dot"></span></a>
     <a href="#temi"><span class="side-nav-label">Temi</span><span class="side-nav-dot"></span></a>
     <a href="#formato"><span class="side-nav-label">Formato</span><span class="side-nav-dot"></span></a>
@@ -802,6 +943,8 @@
     <a href="#info"><span class="side-nav-label">Info</span><span class="side-nav-dot"></span></a>
     <a href="#cta"><span class="side-nav-label">Iscriviti</span><span class="side-nav-dot"></span></a>
   </nav>
+
+  <a href="iscrizioni.html" class="cta-sticky js-cta-primary" id="js-sticky-cta">Partecipa gratuitamente</a>
 
   <!-- ══════════ FOOTER ══════════ -->
   <footer>
@@ -819,6 +962,52 @@
     <a href="https://www.instagram.com/liberidalsuccesso/" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg> Instagram</a>
   </footer>
 
+  <script src="lds-config.js"></script>
+  <script>
+  (function () {
+    var L = window.LDS || {};
+    var full = !!L.eventFull;
+    var label = full ? "Iscriviti alla lista d'attesa" : "Partecipa gratuitamente";
+    document.querySelectorAll(".js-cta-primary").forEach(function (el) {
+      el.textContent = label;
+    });
+    var strip = document.getElementById("js-hero-strip-note");
+    if (strip && L.heroStripNote) {
+      strip.textContent = L.heroStripNote;
+      strip.hidden = false;
+    }
+    var sp = document.getElementById("js-social-proof");
+    if (sp) {
+      var parts = [];
+      if (!full && typeof L.spotsRegistered === "number" && L.spotsRegistered > 0) {
+        parts.push(
+          "Già <strong style=\"color:var(--sand)\">" +
+            L.spotsRegistered +
+            "</strong> persone iscritte."
+        );
+      }
+      if (full && L.waitlistApprox != null && L.waitlistApprox > 0) {
+        parts.push(
+          "In lista d'attesa ci sono già diverse persone; il numero si aggiorna man mano."
+        );
+      }
+      if (L.speakersConfirmed != null && L.speakersConfirmed > 0) {
+        parts.push(L.speakersConfirmed + " interventi confermati.");
+      }
+      if (L.volunteersConfirmed != null && L.volunteersConfirmed > 0) {
+        parts.push(L.volunteersConfirmed + " volontari con noi.");
+      }
+      if (parts.length) {
+        sp.innerHTML = parts.join(" ");
+        sp.hidden = false;
+      }
+    }
+    var kicker = document.getElementById("js-cta-kicker");
+    if (kicker) {
+      kicker.textContent = full ? "Lista d'attesa" : "Un posto per te";
+    }
+  })();
+  </script>
   <script>
     // Side nav: highlight active section
     (function () {

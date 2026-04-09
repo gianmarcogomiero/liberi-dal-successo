@@ -32,6 +32,13 @@
       --r-sm:    9px;
     }
 
+    :focus { outline: none; }
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+    .btn-submit:focus-visible { outline-offset: 4px; }
+
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
     html { scroll-behavior: smooth; background: #0B1C2D; }
 
@@ -211,6 +218,10 @@
       transition: border-color 0.25s;
     }
     input[type="text"]:focus, input[type="email"]:focus, select:focus { border-color: var(--accent); }
+    input[type="text"]:focus-visible, input[type="email"]:focus-visible, select:focus-visible, textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
     input::placeholder { color: rgba(196,201,212,0.25); font-weight: 300; }
 
     select {
@@ -332,6 +343,18 @@
     }
     .btn-submit:hover:not(:disabled) { opacity: 0.9; transform: translateY(-1px); }
     .btn-submit:disabled { opacity: 0.4; cursor: not-allowed; }
+    .submit-err {
+      display: none;
+      margin-top: 14px;
+      padding: 12px 16px;
+      border-radius: var(--r-sm);
+      background: rgba(210, 90, 80, 0.12);
+      border: 1px solid rgba(210, 90, 80, 0.35);
+      color: rgba(230, 232, 236, 0.92);
+      font-size: 0.88rem;
+      line-height: 1.5;
+    }
+    .submit-err.show { display: block; }
     .spin { animation: spinAnim 0.8s linear infinite; display: none; }
     @keyframes spinAnim { to { transform: rotate(360deg); } }
 
@@ -360,6 +383,19 @@
       transition: background 0.2s, border-color 0.2s, transform 0.2s;
     }
     .btn-cal:hover { background: rgba(196,169,98,0.08); border-color: rgba(196,169,98,0.6); transform: translateY(-1px); }
+    .btn-another {
+      display: inline-flex; align-items: center; justify-content: center;
+      margin-top: 20px; width: 100%; max-width: 340px;
+      padding: 14px 22px; min-height: 48px;
+      background: transparent; border: 1.5px solid rgba(175,198,233,0.28);
+      border-radius: 100px; color: var(--info); font-family: 'DM Sans', sans-serif;
+      font-size: 0.9rem; font-weight: 600; letter-spacing: 0.02em; cursor: pointer;
+      transition: border-color 0.2s, background 0.2s, color 0.2s;
+    }
+    .btn-another:hover { background: rgba(175,198,233,0.06); border-color: rgba(175,198,233,0.45); color: var(--title); }
+    .btn-another:focus-visible { outline: 2px solid var(--accent); outline-offset: 3px; }
+    .conf-footnote { font-size: 0.78rem; color: rgba(230,232,236,0.42); margin-top: 18px; max-width: 380px; margin-left: auto; margin-right: auto; line-height: 1.5; }
+    .fg.field-err { background: rgba(210,90,80,0.07) !important; }
 
     /* ── Modal ── */
     .modal-bg {
@@ -466,16 +502,15 @@
     </header>
 
     <div class="reveal d3">
-      <div class="spots-widget">
+      <div class="spots-widget" id="js-spots-widget">
         <div class="spots-head">
-          <span class="spots-lbl">⚡ Posti limitati</span>
-          <span class="spots-right">Assicurati un posto</span>
+          <span class="spots-lbl" id="js-spots-lbl">⚡ Posti limitati</span>
+          <span class="spots-right" id="js-spots-right">Assicurati un posto</span>
         </div>
-        <p class="spots-sub">Iscriviti ora — l'ingresso è gratuito.</p>
+        <p class="spots-sub" id="js-spots-sub">Iscriviti ora — l'ingresso è gratuito.</p>
       </div>
-      <div class="waitlist-banner" id="js-wbanner">
-        <b>L'evento ha raggiunto la capienza massima.</b><br>
-        Puoi comunque iscriverti alla lista d'attesa: ti contatteremo in caso di disponibilità.
+      <div class="waitlist-banner" id="js-wbanner" hidden>
+        <span id="js-wbanner-text"></span>
       </div>
     </div>
 
@@ -504,7 +539,7 @@
           </div>
 
           <div class="fg">
-            <label class="f-label" for="f-eta">Fascia d'età</label>
+            <label class="f-label" for="f-eta">Fascia d'età <span style="font-weight:400;opacity:0.5;text-transform:none;letter-spacing:0;">(facoltativo)</span></label>
             <select id="f-eta">
               <option value="">Seleziona</option>
               <option value="under18">Meno di 18</option>
@@ -517,7 +552,8 @@
           </div>
 
           <div class="fg right">
-            <label class="f-label" for="f-comune">Comune</label>
+            <label class="f-label" for="f-comune">Comune <span style="font-weight:400;opacity:0.5;text-transform:none;letter-spacing:0;">(facoltativo)</span></label>
+            <p style="font-size:0.68rem;color:rgba(230,232,236,0.35);margin:-4px 0 6px;line-height:1.4;">Se vuoi, ci aiuta a capire da dove arrivate.</p>
             <div class="ac-wrap">
               <input type="text" id="f-comune" placeholder="Inizia a digitare…" autocomplete="off" />
               <div class="ac-list" id="js-aclist"></div>
@@ -532,7 +568,7 @@
               <option value="3">3</option>
               <option value="4">4</option>
             </select>
-            <p style="font-size: 0.72rem; color: rgba(230,232,236,0.35); margin-top: 6px;">* Per prenotare più di 4 posti, compila nuovamente il form.</p>
+            <p style="font-size: 0.72rem; color: rgba(230,232,236,0.38); margin-top: 8px; line-height: 1.45;">Per prenotare più di 4 posti, dopo aver inviato questa iscrizione usa <strong style="color: rgba(196,169,98,0.85);">Inserisci un'altra iscrizione</strong> nella schermata di conferma.</p>
           </div>
 
           <div id="js-accompagnatori" class="full" style="display:none;">
@@ -544,15 +580,15 @@
 
         <!-- Consenso foto/video -->
         <div class="prv-wrap" style="border-bottom: 1px solid rgba(196,201,212,0.1);">
-          <div class="prv-row" id="js-fotorow">
-            <div class="chk-box" id="js-fotochk">
+          <div class="prv-row" id="js-fotorow" role="checkbox" tabindex="0" aria-checked="false" aria-label="Consenso facoltativo a foto e video">
+            <div class="chk-box" id="js-fotochk" aria-hidden="true">
               <svg width="11" height="9" viewBox="0 0 12 10" fill="none"
                    stroke="#0B1C2D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="1,5 4.5,8.5 11,1"/>
               </svg>
             </div>
             <span class="prv-text">
-              Acconsento alla ripresa fotografica e video durante l'evento e alla pubblicazione del materiale per finalità di comunicazione del progetto.
+              <strong style="color:rgba(230,232,236,0.75);">Facoltativo.</strong> Acconsento alla ripresa fotografica e video durante l'evento e alla pubblicazione del materiale per finalità di comunicazione del progetto.
             </span>
           </div>
         </div>
@@ -563,8 +599,8 @@
             .prv-row gestisce SOLO il toggle del checkbox.
             Il pulsante modale è dentro .prv-text ma stoppa la propagazione.
           -->
-          <div class="prv-row" id="js-prvrow">
-            <div class="chk-box" id="js-chkbox">
+          <div class="prv-row" id="js-prvrow" role="checkbox" tabindex="0" aria-checked="false" aria-required="true" aria-label="Accetto l'informativa privacy">
+            <div class="chk-box" id="js-chkbox" aria-hidden="true">
               <svg width="11" height="9" viewBox="0 0 12 10" fill="none"
                    stroke="#0B1C2D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
                 <polyline points="1,5 4.5,8.5 11,1"/>
@@ -586,11 +622,12 @@
 
       <button type="submit" class="btn-submit" id="js-btn">
         <span id="js-btn-txt">Invia iscrizione</span>
-        <svg class="spin" id="js-spinner" width="17" height="17" viewBox="0 0 24 24"
+        <svg class="spin" id="js-spinner" width="17" height="17" viewBox="0 0 24 24" aria-hidden="true"
              fill="none" stroke="#0B1C2D" stroke-width="2.5" stroke-linecap="round">
           <path d="M12 2v4M12 18v4M4.93 4.93l2.83 2.83M16.24 16.24l2.83 2.83M2 12h4M18 12h4M4.93 19.07l2.83-2.83M16.24 7.76l2.83-2.83"/>
         </svg>
       </button>
+      <p class="submit-err" id="js-submit-err" role="alert"></p>
       <p style="text-align: center; margin-top: 16px; font-size: 12px; color: rgba(196,169,98,0.50);">
         Vuoi dare una mano? <a href="collabora.html" style="color: rgba(196,169,98,0.65); text-decoration: none;">Collabora con noi →</a>
       </p>
@@ -609,6 +646,8 @@
         </svg>
         Aggiungi al calendario
       </a>
+      <button type="button" class="btn-another" id="js-btn-another">Inserisci un'altra iscrizione</button>
+      <p class="conf-footnote" id="js-conf-footnote">Per più di quattro posti in tutto, ripeti dopo ogni conferma.</p>
     </div>
 
   </div>
@@ -651,6 +690,7 @@
   </div>
 </div>
 
+<script src="lds-config.js"></script>
 <script>
 (function () {
   'use strict';
@@ -701,8 +741,6 @@
   COMUNI.sort(function (a, b) { return a.localeCompare(b, 'it'); });
 
   /* ── REFS ─────────────────────────────────────────────────────────── */
-  var MAX        = 200;
-  var reg        = 0;
   var prvOk      = false;
 
   var form       = document.getElementById('js-form');
@@ -728,6 +766,11 @@
   var modal      = document.getElementById('js-modal');
   var modalX     = document.getElementById('js-modal-close');
   var wBanner    = document.getElementById('js-wbanner');
+  var wBannerText = document.getElementById('js-wbanner-text');
+  var spotsLbl   = document.getElementById('js-spots-lbl');
+  var spotsRight = document.getElementById('js-spots-right');
+  var spotsSub   = document.getElementById('js-spots-sub');
+  var submitErr  = document.getElementById('js-submit-err');
 
   /* ── Accompagnatori dinamici ── */
   fPosti.addEventListener('change', function () {
@@ -740,17 +783,46 @@
       row.className = 'form-grid';
       row.style.marginBottom = '12px';
       row.innerHTML =
-        '<div class="fg"><label class="f-label" for="f-acc-nome-' + i + '">Nome accompagnatore ' + (i - 1) + '</label>' +
-        '<input type="text" id="f-acc-nome-' + i + '" placeholder="Nome" /></div>' +
-        '<div class="fg right"><label class="f-label" for="f-acc-cognome-' + i + '">Cognome accompagnatore ' + (i - 1) + '</label>' +
-        '<input type="text" id="f-acc-cognome-' + i + '" placeholder="Cognome" /></div>';
+        '<div class="fg"><label class="f-label" for="f-acc-nome-' + i + '">Nome accompagnatore ' + (i - 1) + ' <span class="req">*</span></label>' +
+        '<input type="text" id="f-acc-nome-' + i + '" class="acc-in" placeholder="Nome" autocomplete="given-name" /></div>' +
+        '<div class="fg right"><label class="f-label" for="f-acc-cognome-' + i + '">Cognome accompagnatore ' + (i - 1) + ' <span class="req">*</span></label>' +
+        '<input type="text" id="f-acc-cognome-' + i + '" class="acc-in" placeholder="Cognome" autocomplete="family-name" /></div>';
       accWrap.appendChild(row);
     }
+    accWrap.querySelectorAll('.acc-in').forEach(function (inp) {
+      inp.addEventListener('blur', function () { this.value = this.value.trim(); });
+    });
   });
 
-  /* ── Spots ── */
-  function updateSpots() {
-    if (reg >= MAX) wBanner.style.display = 'block';
+  /* ── UI da lds-config.js ── */
+  function applyLdsUi() {
+    var L = window.LDS || {};
+    var full = !!L.eventFull;
+    if (wBanner && wBannerText) {
+      if (full) {
+        wBanner.hidden = false;
+        wBannerText.innerHTML =
+          '<b style="color:var(--accent);">I posti per la serata sono tutti occupati.</b><br>' +
+          (L.waitlistIntro || '');
+      } else {
+        wBanner.hidden = true;
+      }
+    }
+    if (spotsLbl && spotsRight && spotsSub) {
+      if (full) {
+        spotsLbl.textContent = '📋 Lista d\'attesa';
+        spotsRight.textContent = 'Restiamo in contatto';
+        spotsSub.textContent =
+          'Iscriversi ha senso anche così: se si libera un posto, ti scriviamo. Ci aiuta anche a capire quante persone ci tengono a esserci.';
+      } else {
+        spotsLbl.textContent = '⚡ Posti limitati';
+        spotsRight.textContent = 'Prenota il tuo posto';
+        spotsSub.textContent =
+          'Ingresso gratuito. Iscriviti per aiutarci a organizzare la sala al meglio.';
+      }
+    }
+    var btnDefault = full ? 'Iscriviti alla lista d\'attesa' : 'Invia iscrizione';
+    if (btnTxt) btnTxt.textContent = btnDefault;
   }
 
   /* ── Autocomplete ── */
@@ -806,15 +878,24 @@
     if (!e.target.closest('.ac-wrap')) acList.classList.remove('open');
   });
 
-  /* ── Foto/video checkbox ── */
+  /* ── Foto/video checkbox (facoltativo) ── */
   var fotoOk = false;
+  function syncFotoAria() {
+    fotoRow.setAttribute('aria-checked', fotoOk ? 'true' : 'false');
+  }
   fotoRow.addEventListener('click', function () {
     fotoOk = !fotoOk;
     fotoChk.classList.toggle('on', fotoOk);
+    syncFotoAria();
     if (fotoOk) fotoRow.classList.remove('err');
   });
   fotoRow.addEventListener('keydown', function (e) {
-    if (e.key === ' ' || e.key === 'Enter') { e.preventDefault(); fotoOk = !fotoOk; fotoChk.classList.toggle('on', fotoOk); }
+    if (e.key === ' ' || e.key === 'Enter') {
+      e.preventDefault();
+      fotoOk = !fotoOk;
+      fotoChk.classList.toggle('on', fotoOk);
+      syncFotoAria();
+    }
   });
 
   /* ── Privacy checkbox ────────────────────────────────────────────────
@@ -824,6 +905,7 @@
   function togglePrivacy() {
     prvOk = !prvOk;
     chkBox.classList.toggle('on', prvOk);
+    prvRow.setAttribute('aria-checked', prvOk ? 'true' : 'false');
     if (prvOk) prvRow.classList.remove('err');
   }
 
@@ -860,14 +942,26 @@
 
   function validate() {
     [fNome, fCognome, fEmail, fComune].forEach(function (el) { el.value = el.value.trim(); });
+    accWrap.querySelectorAll('.fg').forEach(function (fg) { fg.classList.remove('field-err'); });
     var errors = [];
     if (!fNome.value)    errors.push('Come ti chiami? Il <strong>nome</strong> ci serve per conoscerti!');
     if (!fCognome.value) errors.push('Manca il <strong>cognome</strong> — promesso, non lo usiamo per spam ;)');
     if (!fEmail.value)   errors.push('Ops, ti sei dimenticato la <strong>mail</strong>! Senza non possiamo confermarti il posto.');
     else if (!EMAIL_RE.test(fEmail.value)) errors.push('Hmm, la <strong>mail</strong> non sembra completa — controlla che ci sia la @, il dominio e tutto il resto!');
-    if (!fotoOk) {
-      errors.push('Per partecipare serve il <strong>consenso foto e video</strong> — tranquillo, niente di strano!');
-      fotoRow.classList.add('err');
+    var nPosti = parseInt(fPosti.value, 10) || 1;
+    if (nPosti > 1) {
+      var a;
+      for (a = 2; a <= nPosti; a++) {
+        var elN = document.getElementById('f-acc-nome-' + a);
+        var elC = document.getElementById('f-acc-cognome-' + a);
+        var vn = elN ? elN.value.trim() : '';
+        var vc = elC ? elC.value.trim() : '';
+        if (!vn || !vc) {
+          errors.push('Per l\'accompagnatore ' + (a - 1) + ' servono <strong>nome e cognome</strong>.');
+          if (elN) elN.closest('.fg').classList.add('field-err');
+          if (elC) elC.closest('.fg').classList.add('field-err');
+        }
+      }
     }
     if (!prvOk) {
       errors.push("Manca la spunta sull'<strong>informativa privacy</strong> — un clic e sei a bordo!");
@@ -885,13 +979,28 @@
 
 
   /* ── Submit ── */
-  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbwhOvJ6ijGf3UMFSEIqjJhzi-D3V7OdH5EgPFfBydm-LWG-bPOB3PleQEFCHpB0zI8ogw/exec';
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxardc1ItzK2oys_-qfwgv-y-CY7XVfcEzmNiE0ITO6UBYVVlSNjbHiyLP9qZUtbJNxXA/exec';
+
+  function setSubmitLoading(on) {
+    btn.disabled = on;
+    btn.setAttribute('aria-busy', on ? 'true' : 'false');
+    btnTxt.textContent = on ? '' : ((window.LDS && window.LDS.eventFull) ? 'Iscriviti alla lista d\'attesa' : 'Invia iscrizione');
+    spinner.style.display = on ? 'block' : 'none';
+  }
+
+  function hideSubmitErr() {
+    if (!submitErr) return;
+    submitErr.classList.remove('show');
+    submitErr.textContent = '';
+  }
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    hideSubmitErr();
     if (!validate()) return;
 
-    var isWait = (reg >= MAX);
+    var L = window.LDS || {};
+    var isWait = !!L.eventFull;
 
     var payload = {
       timestamp: new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' }),
@@ -912,54 +1021,107 @@
       tipo: isWait ? "Lista d'attesa" : 'Confermato'
     };
 
-    btn.disabled = true;
-    btnTxt.textContent = '';
-    spinner.style.display = 'block';
+    setSubmitLoading(true);
 
     fetch(ENDPOINT, {
-      method: 'POST', mode: 'no-cors',
-      headers: { 'Content-Type': 'application/json' },
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     })
-    .catch(function () {})
-    .finally(function () {
-      if (!isWait) reg++;
-      updateSpots();
+      .then(function (r) {
+        return r.text().then(function (t) {
+          var data = {};
+          try { data = t ? JSON.parse(t) : {}; } catch (err) { data = {}; }
+          if (!r.ok) {
+            throw new Error((data && data.message) || 'Il server non ha accettato la richiesta. Riprova tra poco.');
+          }
+          if (data && data.success === false) {
+            throw new Error((data && data.message) || 'Non è stato possibile completare l\'iscrizione.');
+          }
+          return data;
+        });
+      })
+      .then(function () {
+        form.style.display = 'none';
+        confirmDiv.style.display = 'block';
 
-      form.style.display       = 'none';
-      confirmDiv.style.display = 'block';
+        var confIcon  = document.getElementById('js-conf-icon');
+        var confTitle = document.getElementById('js-conf-title');
+        var confBody  = document.getElementById('js-conf-body');
+        var calBtn    = document.getElementById('js-btn-cal');
 
-      var confIcon  = document.getElementById('js-conf-icon');
-      var confTitle = document.getElementById('js-conf-title');
-      var confBody  = document.getElementById('js-conf-body');
-      var calBtn    = document.getElementById('js-btn-cal');
+        if (isWait) {
+          confIcon.textContent  = '📋';
+          confTitle.textContent = "Sei in lista d'attesa";
+          calBtn.style.display  = 'none';
+          confBody.innerHTML =
+            "Abbiamo ricevuto la tua richiesta per <span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br><br>" +
+            "Ti terremo aggiornato su <strong style='color:var(--info);'>" + escHtml(payload.email) + "</strong> se si libera un posto. " +
+            "Restare in lista ci aiuta anche a capire quante persone vogliono esserci.<br><br>" +
+            "<em style='color:rgba(230,232,236,0.55);font-size:0.92rem;'>Controlla la posta (anche spam): a volte la conferma arriva lì.</em>";
+          var confFoot = document.getElementById('js-conf-footnote');
+          if (confFoot) confFoot.style.display = 'none';
+        } else {
+          confIcon.textContent  = '✓';
+          confTitle.textContent = 'Iscrizione registrata';
+          calBtn.style.display  = 'inline-flex';
+          confBody.innerHTML =
+            "Grazie per esserti iscritto a <span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br><br>" +
+            "Ti aspettiamo il <strong style='color:var(--info);'>20 Giugno 2026</strong> alle ore <strong style='color:var(--info);'>17:30 – 22:00</strong> " +
+            "alla Sala Polivalente di Bresseo, Teolo.<br><br>" +
+            "<strong style='color:var(--title);'>Controlla la tua email</strong>: ti invieremo la conferma e gli aggiornamenti lì.<br><br>" +
+            "<em style='color:var(--accent);'>Non per imparare ad avere successo.<br>Ma per imparare ad essere noi stessi.</em>";
+          var confFoot2 = document.getElementById('js-conf-footnote');
+          if (confFoot2) confFoot2.style.display = '';
+        }
 
-
-      if (isWait) {
-        confIcon.textContent  = '📋';
-        confTitle.textContent = "Sei in lista d'attesa";
-        calBtn.style.display  = 'none';
-        confBody.innerHTML =
-          "Grazie per il tuo interesse per <span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br>" +
-          "L'evento ha raggiunto la capienza massima, ma sei in lista d'attesa.<br>" +
-          "Ti contatteremo a <strong style='color:var(--info);'>" + escHtml(payload.email) + "</strong> in caso di disponibilità.";
-      } else {
-        confTitle.textContent = 'Iscrizione confermata!';
-        calBtn.style.display  = 'inline-flex';
-        confBody.innerHTML =
-          "Grazie per esserti iscritto a <span style='color:var(--accent);font-family:\"Playfair Display\",serif;font-style:italic;'>Liberi dal Successo</span>.<br>" +
-          "Ti aspettiamo il <strong style='color:var(--info);'>20 Giugno 2026</strong> alle ore <strong style='color:var(--info);'>17:30 – 22:00</strong><br>" +
-          "alla Sala Polivalente di Bresseo, Teolo.<br><br>" +
-          "Riceverai una mail di conferma con tutti i dettagli.<br><br>" +
-          "<em style='color:var(--accent);'>Non per imparare ad avere successo.<br>Ma per imparare ad essere noi stessi.</em>";
-      }
-
-      confirmDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
-    });
+        confirmDiv.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      })
+      .catch(function (err) {
+        var msg = (err && err.message) ? err.message : 'Connessione non riuscita. Controlla la rete e riprova.';
+        if (submitErr) {
+          submitErr.textContent = msg;
+          submitErr.classList.add('show');
+        }
+      })
+      .finally(function () {
+        setSubmitLoading(false);
+      });
   });
 
+  function resetIscrizioneForm() {
+    confirmDiv.style.display = 'none';
+    form.style.display = 'block';
+    fNome.value = '';
+    fCognome.value = '';
+    fEmail.value = '';
+    fEta.value = '';
+    fComune.value = '';
+    fPosti.value = '1';
+    fPosti.dispatchEvent(new Event('change'));
+    acList.classList.remove('open');
+    acList.innerHTML = '';
+    prvOk = false;
+    chkBox.classList.remove('on');
+    prvRow.setAttribute('aria-checked', 'false');
+    prvRow.classList.remove('err');
+    fotoOk = false;
+    fotoChk.classList.remove('on');
+    syncFotoAria();
+    fotoRow.classList.remove('err');
+    toast.classList.remove('show');
+    hideSubmitErr();
+    var cf = document.getElementById('js-conf-footnote');
+    if (cf) cf.style.display = '';
+    applyLdsUi();
+    form.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  }
+
+  var btnAnother = document.getElementById('js-btn-another');
+  if (btnAnother) btnAnother.addEventListener('click', resetIscrizioneForm);
+
   /* ── INIT ── */
-  updateSpots();
+  applyLdsUi();
 })();
 </script>
 </body>

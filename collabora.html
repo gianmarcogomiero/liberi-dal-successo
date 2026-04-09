@@ -32,6 +32,12 @@
       --r-sm:    9px;
     }
 
+    :focus { outline: none; }
+    :focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 3px;
+    }
+
     *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
 
     body {
@@ -98,6 +104,14 @@
       font-family: 'Playfair Display', serif;
       font-size: 1.35rem; font-weight: 600; color: var(--title); line-height: 1.2;
     }
+    .role-per-te {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      text-transform: uppercase;
+      color: rgba(175,198,233,0.45);
+      margin-bottom: 8px;
+    }
     .role-desc {
       font-size: 0.95rem; color: rgba(230,232,236,0.65); line-height: 1.75; font-weight: 300;
       margin-bottom: 16px;
@@ -158,6 +172,10 @@
       outline: none; transition: border-color 0.25s;
     }
     .f-input:focus, .f-select:focus, .f-textarea:focus { border-color: var(--accent); }
+    .f-input:focus-visible, .f-select:focus-visible, .f-textarea:focus-visible {
+      outline: 2px solid var(--accent);
+      outline-offset: 2px;
+    }
     .f-input::placeholder, .f-textarea::placeholder { color: rgba(196,201,212,0.3); }
 
     .f-select {
@@ -187,6 +205,7 @@
     /* ── Submit button ── */
     .btn-submit {
       width: 100%; margin-top: 24px; padding: 16px 28px;
+      min-height: 48px;
       background: linear-gradient(135deg, #c4a962, #d8bb72, #c4a962);
       color: #0B1C2D; font-family: 'DM Sans', sans-serif;
       font-size: 0.95rem; font-weight: 700; letter-spacing: 0.04em; text-transform: uppercase;
@@ -288,12 +307,13 @@
         <span class="role-icon">🤝</span>
         <h2 class="role-title">Se vuoi essere volontario</h2>
       </div>
+      <p class="role-per-te">Per te se vuoi stare dietro le quinte, accogliere le persone e far sentire l’evento “a casa”.</p>
       <p class="role-desc">
         Non servono competenze specifiche — serve voglia di esserci.
       </p>
       <ul class="role-list">
         <li>Dai una mano nell'organizzazione</li>
-        <li>Supporta accoglienza e food</li>
+        <li>Supporta accoglienza e rinfresco</li>
         <li>Contribuisci alla comunicazione</li>
         <li>Porta la tua esperienza sul palco</li>
         <li>Inventati un ruolo :)</li>
@@ -306,6 +326,7 @@
         <span class="role-icon">🎤</span>
         <h2 class="role-title">Se vuoi essere ospite</h2>
       </div>
+      <p class="role-per-te">Per te se hai una storia da raccontare, senza dover “performare”: parole vere, pochi minuti.</p>
       <p class="role-desc">
         Vuoi portare la tua voce e la tua storia sul palco?<br>
         Il formato è breve, informale, autentico — non cerchiamo curriculum, cerchiamo verità.
@@ -318,6 +339,7 @@
         <span class="role-icon">📸</span>
         <h2 class="role-title">Se sei un media</h2>
       </div>
+      <p class="role-per-te">Per te se racconti storie, foto o video e vuoi dare voce a un progetto di territorio.</p>
       <p class="role-desc">
         Questa è una storia sociale positiva che merita spazio.<br>
         Vieni a raccontarla — copertura dell'evento, interviste, contenuti.
@@ -329,7 +351,7 @@
     <!-- ── FORM ── -->
     <div class="form-section reveal d5">
       <h2>Scrivici</h2>
-      <p class="form-sub">Ti rispondiamo entro pochi giorni.</p>
+      <p class="form-sub">Leggiamo ogni messaggio con calma — di solito ti rispondiamo entro 3–5 giorni lavorativi.</p>
 
       <form id="js-form" class="form-panel" novalidate>
         <div class="form-grid">
@@ -375,10 +397,10 @@
 
       <div class="confirm-screen" id="js-confirm">
         <div class="conf-ring">✓</div>
-        <h2 class="conf-title">Messaggio inviato!</h2>
+        <h2 class="conf-title">Messaggio ricevuto</h2>
         <p class="conf-body">
-          Grazie per il tuo interesse.<br>
-          Ti risponderemo il prima possibile a <strong id="js-conf-email" style="color: var(--info);"></strong>.
+          Abbiamo ricevuto la tua email: ti risponderemo a <strong id="js-conf-email" style="color: var(--info);"></strong> entro <strong style="color: var(--title);">3–5 giorni lavorativi</strong>, salvo imprevisti di ultimo minuto.<br><br>
+          Se non vedi nulla, controlla anche lo spam.
         </p>
       </div>
     </div>
@@ -447,21 +469,33 @@
       tipo: 'Collaborazione'
     };
 
-    var ENDPOINT = 'https://script.google.com/macros/s/AKfycbwhOvJ6ijGf3UMFSEIqjJhzi-D3V7OdH5EgPFfBydm-LWG-bPOB3PleQEFCHpB0zI8ogw/exec';
+    var ENDPOINT = 'https://script.google.com/macros/s/AKfycbxardc1ItzK2oys_-qfwgv-y-CY7XVfcEzmNiE0ITO6UBYVVlSNjbHiyLP9qZUtbJNxXA/exec';
 
     fetch(ENDPOINT, {
       method: 'POST',
       headers: { 'Content-Type': 'text/plain;charset=utf-8' },
       body: JSON.stringify(payload)
     })
-    .then(function (r) { return r.json(); })
+    .then(function (r) {
+      return r.text().then(function (t) {
+        var data = {};
+        try { data = t ? JSON.parse(t) : {}; } catch (err) { data = {}; }
+        if (!r.ok) {
+          throw new Error((data && data.message) || 'Il server non ha accettato la richiesta.');
+        }
+        if (data && data.success === false) {
+          throw new Error((data && data.message) || 'Invio non completato.');
+        }
+        return data;
+      });
+    })
     .then(function () {
       form.style.display = 'none';
       confEmail.textContent = email;
       confBox.style.display = 'block';
     })
     .catch(function () {
-      showErr('Errore di rete. Riprova tra poco.');
+      showErr('Non siamo riusciti a inviare il messaggio. Controlla la connessione e riprova tra poco.');
       btn.disabled = false;
       btnTxt.textContent = 'Invia';
     });
