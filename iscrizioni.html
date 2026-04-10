@@ -587,28 +587,13 @@
 
         </div><!-- /form-grid -->
 
-        <!-- Consenso foto/video -->
-        <div class="prv-wrap" style="border-bottom: 1px solid rgba(196,201,212,0.1);">
-          <div class="prv-row" id="js-fotorow" role="checkbox" tabindex="0" aria-checked="false" aria-label="Consenso facoltativo a foto e video">
-            <div class="chk-box" id="js-fotochk" aria-hidden="true">
-              <svg width="11" height="9" viewBox="0 0 12 10" fill="none"
-                   stroke="#0B1C2D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
-                <polyline points="1,5 4.5,8.5 11,1"/>
-              </svg>
-            </div>
-            <span class="prv-text">
-              <strong style="color:rgba(230,232,236,0.75);">Facoltativo.</strong> Acconsento alla ripresa fotografica e video durante l'evento e alla pubblicazione del materiale per finalità di comunicazione del progetto.
-            </span>
-          </div>
-        </div>
-
         <!-- Privacy: fuori dalla grid, struttura separata e pulita -->
         <div class="prv-wrap">
           <!--
             .prv-row gestisce SOLO il toggle del checkbox.
             Il pulsante modale è dentro .prv-text ma stoppa la propagazione.
           -->
-          <div class="prv-row" id="js-prvrow" role="checkbox" tabindex="0" aria-checked="false" aria-required="true" aria-label="Accetto l'informativa privacy">
+          <div class="prv-row" id="js-prvrow" role="checkbox" tabindex="0" aria-checked="false" aria-required="true" aria-label="Accetto informativa privacy e consenso foto/video">
             <div class="chk-box" id="js-chkbox" aria-hidden="true">
               <svg width="11" height="9" viewBox="0 0 12 10" fill="none"
                    stroke="#0B1C2D" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
@@ -616,8 +601,7 @@
               </svg>
             </div>
             <span class="prv-text">
-              Ho letto e accetto l'<button type="button" class="prv-modal-btn" id="js-prv-modal-btn">informativa sulla privacy</button>.
-              I dati saranno trattati esclusivamente per la gestione dell'evento.
+              Ho letto e accetto l'<button type="button" class="prv-modal-btn" id="js-prv-modal-btn">informativa sulla privacy</button>, inclusi il consenso alla ripresa foto/video durante l'evento e alla pubblicazione del materiale sui canali ufficiali del progetto.
             </span>
           </div>
         </div>
@@ -688,7 +672,7 @@
       <h4>Finalità del trattamento</h4>
       <p>I dati sono trattati esclusivamente per la gestione delle iscrizioni all'evento "Liberi dal Successo" (Bresseo, 20 Giugno 2026) e per comunicazioni organizzative legate all'evento.</p>
       <h4>Consenso foto e video</h4>
-      <p>Previo consenso esplicito, potranno essere scattate fotografie e realizzate riprese video durante l'evento. Il materiale potrà essere utilizzato esclusivamente per la comunicazione del progetto "Liberi dal Successo" sui canali ufficiali. Il consenso è facoltativo e può essere revocato in qualsiasi momento scrivendo al titolare.</p>
+      <p>Con l'iscrizione e il consenso obbligatorio del modulo, potranno essere scattate fotografie e realizzate riprese video durante l'evento. Il materiale potrà essere utilizzato esclusivamente per la comunicazione del progetto "Liberi dal Successo" sui canali ufficiali. Per richieste successive puoi scrivere al titolare.</p>
       <h4>Base giuridica</h4>
       <p>Il trattamento si basa sul consenso dell'interessato, ai sensi dell'art. 6, par. 1, lett. a) del Regolamento UE 2016/679 (GDPR).</p>
       <h4>Conservazione</h4>
@@ -764,8 +748,6 @@
   var acList     = document.getElementById('js-aclist');
   var prvRow     = document.getElementById('js-prvrow');
   var chkBox     = document.getElementById('js-chkbox');
-  var fotoRow    = document.getElementById('js-fotorow');
-  var fotoChk    = document.getElementById('js-fotochk');
   var modalBtn   = document.getElementById('js-prv-modal-btn');
   var toast      = document.getElementById('js-toast');
   var toastUl    = document.getElementById('js-toast-list');
@@ -887,26 +869,6 @@
     if (!e.target.closest('.ac-wrap')) acList.classList.remove('open');
   });
 
-  /* ── Foto/video checkbox (facoltativo) ── */
-  var fotoOk = false;
-  function syncFotoAria() {
-    fotoRow.setAttribute('aria-checked', fotoOk ? 'true' : 'false');
-  }
-  fotoRow.addEventListener('click', function () {
-    fotoOk = !fotoOk;
-    fotoChk.classList.toggle('on', fotoOk);
-    syncFotoAria();
-    if (fotoOk) fotoRow.classList.remove('err');
-  });
-  fotoRow.addEventListener('keydown', function (e) {
-    if (e.key === ' ' || e.key === 'Enter') {
-      e.preventDefault();
-      fotoOk = !fotoOk;
-      fotoChk.classList.toggle('on', fotoOk);
-      syncFotoAria();
-    }
-  });
-
   /* ── Privacy checkbox ────────────────────────────────────────────────
      prvRow click  → toggle checkbox (but NOT when clicking the modal button)
      modalBtn click → open modal, stop propagation so prvRow doesn't toggle
@@ -973,7 +935,7 @@
       }
     }
     if (!prvOk) {
-      errors.push("Manca la spunta sull'<strong>informativa privacy</strong> — un clic e sei a bordo!");
+      errors.push("Manca la spunta sul consenso <strong>privacy + foto/video</strong> — un clic e sei a bordo!");
       prvRow.classList.add('err');
     }
     if (errors.length) {
@@ -1026,7 +988,7 @@
         }
         return acc.join(', ');
       })(),
-      consenso_foto: fotoOk ? 'Sì' : 'No',
+      consenso_foto: prvOk ? 'Sì' : 'No',
       tipo: isWait ? "Lista d'attesa" : 'Confermato'
     };
 
@@ -1121,10 +1083,6 @@
     chkBox.classList.remove('on');
     prvRow.setAttribute('aria-checked', 'false');
     prvRow.classList.remove('err');
-    fotoOk = false;
-    fotoChk.classList.remove('on');
-    syncFotoAria();
-    fotoRow.classList.remove('err');
     toast.classList.remove('show');
     hideSubmitErr();
     var cf = document.getElementById('js-conf-footnote');
