@@ -1073,5 +1073,45 @@
       links.forEach(function (a) { a.addEventListener('click', close); });
     })();
   </script>
+
+  <!-- ══════════ GA4 CUSTOM EVENTS ══════════ -->
+  <script>
+    (function(){
+      if (typeof gtag !== 'function') return;
+      var page = window.location.pathname;
+
+      document.querySelectorAll('a[href*="iscrizioni.html"], a[href*="iscrizioni"]').forEach(function(a){
+        a.addEventListener('click', function(){ gtag('event', 'click_iscriviti', { 'link_location': page }); });
+      });
+      document.querySelectorAll('a[href*="collabora.html"]').forEach(function(a){
+        a.addEventListener('click', function(){ gtag('event', 'click_collabora', { 'link_location': page }); });
+      });
+      document.querySelectorAll('a[href*="instagram.com"]').forEach(function(a){
+        a.addEventListener('click', function(){ gtag('event', 'click_instagram', { 'link_location': page }); });
+      });
+      document.querySelectorAll('a[href*="maps.google"], a[href*="maps.app"]').forEach(function(a){
+        a.addEventListener('click', function(){ gtag('event', 'click_maps', { 'link_location': page }); });
+      });
+      document.querySelectorAll('a[href*="calendar.google"]').forEach(function(a){
+        a.addEventListener('click', function(){ gtag('event', 'click_calendar', { 'link_location': page }); });
+      });
+      document.querySelectorAll('a[href^="mailto:"]').forEach(function(a){
+        a.addEventListener('click', function(){ gtag('event', 'click_email', { 'link_location': page }); });
+      });
+
+      var scrollTracked = {};
+      window.addEventListener('scroll', function(){
+        var h = document.documentElement.scrollHeight - window.innerHeight;
+        if (h <= 0) return;
+        var pct = Math.round((window.scrollY / h) * 100);
+        [25, 50, 75, 100].forEach(function(t){
+          if (pct >= t && !scrollTracked[t]) {
+            scrollTracked[t] = true;
+            gtag('event', 'scroll_depth', { 'percent': t, 'page': page });
+          }
+        });
+      }, { passive: true });
+    })();
+  </script>
 </body>
 </html>
