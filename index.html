@@ -491,6 +491,14 @@
       text-align: center;
       box-shadow: 0 8px 32px rgba(0,0,0,0.35);
       letter-spacing: 0.02em;
+      opacity: 1;
+      transform: translateY(0);
+      transition: opacity .25s ease, transform .25s ease;
+    }
+    .cta-sticky.is-hidden {
+      opacity: 0;
+      transform: translateY(120%);
+      pointer-events: none;
     }
     @media (max-width: 900px) {
       .cta-sticky { display: inline-flex; }
@@ -1270,6 +1278,23 @@
           });
         }
       });
+    })();
+  </script>
+
+  <!-- ══════════ STICKY CTA — auto-hide quando il CTA finale è visibile ══════════ -->
+  <script>
+    (function(){
+      var sticky = document.getElementById('js-sticky-cta');
+      var ctaSection = document.getElementById('cta');
+      if (!sticky || !ctaSection || !('IntersectionObserver' in window)) return;
+
+      var obs = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          sticky.classList.toggle('is-hidden', e.isIntersecting);
+        });
+      }, { threshold: 0.1 });
+
+      obs.observe(ctaSection);
     })();
   </script>
 </body>
