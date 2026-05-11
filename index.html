@@ -337,11 +337,72 @@
       color: rgba(175,198,233,0.38);
     }
 
-    /* ── SERATA (compact) ───────────────────────────────── */
-    .serata-section {
-      max-width: 680px;
+    /* ── VIDEO INTRO (Gianmarco racconta) ───────────────── */
+    .video-intro {
+      max-width: 980px;
       margin: 0 auto;
-      padding: 48px 24px 40px;
+      padding: 56px 24px 48px;
+      display: grid;
+      grid-template-columns: 1fr auto;
+      gap: 48px;
+      align-items: center;
+    }
+    .video-intro .vi-text { max-width: 420px; }
+    .video-intro .vi-h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.5rem, 3.5vw, 2rem);
+      font-weight: 600;
+      color: var(--sand);
+      line-height: 1.25;
+      margin-bottom: 16px;
+    }
+    .video-intro .vi-sub {
+      font-size: 1rem;
+      color: rgba(217,207,195,0.72);
+      line-height: 1.6;
+      font-weight: 300;
+      margin-bottom: 18px;
+    }
+    .video-intro .vi-sign {
+      font-size: 0.85rem;
+      color: var(--blue);
+      opacity: 0.7;
+      letter-spacing: 0.5px;
+    }
+    .video-frame {
+      position: relative;
+      aspect-ratio: 9 / 16;
+      width: 340px;
+      max-width: 100%;
+      border-radius: 14px;
+      overflow: hidden;
+      background: #000;
+      box-shadow: 0 8px 32px rgba(0,0,0,0.35);
+    }
+    .video-frame iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+    }
+    @media (max-width: 760px) {
+      .video-intro {
+        grid-template-columns: 1fr;
+        gap: 28px;
+        padding: 44px 24px 36px;
+        text-align: center;
+      }
+      .video-intro .vi-text { max-width: 100%; margin: 0 auto; }
+      .video-frame { margin: 0 auto; }
+    }
+
+    /* ── SERATA (compact) ───────────────────────────────── */
+    /* Stessa larghezza orizzontale di .section così section-tag e titoli si allineano */
+    .serata-section {
+      max-width: 760px;
+      margin: 0 auto;
+      padding: 52px 24px 40px;
     }
     .serata-h2 {
       font-family: 'Playfair Display', serif;
@@ -683,7 +744,7 @@
     </div>
 
     <div class="hero-cta">
-      <a href="iscrizioni.html" class="btn-main js-cta-primary">Partecipa gratuitamente</a>
+      <a href="iscrizioni.html" class="btn-main js-cta-primary">Iscriviti</a>
       <a href="#perche" class="btn-outline">Scopri l'evento</a>
     </div>
 
@@ -718,6 +779,24 @@
       È avere il coraggio di <span class="gold">accettarsi</span> e imparare ad amarsi per come si è."
     </p>
   </div>
+
+  <!-- ══════════ VIDEO INTRO (Gianmarco) ══════════ -->
+  <section class="video-intro" id="video-intro" aria-labelledby="vi-heading">
+    <div class="vi-text">
+      <p class="section-tag">In un video</p>
+      <h2 class="vi-h2" id="vi-heading">Cos'è davvero Liberi dal Successo</h2>
+      <p class="vi-sub">A voce funziona meglio. Te lo racconto io in due minuti — cos'è questo evento, perché lo facciamo, e perché potrebbe interessarti.</p>
+      <p class="vi-sign">— Gianmarco, organizzatore</p>
+    </div>
+    <div class="video-frame">
+      <div id="js-video-intro"></div>
+      <noscript>
+        <p style="color: rgba(217,207,195,0.7); font-size: 0.9rem; padding: 16px; text-align: center;">
+          <a href="https://youtube.com/shorts/7lTmXay4Rg0" target="_blank" rel="noopener" style="color: var(--sand);">Guarda il video di Gianmarco su YouTube</a>
+        </p>
+      </noscript>
+    </div>
+  </section>
 
   <!-- ══════════ COSA SUCCEDE IN SERATA ══════════ -->
   <section class="serata-section" id="serata" aria-labelledby="serata-heading">
@@ -904,7 +983,7 @@
         <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Liberi+dal+Successo&dates=20260620T153000Z/20260620T200000Z&details=Non+per+imparare+ad+avere+successo+%E2%80%94+ma+per+imparare+ad+essere+noi+stessi.%0A%0AIngresso+gratuito+%C2%B7+Rinfresco%0A%0Ahttps://liberidalsuccesso.it&location=Sala+Polivalente%2C+Bresseo%2C+Teolo+(PD)" target="_blank" rel="noopener" class="action-btn">
           📅 Salva nel calendario
         </a>
-        <a href="iscrizioni.html" class="action-btn"><span aria-hidden="true">🎟</span> <span class="js-cta-primary">Partecipa gratuitamente</span></a>
+        <a href="iscrizioni.html" class="action-btn"><span aria-hidden="true">🎟</span> <span class="js-cta-primary">Iscriviti</span></a>
         <a href="https://www.instagram.com/liberidalsuccesso/" target="_blank" rel="noopener" class="action-btn">
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg> Seguici su Instagram
         </a>
@@ -923,7 +1002,7 @@
       Non per imparare ad avere successo.<br>
       Ma per imparare ad essere noi stessi.
     </p>
-    <a href="iscrizioni.html" class="btn-main js-cta-primary">Partecipa gratuitamente</a>
+    <a href="iscrizioni.html" class="btn-main js-cta-primary">Iscriviti</a>
     <a href="collabora.html" class="btn-outline" style="margin-top: 12px;">Collabora con noi</a>
     <p style="font-size: 12px; color: rgba(217,207,195,0.48); margin-top: 20px; letter-spacing: 1px;">Ingresso gratuito · Rinfresco</p>
   </div>
@@ -960,7 +1039,7 @@
     <a href="#cta"><span class="side-nav-label">Iscriviti</span><span class="side-nav-dot"></span></a>
   </nav>
 
-  <a href="iscrizioni.html" class="cta-sticky js-cta-primary" id="js-sticky-cta">Partecipa gratuitamente</a>
+  <a href="iscrizioni.html" class="cta-sticky js-cta-primary" id="js-sticky-cta">Iscriviti</a>
 
   <!-- ══════════ FOOTER ══════════ -->
   <footer>
@@ -983,7 +1062,7 @@
   (function () {
     var L = window.LDS || {};
     var full = !!L.eventFull;
-    var label = full ? "Iscriviti alla lista d'attesa" : "Partecipa gratuitamente";
+    var label = full ? "Iscriviti alla lista d'attesa" : "Iscriviti";
     document.querySelectorAll(".js-cta-primary").forEach(function (el) {
       el.textContent = label;
     });
@@ -1111,6 +1190,86 @@
           }
         });
       }, { passive: true });
+    })();
+  </script>
+
+  <!-- ══════════ GA4 VIDEO TRACKING (intro Gianmarco) ══════════ -->
+  <script>
+    (function(){
+      var placeholder = document.getElementById('js-video-intro');
+      if (!placeholder || !placeholder.parentNode) return;
+
+      var VIDEO_TITLE = 'intro_gianmarco_home';
+      var VIDEO_PROVIDER = 'youtube';
+      var VIDEO_URL = 'https://youtube.com/shorts/7lTmXay4Rg0';
+      var VIDEO_ID = '7lTmXay4Rg0';
+      var EMBED_HOST = 'https://www.youtube-nocookie.com';
+      var IFRAME_TITLE = "Gianmarco racconta cos'è Liberi dal Successo";
+
+      var iframe = document.createElement('iframe');
+      iframe.id = 'js-video-intro';
+      iframe.title = IFRAME_TITLE;
+      iframe.allow = 'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share';
+      iframe.setAttribute('allowfullscreen', '');
+      iframe.referrerPolicy = 'strict-origin-when-cross-origin';
+      iframe.src = EMBED_HOST + '/embed/' + VIDEO_ID +
+                   '?enablejsapi=1&playsinline=1&origin=' + encodeURIComponent(window.location.origin);
+      placeholder.parentNode.replaceChild(iframe, placeholder);
+
+      var startSent = false;
+      var completeSent = false;
+      var progressSent = { 25: false, 50: false, 75: false };
+      var lastDuration = 0;
+      var lastTime = 0;
+
+      function sendEvent(name, percent) {
+        if (typeof gtag !== 'function') return;
+        gtag('event', name, {
+          'video_title': VIDEO_TITLE,
+          'video_provider': VIDEO_PROVIDER,
+          'video_url': VIDEO_URL,
+          'video_duration': Math.round(lastDuration || 0),
+          'video_current_time': Math.round(lastTime || 0),
+          'video_percent': percent
+        });
+      }
+
+      iframe.addEventListener('load', function(){
+        try {
+          iframe.contentWindow.postMessage(JSON.stringify({
+            event: 'listening',
+            id: iframe.id,
+            channel: 'widget'
+          }), EMBED_HOST);
+        } catch (e) {}
+      });
+
+      window.addEventListener('message', function(e){
+        if (e.origin !== EMBED_HOST) return;
+        var data;
+        try { data = typeof e.data === 'string' ? JSON.parse(e.data) : e.data; }
+        catch (err) { return; }
+        if (!data || data.id !== iframe.id) return;
+        if (data.event !== 'infoDelivery' || !data.info) return;
+
+        var info = data.info;
+        if (typeof info.duration === 'number' && info.duration > 0) lastDuration = info.duration;
+        if (typeof info.currentTime === 'number') lastTime = info.currentTime;
+
+        var state = info.playerState;
+        if (state === 1 && !startSent) { startSent = true; sendEvent('video_start', 0); }
+        if (state === 0 && !completeSent) { completeSent = true; sendEvent('video_complete', 100); }
+
+        if (lastDuration > 0) {
+          var pct = (lastTime / lastDuration) * 100;
+          [25, 50, 75].forEach(function(t){
+            if (pct >= t && !progressSent[t]) {
+              progressSent[t] = true;
+              sendEvent('video_progress', t);
+            }
+          });
+        }
+      });
     })();
   </script>
 </body>
