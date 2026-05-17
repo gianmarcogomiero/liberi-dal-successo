@@ -213,9 +213,36 @@
     .d1 { animation-delay: 0.08s; } .d2 { animation-delay: 0.18s; }
     .d3 { animation-delay: 0.28s; } .d4 { animation-delay: 0.38s; }
     .d5 { animation-delay: 0.48s; } .d6 { animation-delay: 0.58s; }
+    /* ── SELETTORE LINGUA ──────────────────────────────── */
+    .lang-switch {
+      position: fixed; top: 16px; right: 16px; z-index: 160;
+      display: flex; align-items: center; gap: 2px;
+      padding: 4px;
+      background: rgba(11,28,45,0.85);
+      backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+      border: 1px solid rgba(175,198,233,0.15);
+      border-radius: 100px;
+    }
+    .lang-switch a {
+      display: flex; align-items: center; gap: 5px;
+      padding: 4px 9px; border-radius: 100px;
+      font-size: 11px; font-weight: 600; letter-spacing: 0.6px;
+      text-decoration: none; color: rgba(217,207,195,0.5);
+      transition: color 0.2s, background 0.2s;
+    }
+    .lang-switch a .fl { font-size: 12px; line-height: 1; }
+    .lang-switch a:hover { color: var(--title); }
+    .lang-switch a.is-current { color: var(--bg); background: var(--title); }
   </style>
 </head>
 <body>
+
+<!-- ══════════ SELETTORE LINGUA ══════════ -->
+<nav class="lang-switch" aria-label="Lingua del sito">
+  <a href="https://liberidalsuccesso.it/identita.html" class="is-current" hreflang="it" aria-current="true"><span class="fl">🇮🇹</span> IT</a>
+  <a href="https://liberidalsuccesso-it.translate.goog/identita.html?_x_tr_sl=it&amp;_x_tr_tl=en&amp;_x_tr_hl=en" hreflang="en" rel="nofollow"><span class="fl">🇬🇧</span> EN</a>
+  <a href="https://liberidalsuccesso-it.translate.goog/identita.html?_x_tr_sl=it&amp;_x_tr_tl=es&amp;_x_tr_hl=es" hreflang="es" rel="nofollow"><span class="fl">🇪🇸</span> ES</a>
+</nav>
 
 <main>
   <div class="container">
