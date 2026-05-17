@@ -34,7 +34,7 @@
     "name": "Liberi dal Successo",
     "description": "Un evento per ridefinire il significato di successo. Non per imparare ad avere successo, ma per imparare ad essere noi stessi.",
     "startDate": "2026-06-20T17:30:00+02:00",
-    "endDate": "2026-06-20T22:00:00+02:00",
+    "endDate": "2026-06-20T22:30:00+02:00",
     "eventAttendanceMode": "https://schema.org/OfflineEventAttendanceMode",
     "eventStatus": "https://schema.org/EventScheduled",
     "location": {
@@ -469,6 +469,51 @@
     }
     .hero-strip-note[hidden] { display: none !important; }
 
+    /* ── FAQ ───────────────────────────────────────────── */
+    .faq-h2 {
+      font-family: 'Playfair Display', serif;
+      font-size: clamp(1.35rem, 3.5vw, 1.75rem);
+      font-weight: 600;
+      color: var(--sand);
+      margin-bottom: 24px;
+      line-height: 1.25;
+    }
+    .faq-list { border-top: 1px solid rgba(175,198,233,0.10); }
+    .faq-item { border-bottom: 1px solid rgba(175,198,233,0.10); }
+    .faq-item > summary {
+      list-style: none;
+      cursor: pointer;
+      position: relative;
+      padding: 19px 40px 19px 0;
+      font-size: 1.02rem;
+      font-weight: 500;
+      color: var(--sand);
+      line-height: 1.45;
+      transition: color .15s ease;
+    }
+    .faq-item > summary::-webkit-details-marker { display: none; }
+    .faq-item > summary::after {
+      content: '+';
+      position: absolute;
+      right: 4px;
+      top: 16px;
+      font-size: 1.4rem;
+      font-weight: 300;
+      line-height: 1;
+      color: var(--blue);
+      opacity: 0.55;
+    }
+    .faq-item[open] > summary::after { content: '−'; }
+    .faq-item > summary:hover { color: var(--blue); }
+    .faq-a {
+      padding: 2px 40px 22px 0;
+      font-size: 0.95rem;
+      line-height: 1.7;
+      color: rgba(217,207,195,0.74);
+    }
+    .faq-a p { margin: 0 0 12px; }
+    .faq-a p:last-child { margin-bottom: 0; }
+
     /* CTA sticky mobile */
     .cta-sticky {
       display: none;
@@ -760,7 +805,7 @@
     <div class="info-strip">
       <div class="info-cell">
         <span class="info-cell-label">📅</span>
-        <span class="info-cell-value"><span class="info-line">20 Giugno 2026</span><br><span class="info-line">Ore 17:30 – 22:00</span></span>
+        <span class="info-cell-value"><span class="info-line">20 Giugno 2026</span><br><span class="info-line">Ore 17:30 – 22:30</span></span>
       </div>
       <div class="info-cell">
         <span class="info-cell-label">📍</span>
@@ -964,7 +1009,7 @@
         <div>
           <p class="info-item-label">Data</p>
           <p class="info-item-value">Sabato 20 Giugno 2026</p>
-          <p class="info-item-sub">Ore 17:30 – 22:00</p>
+          <p class="info-item-sub">Ore 17:30 – 22:30</p>
         </div>
         <div>
           <p class="info-item-label">Luogo</p>
@@ -988,7 +1033,7 @@
            target="_blank" rel="noopener" class="action-btn">
           📍 Apri in Google Maps
         </a>
-        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Liberi+dal+Successo&dates=20260620T153000Z/20260620T200000Z&details=Non+per+imparare+ad+avere+successo+%E2%80%94+ma+per+imparare+ad+essere+noi+stessi.%0A%0AIngresso+gratuito+%C2%B7+Rinfresco%0A%0Ahttps://liberidalsuccesso.it&location=Sala+Polivalente%2C+Bresseo%2C+Teolo+(PD)" target="_blank" rel="noopener" class="action-btn">
+        <a href="https://calendar.google.com/calendar/render?action=TEMPLATE&text=Liberi+dal+Successo&dates=20260620T153000Z/20260620T203000Z&details=Non+per+imparare+ad+avere+successo+%E2%80%94+ma+per+imparare+ad+essere+noi+stessi.%0A%0AIngresso+gratuito+%C2%B7+Rinfresco%0A%0Ahttps://liberidalsuccesso.it&location=Sala+Polivalente%2C+Bresseo%2C+Teolo+(PD)" target="_blank" rel="noopener" class="action-btn">
           📅 Salva nel calendario
         </a>
         <a href="iscrizioni.html" class="action-btn"><span aria-hidden="true">🎟</span> <span class="js-cta-primary">Iscriviti</span></a>
@@ -996,6 +1041,109 @@
           <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg> Seguici su Instagram
         </a>
       </div>
+    </div>
+  </div>
+
+  <hr class="section-sep" />
+
+  <!-- ══════════ FAQ ══════════ -->
+  <div class="section" id="faq">
+    <p class="section-tag">Domande frequenti</p>
+    <h2 class="faq-h2">Le domande che ci fate più spesso</h2>
+
+    <div class="faq-list">
+      <details class="faq-item" open>
+        <summary>Che tipo di evento è?</summary>
+        <div class="faq-a">
+          <p>Liberi dal Successo è una serata fatta di storie vere, musica, condivisione e riflessione.</p>
+          <p>Non è un corso.<br>
+             Non è un convegno motivazionale.<br>
+             Non è terapia.</p>
+          <p>È uno spazio dove ascoltare persone comuni raccontare esperienze, dubbi, cambiamenti, cadute e momenti di vita legati al tema del successo, dell'identità e dell'accettazione personale.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Cosa farà il pubblico durante l'evento?</summary>
+        <div class="faq-a">
+          <p>Semplicemente… parteciperà 🙂</p>
+          <p>Ci sarà un palco con diversi interventi dal vivo, momenti musicali e una pausa conviviale.</p>
+          <p>Non devi preparare nulla e non sei obbligato a parlare o interagire.</p>
+          <p>Puoi semplicemente venire, ascoltare e vivere la serata.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>È un evento psicologico o legato al lavoro?</summary>
+        <div class="faq-a">
+          <p>Né uno né l'altro.</p>
+          <p>Parleremo anche di lavoro, aspettative sociali, crescita personale e benessere mentale, ma senza approcci clinici o professionali.</p>
+          <p>Non ci sono terapeuti sul palco.<br>
+             Ci sono persone.</p>
+          <p>L'obiettivo non è insegnare qualcosa, ma condividere esperienze che possano far sentire meno soli.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>È tutto gratuito?</summary>
+        <div class="faq-a">
+          <p>Sì, completamente gratuito.</p>
+          <p>L'evento è organizzato da un gruppo di ragazzi del territorio e non è sponsorizzato da aziende o partiti.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Posso entrare più tardi o uscire prima?</summary>
+        <div class="faq-a">
+          <p>Assolutamente sì.</p>
+          <p>Puoi entrare e uscire liberamente durante la serata.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Come si svolgerà la serata?</summary>
+        <div class="faq-a">
+          <p>Le porte apriranno dalle 17:30 con musica e accoglienza.</p>
+          <p>Durante la serata ci saranno diversi interventi sul palco, momenti musicali e una pausa conviviale con rinfresco offerto.</p>
+          <p>La conclusione è prevista intorno alle 22:30.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Ci saranno persone "importanti" o ospiti famosi?</summary>
+        <div class="faq-a">
+          <p>No, ed è proprio questo il punto.</p>
+          <p>Liberi dal Successo nasce per valorizzare persone vere del territorio, non personaggi irraggiungibili.</p>
+          <p>Le storie più forti spesso arrivano dalle persone normali.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>È adatto solo ai giovani?</summary>
+        <div class="faq-a">
+          <p>No.</p>
+          <p>È un evento aperto a tutte le età.</p>
+          <p>Anzi, il bello è proprio mettere insieme generazioni diverse, esperienze diverse e punti di vista diversi.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Verranno fatte foto o video?</summary>
+        <div class="faq-a">
+          <p>Sì.</p>
+          <p>Durante l'evento verranno realizzati contenuti foto e video che potranno essere pubblicati sui social e nei materiali dell'evento.</p>
+          <p>L'informativa privacy è disponibile durante l'iscrizione.</p>
+        </div>
+      </details>
+
+      <details class="faq-item">
+        <summary>Chi organizza l'evento?</summary>
+        <div class="faq-a">
+          <p>Liberi dal Successo è un progetto indipendente creato da un gruppo di ragazzi del territorio.</p>
+          <p>Non nasce da aziende o organizzazioni professionali.<br>
+             Nasce dalla voglia di creare uno spazio autentico di condivisione.</p>
+        </div>
+      </details>
     </div>
   </div>
 
@@ -1030,6 +1178,7 @@
     <a href="#pubblico">Per chi</a>
     <a href="#missione">Missione</a>
     <a href="#info">Info</a>
+    <a href="#faq">FAQ</a>
     <a href="identita.html">Identità</a>
     <a href="#cta">Iscriviti</a>
   </nav>
@@ -1045,6 +1194,7 @@
     <a href="#pubblico"><span class="side-nav-label">Per chi</span><span class="side-nav-dot"></span></a>
     <a href="#missione"><span class="side-nav-label">Missione</span><span class="side-nav-dot"></span></a>
     <a href="#info"><span class="side-nav-label">Info</span><span class="side-nav-dot"></span></a>
+    <a href="#faq"><span class="side-nav-label">FAQ</span><span class="side-nav-dot"></span></a>
     <a href="identita.html"><span class="side-nav-label">Identità</span><span class="side-nav-dot"></span></a>
     <a href="#cta"><span class="side-nav-label">Iscriviti</span><span class="side-nav-dot"></span></a>
   </nav>
