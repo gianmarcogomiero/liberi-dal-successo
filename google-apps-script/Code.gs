@@ -158,6 +158,205 @@ function sumPostiColumn(sheet) {
   return t;
 }
 
+// ── ANALISI AGGREGATA ISCRIZIONI ──
+
+/** Italian-name → gender heuristic. Returns 'M', 'F', or null. */
+function detectGenderFromFirst_(name) {
+  if (!name) return null;
+  var first = String(name).trim().split(/\s+/)[0].toLowerCase();
+  if (!first) return null;
+  first = first.replace(/['`’]/g, '');
+
+  var MALE = {
+    'andrea':1,'luca':1,'mattia':1,'nicola':1,'elia':1,'enea':1,'tobia':1,
+    'simone':1,'michele':1,'daniele':1,'gabriele':1,'emanuele':1,'samuele':1,
+    'manuele':1,'niccolò':1,'niccolo':1,'denis':1,'antonio':1,'samuel':1,
+    'noè':1,'noe':1,'ettore':1,'salvatore':1,'cesare':1,'felice':1,'ulisse':1,
+    'ac':1,'davide':1,'manuel':1,'gabriel':1,'raphael':1,'oscar':1
+  };
+  var FEMALE = {
+    'noemi':1,'ester':1,'beatrice':1,'agnese':1,'alice':1,'irene':1,'iris':1,
+    'agnes':1,'carmen':1,'helene':1,'eleonore':1,'sole':1,'dafne':1,'ines':1,
+    'mariele':1,'rachele':1,'micol':1,'estrella':1,'consuelo':1,'miriam':1
+  };
+
+  if (MALE[first]) return 'M';
+  if (FEMALE[first]) return 'F';
+
+  var last = first.charAt(first.length - 1);
+  if (last === 'a') return 'F';
+  if (last === 'o') return 'M';
+  if (last === 'e') return 'M';
+  if (last === 'i') return 'M';
+  return null;
+}
+
+/** Try nome first, fallback to cognome (handles swapped fields / initials). */
+function detectGender_(nome, cognome) {
+  var g = detectGenderFromFirst_(nome);
+  if (g) return g;
+  if (cognome) return detectGenderFromFirst_(cognome);
+  return null;
+}
+
+/** Read all iscrizioni rows as objects. */
+function readIscrizioni_(sheet) {
+  if (!sheet) return [];
+  var lr = sheet.getLastRow();
+  var startRow = SHEET_HAS_HEADER_ROW ? 2 : 1;
+  if (lr < startRow) return [];
+  var values = sheet.getRange(startRow, 1, lr - startRow + 1, 10).getValues();
+  var out = [];
+  for (var i = 0; i < values.length; i++) {
+    var r = values[i];
+    if (!r[1] && !r[3]) continue; // skip empty rows
+    out.push({
+      timestamp: r[0],
+      nome: r[1],
+      cognome: r[2],
+      email: r[3],
+      eta: r[4],
+      comune: r[5],
+      posti: r[6],
+      accompagnatori: r[7],
+      consenso_foto: r[8],
+      tipo: r[9]
+    });
+  }
+  return out;
+}
+
+/** Comuni della provincia di Padova (per categorizzazione “fuori”). */
+var PD_COMUNI_ = {
+  'padova':1,'teolo':1,'bresseo':1,'montegrotto terme':1,'selvazzano dentro':1,
+  'mestrino':1,'limena':1,'cervarese santa croce':1,'rubano':1,'abano terme':1,
+  'albignasego':1,'cadoneghe':1,'vigodarzere':1,'vigonza':1,'rovolon':1,'veggiano':1,
+  'saccolongo':1,'galzignano terme':1,'torreglia':1,'battaglia terme':1,'monselice':1,
+  'montagnana':1,'este':1,'conselve':1,'piove di sacco':1,'brugine':1,'legnaro':1,
+  'ponte san nicolò':1,'noventa padovana':1,'casalserugo':1,'tribano':1,'polverara':1,
+  'due carrare':1,'maserà di padova':1,'maserà':1,'cinto euganeo':1,'vò':1,"vo'":1,
+  'arquà petrarca':1,'baone':1,'cervarese':1,'selvazzano':1,'galliera veneta':1
+};
+
+/** Build the WhatsApp analysis message from the current sheet state. */
+function buildAnalysisMessage_(sheetIscr) {
+  var rows = readIscrizioni_(sheetIscr);
+  if (!rows.length) return null;
+
+  var totalIscritti = rows.length;
+  var totalPosti = 0;
+  for (var i = 0; i < rows.length; i++) {
+    var n = parseInt(String(rows[i].posti).replace(/\s/g, ''), 10);
+    if (!isNaN(n)) totalPosti += n;
+  }
+
+  var bucketsOrder = ['18-25','26-35','36-50','51-65','over65'];
+  var buckets = { '18-25':0, '26-35':0, '36-50':0, '51-65':0, 'over65':0 };
+  for (var j = 0; j < rows.length; j++) {
+    var e = String(rows[j].eta || '').trim().toLowerCase();
+    if (buckets.hasOwnProperty(e)) buckets[e]++;
+  }
+
+  var gen = { F: 0, M: 0, U: 0 };
+  for (var k = 0; k < rows.length; k++) {
+    var r = rows[k];
+    var g = detectGender_(r.nome, r.cognome);
+    if (g === 'F') gen.F++; else if (g === 'M') gen.M++; else gen.U++;
+    if (r.accompagnatori) {
+      var parts = String(r.accompagnatori).split(/[,;]/);
+      for (var p = 0; p < parts.length; p++) {
+        var nn = parts[p].trim();
+        if (!nn) continue;
+        var g2 = detectGender_(nn);
+        if (g2 === 'F') gen.F++; else if (g2 === 'M') gen.M++; else gen.U++;
+      }
+    }
+  }
+
+  var comuniMap = {};
+  var noComune = 0;
+  for (var c = 0; c < rows.length; c++) {
+    var cm = String(rows[c].comune || '').trim();
+    if (!cm || /^ext$/i.test(cm)) { noComune++; continue; }
+    comuniMap[cm] = (comuniMap[cm] || 0) + 1;
+  }
+  var comuniArr = [];
+  for (var key in comuniMap) comuniArr.push([key, comuniMap[key]]);
+  comuniArr.sort(function(a, b) { return b[1] - a[1]; });
+
+  var top = comuniArr.filter(function(x) { return x[1] >= 2; });
+  var singles = comuniArr.filter(function(x) { return x[1] === 1; });
+  var singlesPD = singles.filter(function(x) { return PD_COMUNI_[x[0].toLowerCase()]; });
+  var singlesFuori = singles.filter(function(x) { return !PD_COMUNI_[x[0].toLowerCase()]; });
+
+  var maxBucket = '26-35', maxCount = -1;
+  for (var b = 0; b < bucketsOrder.length; b++) {
+    if (buckets[bucketsOrder[b]] > maxCount) { maxCount = buckets[bucketsOrder[b]]; maxBucket = bucketsOrder[b]; }
+  }
+
+  function pct(x) { return totalIscritti ? Math.round(x / totalIscritti * 100) : 0; }
+  var totGen = gen.F + gen.M + gen.U;
+  function pctG(x) { return totGen ? Math.round(x / totGen * 100) : 0; }
+  function ageLabel(x) { return x === 'over65' ? 'over 65' : x; }
+
+  var ageLines = bucketsOrder.map(function(bk) {
+    var label = ageLabel(bk);
+    if (bk === maxBucket) return '• *' + label + ' → ' + buckets[bk] + ' (' + pct(buckets[bk]) + '%)* ← gruppo più numeroso';
+    return '• ' + label + ' → ' + buckets[bk] + ' (' + pct(buckets[bk]) + '%)';
+  });
+
+  var comuniLines = [];
+  top.forEach(function(x, idx) {
+    if (idx === 0) comuniLines.push('• *' + x[0] + ' → ' + x[1] + '* (il cuore di casa 💙)');
+    else comuniLines.push('• ' + x[0] + ' → ' + x[1]);
+  });
+  if (singlesPD.length) {
+    comuniLines.push('• ' + singlesPD.map(function(x){ return x[0]; }).join(', ') + ' → 1 ciascuno');
+  }
+  if (singlesFuori.length) {
+    comuniLines.push('• Anche da fuori: ' + singlesFuori.map(function(x){ return x[0]; }).join(', ') + ' → 1 ciascuno');
+  }
+  if (noComune > 0) {
+    comuniLines.push('• ' + noComune + ' iscritt' + (noComune === 1 ? 'o' : 'i') + ' senza comune compilato');
+  }
+
+  var polariz = pct(buckets['26-35'] + buckets['51-65']);
+  var insightLines = ['• Pubblico polarizzato: *26-35 + 51-65 = ' + polariz + '%*'];
+  if (buckets['18-25'] <= 2) {
+    insightLines.push('• Quasi assenti i *18-25* (solo ' + buckets['18-25'] + ' iscritt' + (buckets['18-25'] === 1 ? 'o' : 'i') + ')');
+  }
+  if (top.length) {
+    insightLines.push('• Bel mix territoriale: ' + top[0][0] + ' zoccolo duro, ma stiamo arrivando anche oltre i Colli');
+  }
+
+  var dateStr = Utilities.formatDate(new Date(), 'Europe/Rome', 'dd.MM.yyyy');
+
+  return [
+    '📊 *Analisi iscrizioni — Liberi dal Successo*',
+    '📅 ' + dateStr,
+    '',
+    'Ciao a tutti! 👋',
+    'Piccolo update sui numeri delle iscrizioni 👇',
+    '',
+    '🎫 *Totali*',
+    '• ' + totalPosti + ' posti richiesti',
+    '',
+    "👥 *Fasce d'età*",
+    ageLines.join('\n'),
+    '',
+    '⚖️ *Genere (stimato dal nome)*',
+    pctG(gen.F) + '% F · ' + pctG(gen.M) + '% M',
+    '',
+    '📍 *Provenienza*',
+    comuniLines.join('\n'),
+    '',
+    '💡 *Cosa notiamo*',
+    insightLines.join('\n'),
+    '',
+    '💙'
+  ].join('\n');
+}
+
 // ── NOTIFICHE ORGANIZZATORE (WhatsApp via CallMeBot) ──
 function adminLine_(v) {
   return String(v == null ? '' : v).replace(/\r|\n/g, ' ');
@@ -254,6 +453,16 @@ function sendAdminNotifyIscrizione(data, sheetIscr, sheetCollab) {
     '\nRichieste collaborazione: ' +
     nCollab;
   sendWhatsAppAdmin(msg);
+
+  try {
+    var analysisMsg = buildAnalysisMessage_(sheetIscr);
+    if (analysisMsg) {
+      Utilities.sleep(2000);
+      sendWhatsAppAdmin(analysisMsg);
+    }
+  } catch (analysisErr) {
+    Logger.log('buildAnalysisMessage error: ' + (analysisErr && analysisErr.message ? analysisErr.message : analysisErr));
+  }
 }
 
 function sendAdminNotifyCollaborazione(data, sheetCollab, sheetIscr) {
