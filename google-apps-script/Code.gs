@@ -357,6 +357,104 @@ function buildAnalysisMessage_(sheetIscr) {
   ].join('\n');
 }
 
+// ── FOGLIO "LISTA NOMINATIVI" (contatore + elenco completo per cognome) ──
+
+/**
+ * Esegui A MANO questa funzione (menu funzioni → buildListaNominativi → Esegui)
+ * per creare/aggiornare subito il foglio "Lista nominativi".
+ * Per l'aggiornamento automatico vedi rebuildListaNominativi_, richiamata
+ * a ogni nuova iscrizione dentro sendAdminNotifyIscrizione.
+ */
+function buildListaNominativi() {
+  var n = rebuildListaNominativi_(SpreadsheetApp.getActiveSpreadsheet());
+  Logger.log('Lista nominativi aggiornata: ' + n + ' persone.');
+  return n;
+}
+
+/** Spezza "Nome Cognome" → {nome, cognome} (ultima parola = cognome). */
+function splitFullName_(full) {
+  var parts = String(full == null ? '' : full).trim().split(/\s+/).filter(String);
+  if (!parts.length) return { nome: '', cognome: '' };
+  if (parts.length === 1) return { nome: parts[0], cognome: '' };
+  var cognome = parts.pop();
+  return { nome: parts.join(' '), cognome: cognome };
+}
+
+/**
+ * (Ri)costruisce il foglio "Lista nominativi": contatore totale persone
+ * + elenco completo (iscritti + accompagnatori) ordinato per cognome.
+ * Sovrascrive il foglio a ogni chiamata, quindi resta sempre aggiornato.
+ */
+function rebuildListaNominativi_(ss) {
+  var sheetIscr = ss.getSheetByName('Iscrizioni');
+  if (!sheetIscr) throw new Error('Foglio "Iscrizioni" non trovato.');
+
+  var rows = readIscrizioni_(sheetIscr);
+  var people = [];
+
+  for (var i = 0; i < rows.length; i++) {
+    var nome = String(rows[i].nome == null ? '' : rows[i].nome).trim();
+    var cognome = String(rows[i].cognome == null ? '' : rows[i].cognome).trim();
+    if (nome || cognome) {
+      people.push({ nome: nome, cognome: cognome, ruolo: 'Iscritto' });
+    }
+    if (rows[i].accompagnatori) {
+      var parts = String(rows[i].accompagnatori).split(/[,;]/);
+      for (var p = 0; p < parts.length; p++) {
+        var nn = parts[p].trim();
+        if (!nn) continue;
+        var sp = splitFullName_(nn);
+        people.push({ nome: sp.nome, cognome: sp.cognome, ruolo: 'Accompagnatore' });
+      }
+    }
+  }
+
+  people.sort(function (a, b) {
+    var ca = a.cognome.toLowerCase(), cb = b.cognome.toLowerCase();
+    if (ca < cb) return -1;
+    if (ca > cb) return 1;
+    var na = a.nome.toLowerCase(), nb = b.nome.toLowerCase();
+    return na < nb ? -1 : (na > nb ? 1 : 0);
+  });
+
+  var SHEET_NAME = 'Lista nominativi';
+  var sh = ss.getSheetByName(SHEET_NAME);
+  if (!sh) sh = ss.insertSheet(SHEET_NAME);
+  else sh.clear();
+
+  // Titolo + contatore
+  sh.getRange(1, 1).setValue('Lista completa — Liberi dal Successo');
+  sh.getRange(2, 1).setValue('Totale persone:');
+  sh.getRange(2, 2).setValue(people.length);
+
+  // Intestazione tabella
+  var headerRow = 4;
+  sh.getRange(headerRow, 1, 1, 4).setValues([['#', 'Cognome', 'Nome', 'Ruolo']]);
+
+  // Dati
+  if (people.length) {
+    var data = people.map(function (person, idx) {
+      return [idx + 1, person.cognome, person.nome, person.ruolo];
+    });
+    sh.getRange(headerRow + 1, 1, data.length, 4).setValues(data);
+  }
+
+  // Formattazione leggera
+  sh.getRange(1, 1).setFontWeight('bold').setFontSize(13);
+  sh.getRange(2, 1, 1, 2).setFontWeight('bold');
+  sh.getRange(headerRow, 1, 1, 4)
+    .setFontWeight('bold')
+    .setBackground('#0B1C2D')
+    .setFontColor('#FFFFFF');
+  sh.setColumnWidth(1, 44);
+  sh.setColumnWidth(2, 190);
+  sh.setColumnWidth(3, 190);
+  sh.setColumnWidth(4, 130);
+  sh.setFrozenRows(headerRow);
+
+  return people.length;
+}
+
 // ── NOTIFICHE ORGANIZZATORE (WhatsApp via CallMeBot) ──
 function adminLine_(v) {
   return String(v == null ? '' : v).replace(/\r|\n/g, ' ');
@@ -462,6 +560,13 @@ function sendAdminNotifyIscrizione(data, sheetIscr, sheetCollab) {
     }
   } catch (analysisErr) {
     Logger.log('buildAnalysisMessage error: ' + (analysisErr && analysisErr.message ? analysisErr.message : analysisErr));
+  }
+
+  // Aggiorna automaticamente il foglio "Lista nominativi" (dinamico).
+  try {
+    rebuildListaNominativi_(sheetIscr.getParent());
+  } catch (listaErr) {
+    Logger.log('rebuildListaNominativi_ error: ' + (listaErr && listaErr.message ? listaErr.message : listaErr));
   }
 }
 
