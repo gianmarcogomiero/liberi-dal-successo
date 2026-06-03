@@ -626,80 +626,95 @@ function rebuildStatistiche_(ss) {
   ];
   sh.getRange(5, 1, kpis.length, 2).setValues(kpis);
 
-  // Dati di supporto ai grafici (colonne N+)
-  sh.getRange(1, 14).setValue('— Dati di supporto ai grafici —');
+  // ── Dati di supporto ai grafici (colonne T+, fuori dall'area di stampa) ──
+  function pctI(x) { return totalIscritti ? Math.round(x / totalIscritti * 100) : 0; }
 
-  // Età (N2:O7)
-  sh.getRange(2, 14, 1, 2).setValues([["Fascia d'età", 'Iscritti']]);
-  var ageData = [
-    ['18-25', buckets['18-25']],
-    ['26-35', buckets['26-35']],
-    ['36-50', buckets['36-50']],
-    ['51-65', buckets['51-65']],
+  sh.getRange(1, 20).setValue('— Dati di supporto ai grafici —');
+
+  // Età (etichetta con conteggio e %)
+  sh.getRange(2, 20, 1, 2).setValues([["Fascia d'età", 'Iscritti']]);
+  var ageOrder = [
+    ['18-25', buckets['18-25']], ['26-35', buckets['26-35']],
+    ['36-50', buckets['36-50']], ['51-65', buckets['51-65']],
     ['over 65', buckets['over65']]
   ];
-  sh.getRange(3, 14, ageData.length, 2).setValues(ageData);
+  var ageData = ageOrder.map(function (x) {
+    return [x[0] + ' — ' + x[1] + ' (' + pctI(x[1]) + '%)', x[1]];
+  });
+  sh.getRange(3, 20, ageData.length, 2).setValues(ageData);
 
-  // Genere
+  // Genere (% mostrata sulle fette; conteggio nell'etichetta)
   var genRow = 10;
-  sh.getRange(genRow, 14, 1, 2).setValues([['Genere', 'Persone']]);
-  var genData = [['Donne', gen.F], ['Uomini', gen.M]];
-  if (gen.U > 0) genData.push(['Non determinato', gen.U]);
-  sh.getRange(genRow + 1, 14, genData.length, 2).setValues(genData);
+  sh.getRange(genRow, 20, 1, 2).setValues([['Genere', 'Persone']]);
+  var genRaw = [['Donne', gen.F], ['Uomini', gen.M]];
+  if (gen.U > 0) genRaw.push(['Non determinato', gen.U]);
+  var genData = genRaw.map(function (x) { return [x[0] + ' (' + x[1] + ')', x[1]]; });
+  sh.getRange(genRow + 1, 20, genData.length, 2).setValues(genData);
 
-  // Provenienza
+  // Provenienza (etichetta con conteggio e %)
   var provRow = genRow + genData.length + 3;
-  sh.getRange(provRow, 14, 1, 2).setValues([['Comune', 'Iscritti']]);
-  var provData = topComuni.map(function (x) { return [x[0], x[1]]; });
-  if (restCount > 0) provData.push(['Altri comuni', restCount]);
-  if (noComune > 0) provData.push(['Non indicato', noComune]);
-  if (!provData.length) provData.push(['—', 0]);
-  sh.getRange(provRow + 1, 14, provData.length, 2).setValues(provData);
+  sh.getRange(provRow, 20, 1, 2).setValues([['Comune', 'Iscritti']]);
+  var provRaw = topComuni.map(function (x) { return [x[0], x[1]]; });
+  if (restCount > 0) provRaw.push(['Altri comuni', restCount]);
+  if (noComune > 0) provRaw.push(['Non indicato', noComune]);
+  if (!provRaw.length) provRaw.push(['—', 0]);
+  var provData = provRaw.map(function (x) {
+    return [x[0] + ' — ' + x[1] + ' (' + pctI(x[1]) + '%)', x[1]];
+  });
+  sh.getRange(provRow + 1, 20, provData.length, 2).setValues(provData);
 
-  // Timeline (colonne Q+)
-  sh.getRange(1, 17, 1, 2).setValues([['Data', 'Iscrizioni (cumulato)']]);
-  if (timeline.length) sh.getRange(2, 17, timeline.length, 2).setValues(timeline);
+  // Timeline (colonne W+)
+  sh.getRange(1, 23, 1, 2).setValues([['Data', 'Iscrizioni (cumulato)']]);
+  if (timeline.length) sh.getRange(2, 23, timeline.length, 2).setValues(timeline);
 
-  // Grafici
-  var ageChart = sh.newChart().asColumnChart()
-    .addRange(sh.getRange(2, 14, ageData.length + 1, 2))
-    .setPosition(12, 1, 0, 0)
-    .setOption('title', "Iscrizioni per fascia d'età")
+  // ── Grafici (colori brand: navy #0B1C2D, oro #C4A962) ──
+  var BRAND_NAVY = '#0B1C2D', BRAND_GOLD = '#C4A962', BRAND_BLUE = '#AFC6E9';
+  function brand_(builder, title) {
+    return builder
+      .setOption('title', title)
+      .setOption('backgroundColor', '#FFFFFF')
+      .setOption('fontName', 'Arial')
+      .setOption('titleTextStyle', { color: BRAND_NAVY, fontSize: 14, bold: true })
+      .setOption('legendTextStyle', { color: BRAND_NAVY })
+      .setOption('height', 300).setOption('width', 470);
+  }
+
+  var ageChart = brand_(sh.newChart().asColumnChart()
+    .addRange(sh.getRange(2, 20, ageData.length + 1, 2))
+    .setPosition(12, 1, 0, 0), "Iscrizioni per fascia d'età")
     .setOption('legend', { position: 'none' })
-    .setOption('colors', ['#0B1C2D'])
-    .setOption('height', 300).setOption('width', 460)
+    .setOption('colors', [BRAND_NAVY])
     .build();
   sh.insertChart(ageChart);
 
-  var genChart = sh.newChart().asPieChart()
-    .addRange(sh.getRange(genRow, 14, genData.length + 1, 2))
-    .setPosition(12, 9, 0, 0)
-    .setOption('title', 'Genere (stima dal nome)')
-    .setOption('colors', ['#C4A962', '#0B1C2D', '#AFC6E9'])
+  var genChart = brand_(sh.newChart().asPieChart()
+    .addRange(sh.getRange(genRow, 20, genData.length + 1, 2))
+    .setPosition(12, 9, 0, 0), 'Genere (stima dal nome) — % sulle fette')
+    .setOption('colors', [BRAND_GOLD, BRAND_NAVY, BRAND_BLUE])
     .setOption('pieHole', 0.4)
-    .setOption('height', 300).setOption('width', 460)
+    .setOption('pieSliceText', 'percentage')
+    .setOption('legend', { position: 'right' })
     .build();
   sh.insertChart(genChart);
 
-  var provChart = sh.newChart().asBarChart()
-    .addRange(sh.getRange(provRow, 14, provData.length + 1, 2))
-    .setPosition(29, 1, 0, 0)
-    .setOption('title', 'Provenienza per comune')
+  var provChart = brand_(sh.newChart().asBarChart()
+    .addRange(sh.getRange(provRow, 20, provData.length + 1, 2))
+    .setPosition(29, 1, 0, 0), 'Provenienza per comune (% sugli iscritti)')
     .setOption('legend', { position: 'none' })
-    .setOption('colors', ['#C4A962'])
-    .setOption('height', 320).setOption('width', 460)
+    .setOption('colors', [BRAND_GOLD])
+    .setOption('height', 330)
     .build();
   sh.insertChart(provChart);
 
   if (timeline.length) {
-    var tlChart = sh.newChart().asLineChart()
-      .addRange(sh.getRange(1, 17, timeline.length + 1, 2))
-      .setPosition(29, 9, 0, 0)
-      .setOption('title', 'Andamento iscrizioni (cumulato)')
+    var tlChart = brand_(sh.newChart().asLineChart()
+      .addRange(sh.getRange(1, 23, timeline.length + 1, 2))
+      .setPosition(29, 9, 0, 0), 'Andamento iscrizioni (cumulato)')
       .setOption('legend', { position: 'none' })
-      .setOption('colors', ['#0B1C2D'])
+      .setOption('colors', [BRAND_NAVY])
       .setOption('curveType', 'function')
-      .setOption('height', 320).setOption('width', 460)
+      .setOption('pointSize', 4)
+      .setOption('height', 330)
       .build();
     sh.insertChart(tlChart);
   }
@@ -712,16 +727,69 @@ function rebuildStatistiche_(ss) {
   sh.getRange(noteRow + 3, 1).setValue("• Gli accompagnatori non hanno fascia d'età/comune (non raccolti dal form).");
   sh.getRange(noteRow + 4, 1).setValue('• Comuni: "Non indicato" = campo vuoto o fuori lista.');
 
-  // Formattazione
-  sh.getRange(1, 1).setFontWeight('bold').setFontSize(15);
-  sh.getRange(2, 1).setFontColor('#666666');
-  sh.getRange(4, 1).setFontWeight('bold');
-  sh.getRange(5, 2, kpis.length, 1).setFontWeight('bold');
-  sh.getRange(noteRow, 1).setFontWeight('bold');
+  // ── Formattazione (banner brand + KPI) ──
+  sh.getRange(1, 1, 1, 12).merge()
+    .setBackground(BRAND_NAVY).setFontColor('#FFFFFF')
+    .setFontSize(16).setFontWeight('bold')
+    .setVerticalAlignment('middle');
+  sh.setRowHeight(1, 34);
+  sh.getRange(2, 1, 1, 12).merge().setFontColor('#666666').setFontStyle('italic');
+  sh.getRange(4, 1).setFontWeight('bold').setFontColor(BRAND_NAVY);
+  sh.getRange(4, 1, 1, 2).setBorder(
+    null, null, true, null, null, null,
+    BRAND_GOLD, SpreadsheetApp.BorderStyle.SOLID_MEDIUM
+  );
+  sh.getRange(5, 1, kpis.length, 1).setFontColor('#333333');
+  sh.getRange(5, 2, kpis.length, 1).setFontWeight('bold').setFontColor(BRAND_NAVY);
+  sh.getRange(noteRow, 1).setFontWeight('bold').setFontColor(BRAND_NAVY);
+  sh.getRange(noteRow + 1, 1, 4, 1).setFontColor('#666666').setFontSize(9);
   sh.setColumnWidth(1, 230);
   sh.setColumnWidth(2, 120);
 
   return totalIscritti;
+}
+
+/**
+ * Esporta il foglio "Statistiche" come PDF (A4 orizzontale) e lo salva su
+ * Drive, nella stessa cartella del foglio. Restituisce l'URL del PDF.
+ * Richiede lo scope Drive (vedi appsscript.json). Esegui A MANO.
+ */
+function esportaReportPdf() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  rebuildStatistiche_(ss);
+  SpreadsheetApp.flush();
+  var sh = ss.getSheetByName('Statistiche');
+  var dateStr = Utilities.formatDate(new Date(), 'Europe/Rome', 'yyyy-MM-dd');
+
+  var params = [
+    'format=pdf', 'gid=' + sh.getSheetId(),
+    'portrait=false', 'size=A4', 'fitw=true',
+    'gridlines=false', 'sheetnames=false', 'printtitle=false',
+    'pagenumbers=false', 'fzr=false',
+    'top_margin=0.5', 'bottom_margin=0.5', 'left_margin=0.5', 'right_margin=0.5',
+    'r1=0', 'c1=0', 'r2=53', 'c2=18'
+  ].join('&');
+  var url = 'https://docs.google.com/spreadsheets/d/' + ss.getId() + '/export?' + params;
+
+  var resp = UrlFetchApp.fetch(url, {
+    headers: { Authorization: 'Bearer ' + ScriptApp.getOAuthToken() },
+    muteHttpExceptions: true
+  });
+  if (resp.getResponseCode() !== 200) {
+    throw new Error('Export PDF fallito (HTTP ' + resp.getResponseCode() +
+      '). Verifica lo scope Drive in appsscript.json e riautorizza.');
+  }
+  var blob = resp.getBlob().setName('Report Iscrizioni LdS — ' + dateStr + '.pdf');
+
+  var file;
+  try {
+    var parents = DriveApp.getFileById(ss.getId()).getParents();
+    file = parents.hasNext() ? parents.next().createFile(blob) : DriveApp.createFile(blob);
+  } catch (e) {
+    file = DriveApp.createFile(blob);
+  }
+  Logger.log('PDF creato: ' + file.getUrl());
+  return file.getUrl();
 }
 
 // ── NOTIFICHE ORGANIZZATORE (WhatsApp via CallMeBot) ──
