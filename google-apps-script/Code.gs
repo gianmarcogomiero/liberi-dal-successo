@@ -503,6 +503,227 @@ function rebuildListaNominativi_(ss) {
   return people.length;
 }
 
+// ── FOGLIO "STATISTICHE" (KPI + grafici, stile report) ──
+
+/** Esegui A MANO per creare/aggiornare subito il foglio "Statistiche". */
+function buildStatistiche() {
+  var n = rebuildStatistiche_(SpreadsheetApp.getActiveSpreadsheet());
+  Logger.log('Statistiche aggiornate: ' + n + ' iscrizioni.');
+  return n;
+}
+
+/** "10/04/2026, 1:02:18" → Date (o null). */
+function parseItDate_(ts) {
+  var s = String(ts == null ? '' : ts).trim();
+  if (!s) return null;
+  var datePart = s.split(',')[0].trim();
+  var m = datePart.split('/');
+  if (m.length < 3) return null;
+  var d = parseInt(m[0], 10), mo = parseInt(m[1], 10), y = parseInt(m[2], 10);
+  if (isNaN(d) || isNaN(mo) || isNaN(y)) return null;
+  return new Date(y, mo - 1, d);
+}
+
+/**
+ * (Ri)costruisce il foglio "Statistiche": KPI + 4 grafici (età, genere,
+ * provenienza, andamento cumulato). I dati di supporto ai grafici sono
+ * scritti nelle colonne N+ (a destra). Sovrascritto a ogni chiamata.
+ */
+function rebuildStatistiche_(ss) {
+  var sheetIscr = ss.getSheetByName('Iscrizioni');
+  if (!sheetIscr) throw new Error('Foglio "Iscrizioni" non trovato.');
+  var rows = readIscrizioni_(sheetIscr);
+
+  var totalIscritti = rows.length;
+  var totalPosti = 0, accompCount = 0, consensoSi = 0;
+  var buckets = { '18-25': 0, '26-35': 0, '36-50': 0, '51-65': 0, 'over65': 0 };
+  var gen = { F: 0, M: 0, U: 0 };
+  var comuniMap = {}, noComune = 0;
+  var perDate = {};
+
+  for (var i = 0; i < rows.length; i++) {
+    var r = rows[i];
+
+    var n = parseInt(String(r.posti).replace(/\s/g, ''), 10);
+    if (!isNaN(n)) totalPosti += n;
+
+    var cf = String(r.consenso_foto || '').trim().toLowerCase();
+    if (cf === 'sì' || cf === 'si') consensoSi++;
+
+    var e = String(r.eta || '').trim().toLowerCase();
+    if (buckets.hasOwnProperty(e)) buckets[e]++;
+
+    var g = detectGender_(r.nome, r.cognome);
+    if (g === 'F') gen.F++; else if (g === 'M') gen.M++; else gen.U++;
+
+    if (r.accompagnatori) {
+      var parts = String(r.accompagnatori).split(/[,;]/);
+      for (var p = 0; p < parts.length; p++) {
+        var nn = parts[p].trim();
+        if (!nn) continue;
+        accompCount++;
+        var g2 = detectGender_(nn);
+        if (g2 === 'F') gen.F++; else if (g2 === 'M') gen.M++; else gen.U++;
+      }
+    }
+
+    var cm = String(r.comune || '').trim();
+    if (!cm || /^ext$/i.test(cm)) noComune++;
+    else comuniMap[cm] = (comuniMap[cm] || 0) + 1;
+
+    var dt = parseItDate_(r.timestamp);
+    if (dt) {
+      var key = Utilities.formatDate(dt, 'Europe/Rome', 'yyyy-MM-dd');
+      if (!perDate[key]) perDate[key] = { label: Utilities.formatDate(dt, 'Europe/Rome', 'dd/MM'), count: 0 };
+      perDate[key].count++;
+    }
+  }
+
+  var personeTotali = totalPosti;
+  var media = totalIscritti ? (totalPosti / totalIscritti) : 0;
+  var nComuni = Object.keys(comuniMap).length;
+  var pctConsenso = totalIscritti ? Math.round(consensoSi / totalIscritti * 100) : 0;
+
+  var comuniArr = [];
+  for (var k in comuniMap) comuniArr.push([k, comuniMap[k]]);
+  comuniArr.sort(function (a, b) { return b[1] - a[1]; });
+  var TOPN = 6;
+  var topComuni = comuniArr.slice(0, TOPN);
+  var restCount = 0;
+  for (var c = TOPN; c < comuniArr.length; c++) restCount += comuniArr[c][1];
+
+  var dateKeys = Object.keys(perDate).sort();
+  var timeline = [], cum = 0;
+  for (var t = 0; t < dateKeys.length; t++) {
+    cum += perDate[dateKeys[t]].count;
+    timeline.push([perDate[dateKeys[t]].label, cum]);
+  }
+
+  var SHEET_NAME = 'Statistiche';
+  var sh = ss.getSheetByName(SHEET_NAME);
+  if (!sh) sh = ss.insertSheet(SHEET_NAME);
+  else {
+    var existing = sh.getCharts();
+    for (var ci = 0; ci < existing.length; ci++) sh.removeChart(existing[ci]);
+    sh.clear();
+  }
+
+  var dateStr = Utilities.formatDate(new Date(), 'Europe/Rome', 'dd.MM.yyyy');
+
+  // Intestazione
+  sh.getRange(1, 1).setValue('Liberi dal Successo — Report Iscrizioni');
+  sh.getRange(2, 1).setValue('Aggiornato al ' + dateStr + ' · Evento: 20 giugno 2026 · Bresseo (Teolo, PD)');
+
+  // KPI
+  sh.getRange(4, 1).setValue('Indicatori chiave');
+  var kpis = [
+    ['Iscrizioni (richieste)', totalIscritti],
+    ['Persone totali (posti)', personeTotali],
+    ['di cui accompagnatori', accompCount],
+    ['Media posti / iscrizione', Math.round(media * 10) / 10],
+    ['Comuni rappresentati', nComuni],
+    ['Consenso foto', pctConsenso + '%']
+  ];
+  sh.getRange(5, 1, kpis.length, 2).setValues(kpis);
+
+  // Dati di supporto ai grafici (colonne N+)
+  sh.getRange(1, 14).setValue('— Dati di supporto ai grafici —');
+
+  // Età (N2:O7)
+  sh.getRange(2, 14, 1, 2).setValues([["Fascia d'età", 'Iscritti']]);
+  var ageData = [
+    ['18-25', buckets['18-25']],
+    ['26-35', buckets['26-35']],
+    ['36-50', buckets['36-50']],
+    ['51-65', buckets['51-65']],
+    ['over 65', buckets['over65']]
+  ];
+  sh.getRange(3, 14, ageData.length, 2).setValues(ageData);
+
+  // Genere
+  var genRow = 10;
+  sh.getRange(genRow, 14, 1, 2).setValues([['Genere', 'Persone']]);
+  var genData = [['Donne', gen.F], ['Uomini', gen.M]];
+  if (gen.U > 0) genData.push(['Non determinato', gen.U]);
+  sh.getRange(genRow + 1, 14, genData.length, 2).setValues(genData);
+
+  // Provenienza
+  var provRow = genRow + genData.length + 3;
+  sh.getRange(provRow, 14, 1, 2).setValues([['Comune', 'Iscritti']]);
+  var provData = topComuni.map(function (x) { return [x[0], x[1]]; });
+  if (restCount > 0) provData.push(['Altri comuni', restCount]);
+  if (noComune > 0) provData.push(['Non indicato', noComune]);
+  if (!provData.length) provData.push(['—', 0]);
+  sh.getRange(provRow + 1, 14, provData.length, 2).setValues(provData);
+
+  // Timeline (colonne Q+)
+  sh.getRange(1, 17, 1, 2).setValues([['Data', 'Iscrizioni (cumulato)']]);
+  if (timeline.length) sh.getRange(2, 17, timeline.length, 2).setValues(timeline);
+
+  // Grafici
+  var ageChart = sh.newChart().asColumnChart()
+    .addRange(sh.getRange(2, 14, ageData.length + 1, 2))
+    .setPosition(12, 1, 0, 0)
+    .setOption('title', "Iscrizioni per fascia d'età")
+    .setOption('legend', { position: 'none' })
+    .setOption('colors', ['#0B1C2D'])
+    .setOption('height', 300).setOption('width', 460)
+    .build();
+  sh.insertChart(ageChart);
+
+  var genChart = sh.newChart().asPieChart()
+    .addRange(sh.getRange(genRow, 14, genData.length + 1, 2))
+    .setPosition(12, 9, 0, 0)
+    .setOption('title', 'Genere (stima dal nome)')
+    .setOption('colors', ['#C4A962', '#0B1C2D', '#AFC6E9'])
+    .setOption('pieHole', 0.4)
+    .setOption('height', 300).setOption('width', 460)
+    .build();
+  sh.insertChart(genChart);
+
+  var provChart = sh.newChart().asBarChart()
+    .addRange(sh.getRange(provRow, 14, provData.length + 1, 2))
+    .setPosition(29, 1, 0, 0)
+    .setOption('title', 'Provenienza per comune')
+    .setOption('legend', { position: 'none' })
+    .setOption('colors', ['#C4A962'])
+    .setOption('height', 320).setOption('width', 460)
+    .build();
+  sh.insertChart(provChart);
+
+  if (timeline.length) {
+    var tlChart = sh.newChart().asLineChart()
+      .addRange(sh.getRange(1, 17, timeline.length + 1, 2))
+      .setPosition(29, 9, 0, 0)
+      .setOption('title', 'Andamento iscrizioni (cumulato)')
+      .setOption('legend', { position: 'none' })
+      .setOption('colors', ['#0B1C2D'])
+      .setOption('curveType', 'function')
+      .setOption('height', 320).setOption('width', 460)
+      .build();
+    sh.insertChart(tlChart);
+  }
+
+  // Note metodologiche
+  var noteRow = 48;
+  sh.getRange(noteRow, 1).setValue('Note metodologiche');
+  sh.getRange(noteRow + 1, 1).setValue('• Genere stimato dal nome (euristica): non è un dato dichiarato nel form.');
+  sh.getRange(noteRow + 2, 1).setValue('• "Persone totali" = posti richiesti (iscritti + accompagnatori).');
+  sh.getRange(noteRow + 3, 1).setValue("• Gli accompagnatori non hanno fascia d'età/comune (non raccolti dal form).");
+  sh.getRange(noteRow + 4, 1).setValue('• Comuni: "Non indicato" = campo vuoto o fuori lista.');
+
+  // Formattazione
+  sh.getRange(1, 1).setFontWeight('bold').setFontSize(15);
+  sh.getRange(2, 1).setFontColor('#666666');
+  sh.getRange(4, 1).setFontWeight('bold');
+  sh.getRange(5, 2, kpis.length, 1).setFontWeight('bold');
+  sh.getRange(noteRow, 1).setFontWeight('bold');
+  sh.setColumnWidth(1, 230);
+  sh.setColumnWidth(2, 120);
+
+  return totalIscritti;
+}
+
 // ── NOTIFICHE ORGANIZZATORE (WhatsApp via CallMeBot) ──
 function adminLine_(v) {
   return String(v == null ? '' : v).replace(/\r|\n/g, ' ');
@@ -615,6 +836,13 @@ function sendAdminNotifyIscrizione(data, sheetIscr, sheetCollab) {
     rebuildListaNominativi_(sheetIscr.getParent());
   } catch (listaErr) {
     Logger.log('rebuildListaNominativi_ error: ' + (listaErr && listaErr.message ? listaErr.message : listaErr));
+  }
+
+  // Aggiorna automaticamente il foglio "Statistiche" (KPI + grafici).
+  try {
+    rebuildStatistiche_(sheetIscr.getParent());
+  } catch (statErr) {
+    Logger.log('rebuildStatistiche_ error: ' + (statErr && statErr.message ? statErr.message : statErr));
   }
 }
 
