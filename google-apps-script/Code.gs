@@ -380,9 +380,34 @@ function splitFullName_(full) {
   return { nome: parts.join(' '), cognome: cognome };
 }
 
+/** Nome proprio: prima lettera maiuscola di ogni parola, resto minuscolo. */
+function toTitleCase_(s) {
+  return String(s == null ? '' : s).trim().toLowerCase().replace(
+    /(^|[\s'’\-])([a-zà-ÿ])/g,
+    function (m, sep, ch) { return sep + ch.toUpperCase(); }
+  );
+}
+
+/** Etichetta fascia d'età leggibile (vuoto → "—", over65 → "over 65"). */
+function etaLabel_(e) {
+  var v = String(e == null ? '' : e).trim();
+  if (!v) return '—';
+  if (v.toLowerCase() === 'over65') return 'over 65';
+  return v;
+}
+
+/** Comune leggibile (vuoto o "EXT" → "—"). */
+function comuneLabel_(c) {
+  var v = String(c == null ? '' : c).trim();
+  if (!v || /^ext$/i.test(v)) return '—';
+  return v;
+}
+
 /**
  * (Ri)costruisce il foglio "Lista nominativi": contatore totale persone
- * + elenco completo (iscritti + accompagnatori) ordinato per cognome.
+ * + elenco completo (iscritti + accompagnatori) ordinato per cognome, con
+ * fascia d'età, comune e nominativi in maiuscolo/minuscolo uniforme.
+ * Gli accompagnatori non hanno età/comune nel form → mostrati come "—".
  * Sovrascrive il foglio a ogni chiamata, quindi resta sempre aggiornato.
  */
 function rebuildListaNominativi_(ss) {
@@ -396,7 +421,13 @@ function rebuildListaNominativi_(ss) {
     var nome = String(rows[i].nome == null ? '' : rows[i].nome).trim();
     var cognome = String(rows[i].cognome == null ? '' : rows[i].cognome).trim();
     if (nome || cognome) {
-      people.push({ nome: nome, cognome: cognome, ruolo: 'Iscritto' });
+      people.push({
+        nome: nome,
+        cognome: cognome,
+        eta: etaLabel_(rows[i].eta),
+        comune: comuneLabel_(rows[i].comune),
+        ruolo: 'Iscritto'
+      });
     }
     if (rows[i].accompagnatori) {
       var parts = String(rows[i].accompagnatori).split(/[,;]/);
@@ -404,7 +435,13 @@ function rebuildListaNominativi_(ss) {
         var nn = parts[p].trim();
         if (!nn) continue;
         var sp = splitFullName_(nn);
-        people.push({ nome: sp.nome, cognome: sp.cognome, ruolo: 'Accompagnatore' });
+        people.push({
+          nome: sp.nome,
+          cognome: sp.cognome,
+          eta: '—',
+          comune: '—',
+          ruolo: 'Accompagnatore'
+        });
       }
     }
   }
@@ -429,27 +466,38 @@ function rebuildListaNominativi_(ss) {
 
   // Intestazione tabella
   var headerRow = 4;
-  sh.getRange(headerRow, 1, 1, 4).setValues([['#', 'Cognome', 'Nome', 'Ruolo']]);
+  sh.getRange(headerRow, 1, 1, 6).setValues([
+    ['#', 'Cognome', 'Nome', "Fascia d'età", 'Comune', 'Ruolo']
+  ]);
 
   // Dati
   if (people.length) {
     var data = people.map(function (person, idx) {
-      return [idx + 1, person.cognome, person.nome, person.ruolo];
+      return [
+        idx + 1,
+        toTitleCase_(person.cognome),
+        toTitleCase_(person.nome),
+        person.eta,
+        person.comune,
+        person.ruolo
+      ];
     });
-    sh.getRange(headerRow + 1, 1, data.length, 4).setValues(data);
+    sh.getRange(headerRow + 1, 1, data.length, 6).setValues(data);
   }
 
   // Formattazione leggera
   sh.getRange(1, 1).setFontWeight('bold').setFontSize(13);
   sh.getRange(2, 1, 1, 2).setFontWeight('bold');
-  sh.getRange(headerRow, 1, 1, 4)
+  sh.getRange(headerRow, 1, 1, 6)
     .setFontWeight('bold')
     .setBackground('#0B1C2D')
     .setFontColor('#FFFFFF');
   sh.setColumnWidth(1, 44);
   sh.setColumnWidth(2, 190);
   sh.setColumnWidth(3, 190);
-  sh.setColumnWidth(4, 130);
+  sh.setColumnWidth(4, 110);
+  sh.setColumnWidth(5, 170);
+  sh.setColumnWidth(6, 130);
   sh.setFrozenRows(headerRow);
 
   return people.length;
