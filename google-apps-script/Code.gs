@@ -556,12 +556,14 @@ function rebuildStatistiche_(ss) {
     var g = detectGender_(r.nome, r.cognome);
     if (g === 'F') gen.F++; else if (g === 'M') gen.M++; else gen.U++;
 
+    var rowAcc = 0;
     if (r.accompagnatori) {
       var parts = String(r.accompagnatori).split(/[,;]/);
       for (var p = 0; p < parts.length; p++) {
         var nn = parts[p].trim();
         if (!nn) continue;
         accompCount++;
+        rowAcc++;
         var g2 = detectGender_(nn);
         if (g2 === 'F') gen.F++; else if (g2 === 'M') gen.M++; else gen.U++;
       }
@@ -574,8 +576,9 @@ function rebuildStatistiche_(ss) {
     var dt = parseItDate_(r.timestamp);
     if (dt) {
       var key = Utilities.formatDate(dt, 'Europe/Rome', 'yyyy-MM-dd');
-      if (!perDate[key]) perDate[key] = { label: Utilities.formatDate(dt, 'Europe/Rome', 'dd/MM'), count: 0 };
-      perDate[key].count++;
+      if (!perDate[key]) perDate[key] = { label: Utilities.formatDate(dt, 'Europe/Rome', 'dd/MM'), iscr: 0, acc: 0 };
+      perDate[key].iscr++;
+      perDate[key].acc += rowAcc;
     }
   }
 
@@ -593,10 +596,11 @@ function rebuildStatistiche_(ss) {
   for (var c = TOPN; c < comuniArr.length; c++) restCount += comuniArr[c][1];
 
   var dateKeys = Object.keys(perDate).sort();
-  var timeline = [], cum = 0;
+  var timeline = [], cumI = 0, cumA = 0;
   for (var t = 0; t < dateKeys.length; t++) {
-    cum += perDate[dateKeys[t]].count;
-    timeline.push([perDate[dateKeys[t]].label, cum]);
+    cumI += perDate[dateKeys[t]].iscr;
+    cumA += perDate[dateKeys[t]].acc;
+    timeline.push([perDate[dateKeys[t]].label, cumI, cumA, cumI + cumA]);
   }
 
   var SHEET_NAME = 'Statistiche';
@@ -665,9 +669,11 @@ function rebuildStatistiche_(ss) {
   });
   sh.getRange(provRow + 1, 20, provData.length, 2).setValues(provData);
 
-  // Timeline (colonne W+)
-  sh.getRange(1, 23, 1, 2).setValues([['Data', 'Iscrizioni (cumulato)']]);
-  if (timeline.length) sh.getRange(2, 23, timeline.length, 2).setValues(timeline);
+  // Timeline (colonne W+): 3 serie cumulate
+  sh.getRange(1, 23, 1, 4).setValues([
+    ['Data', 'Iscrizioni', 'Accompagnatori', 'Totale persone']
+  ]);
+  if (timeline.length) sh.getRange(2, 23, timeline.length, 4).setValues(timeline);
 
   // ── Grafici (colori brand: navy #0B1C2D, oro #C4A962) ──
   var BRAND_NAVY = '#0B1C2D', BRAND_GOLD = '#C4A962', BRAND_BLUE = '#AFC6E9';
@@ -710,10 +716,10 @@ function rebuildStatistiche_(ss) {
 
   if (timeline.length) {
     var tlChart = brand_(sh.newChart().asLineChart()
-      .addRange(sh.getRange(1, 23, timeline.length + 1, 2))
-      .setPosition(29, 9, 0, 0), 'Andamento iscrizioni (cumulato)')
-      .setOption('legend', { position: 'none' })
-      .setOption('colors', [BRAND_NAVY])
+      .addRange(sh.getRange(1, 23, timeline.length + 1, 4))
+      .setPosition(29, 9, 0, 0), 'Andamento cumulato: iscrizioni, accompagnatori, totale')
+      .setOption('legend', { position: 'bottom' })
+      .setOption('colors', [BRAND_NAVY, BRAND_GOLD, BRAND_BLUE])
       .setOption('curveType', 'function')
       .setOption('pointSize', 4)
       .setOption('height', 330)
