@@ -404,16 +404,12 @@ function comuneLabel_(c) {
 }
 
 /**
- * (Ri)costruisce il foglio "Lista nominativi": contatore totale persone
- * + elenco completo (iscritti + accompagnatori) ordinato per cognome, con
- * fascia d'età, comune e nominativi in maiuscolo/minuscolo uniforme.
- * Gli accompagnatori non hanno età/comune nel form → mostrati come "—".
- * Sovrascrive il foglio a ogni chiamata, quindi resta sempre aggiornato.
+ * Elenco persone (iscritti + accompagnatori) pronto per la stampa, ordinato
+ * per cognome. Ogni voce: {cognome, nome, eta, comune, ruolo} con nomi già
+ * normalizzati (Title Case) ed età/comune come etichette ("—" se mancanti).
+ * Fonte unica usata sia dal foglio "Lista nominativi" sia dal report PDF.
  */
-function rebuildListaNominativi_(ss) {
-  var sheetIscr = ss.getSheetByName('Iscrizioni');
-  if (!sheetIscr) throw new Error('Foglio "Iscrizioni" non trovato.');
-
+function collectPeople_(sheetIscr) {
   var rows = readIscrizioni_(sheetIscr);
   var people = [];
 
@@ -422,11 +418,12 @@ function rebuildListaNominativi_(ss) {
     var cognome = String(rows[i].cognome == null ? '' : rows[i].cognome).trim();
     if (nome || cognome) {
       people.push({
-        nome: nome,
-        cognome: cognome,
+        cognome: toTitleCase_(cognome),
+        nome: toTitleCase_(nome),
         eta: etaLabel_(rows[i].eta),
         comune: comuneLabel_(rows[i].comune),
-        ruolo: 'Iscritto'
+        ruolo: 'Iscritto',
+        sortKey: cognome.toLowerCase() + '|' + nome.toLowerCase()
       });
     }
     if (rows[i].accompagnatori) {
@@ -436,23 +433,33 @@ function rebuildListaNominativi_(ss) {
         if (!nn) continue;
         var sp = splitFullName_(nn);
         people.push({
-          nome: sp.nome,
-          cognome: sp.cognome,
+          cognome: toTitleCase_(sp.cognome),
+          nome: toTitleCase_(sp.nome),
           eta: '—',
           comune: '—',
-          ruolo: 'Accompagnatore'
+          ruolo: 'Accompagnatore',
+          sortKey: sp.cognome.toLowerCase() + '|' + sp.nome.toLowerCase()
         });
       }
     }
   }
 
   people.sort(function (a, b) {
-    var ca = a.cognome.toLowerCase(), cb = b.cognome.toLowerCase();
-    if (ca < cb) return -1;
-    if (ca > cb) return 1;
-    var na = a.nome.toLowerCase(), nb = b.nome.toLowerCase();
-    return na < nb ? -1 : (na > nb ? 1 : 0);
+    return a.sortKey < b.sortKey ? -1 : (a.sortKey > b.sortKey ? 1 : 0);
   });
+  return people;
+}
+
+/**
+ * (Ri)costruisce il foglio "Lista nominativi": contatore totale persone
+ * + elenco completo (iscritti + accompagnatori) ordinato per cognome, con
+ * fascia d'età, comune e nominativi in maiuscolo/minuscolo uniforme.
+ * Sovrascrive il foglio a ogni chiamata, quindi resta sempre aggiornato.
+ */
+function rebuildListaNominativi_(ss) {
+  var sheetIscr = ss.getSheetByName('Iscrizioni');
+  if (!sheetIscr) throw new Error('Foglio "Iscrizioni" non trovato.');
+  var people = collectPeople_(sheetIscr);
 
   var SHEET_NAME = 'Lista nominativi';
   var sh = ss.getSheetByName(SHEET_NAME);
@@ -473,14 +480,7 @@ function rebuildListaNominativi_(ss) {
   // Dati
   if (people.length) {
     var data = people.map(function (person, idx) {
-      return [
-        idx + 1,
-        toTitleCase_(person.cognome),
-        toTitleCase_(person.nome),
-        person.eta,
-        person.comune,
-        person.ruolo
-      ];
+      return [idx + 1, person.cognome, person.nome, person.eta, person.comune, person.ruolo];
     });
     sh.getRange(headerRow + 1, 1, data.length, 6).setValues(data);
   }
@@ -605,6 +605,8 @@ function rebuildStatistiche_(ss) {
   else {
     var existing = sh.getCharts();
     for (var ci = 0; ci < existing.length; ci++) sh.removeChart(existing[ci]);
+    var imgs = sh.getImages();
+    for (var ii = 0; ii < imgs.length; ii++) imgs[ii].remove();
     sh.clear();
   }
 
@@ -727,6 +729,29 @@ function rebuildStatistiche_(ss) {
   sh.getRange(noteRow + 3, 1).setValue("• Gli accompagnatori non hanno fascia d'età/comune (non raccolti dal form).");
   sh.getRange(noteRow + 4, 1).setValue('• Comuni: "Non indicato" = campo vuoto o fuori lista.');
 
+  // ── Lista nominativi completa (in coda, finisce nel PDF) ──
+  var people = collectPeople_(sheetIscr);
+  var listRow = 55;
+  sh.getRange(listRow, 1).setValue('Lista nominativi completa (' + people.length + ' persone)');
+  sh.getRange(listRow + 1, 1, 1, 6).setValues([
+    ['#', 'Cognome', 'Nome', "Fascia d'età", 'Comune', 'Ruolo']
+  ]);
+  if (people.length) {
+    var pdata = people.map(function (p, idx) {
+      return [idx + 1, p.cognome, p.nome, p.eta, p.comune, p.ruolo];
+    });
+    sh.getRange(listRow + 2, 1, pdata.length, 6).setValues(pdata);
+  }
+
+  // ── Logo (in alto a destra, sopra l'area KPI) ──
+  try {
+    var logo = sh.insertImage('https://liberidalsuccesso.it/Loghi/colorato%201.png', 11, 1, 8, 4);
+    logo.setWidth(96);
+    logo.setHeight(96);
+  } catch (logoErr) {
+    Logger.log('logo insert: ' + (logoErr && logoErr.message ? logoErr.message : logoErr));
+  }
+
   // ── Formattazione (banner brand + KPI) ──
   sh.getRange(1, 1, 1, 12).merge()
     .setBackground(BRAND_NAVY).setFontColor('#FFFFFF')
@@ -743,6 +768,9 @@ function rebuildStatistiche_(ss) {
   sh.getRange(5, 2, kpis.length, 1).setFontWeight('bold').setFontColor(BRAND_NAVY);
   sh.getRange(noteRow, 1).setFontWeight('bold').setFontColor(BRAND_NAVY);
   sh.getRange(noteRow + 1, 1, 4, 1).setFontColor('#666666').setFontSize(9);
+  sh.getRange(listRow, 1).setFontWeight('bold').setFontColor(BRAND_NAVY).setFontSize(12);
+  sh.getRange(listRow + 1, 1, 1, 6)
+    .setFontWeight('bold').setBackground(BRAND_NAVY).setFontColor('#FFFFFF');
   sh.setColumnWidth(1, 230);
   sh.setColumnWidth(2, 120);
 
@@ -767,7 +795,7 @@ function esportaReportPdf() {
     'gridlines=false', 'sheetnames=false', 'printtitle=false',
     'pagenumbers=false', 'fzr=false',
     'top_margin=0.5', 'bottom_margin=0.5', 'left_margin=0.5', 'right_margin=0.5',
-    'r1=0', 'c1=0', 'r2=53', 'c2=18'
+    'r1=0', 'c1=0', 'r2=' + sh.getLastRow(), 'c2=18'
   ].join('&');
   var url = 'https://docs.google.com/spreadsheets/d/' + ss.getId() + '/export?' + params;
 
