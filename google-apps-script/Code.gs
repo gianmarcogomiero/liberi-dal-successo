@@ -826,6 +826,121 @@ function esportaReportPdf() {
   return file.getUrl();
 }
 
+// ── FOGLI "TEAM" e "TOTALE" (squadra interna + somma con iscritti) ──
+
+/**
+ * Squadra interna che lavora al progetto (formato "Nome Cognome").
+ * Per aggiornare il team: modifica questa lista e rilancia buildTeam().
+ */
+var TEAM_NAMES = [
+  'Gianmarco Gomiero', 'Adam Buur', 'Agnese Ardolino', 'Agnese Bellio',
+  'Alessandro Morato', 'Alessandro Trolese', 'Beatrice Babolin', 'Beatrice Gallarotti',
+  'Carlotta Monterosso', 'Denis Mazzucato', 'Giacomo Gomiero', 'Giovanni Toffanin',
+  'Giulia Lazzaretto', 'Joel Parman', 'Marcello Marchetti', 'Marco Bilato',
+  'Marco Frizzarin', 'Matteo Frizzarin', 'Maya Bosello', 'Nicolò Casotto',
+  'Silvia Grimaldi', 'Stefano Canton', 'Emanuele'
+];
+
+/** Crea/aggiorna il foglio "Team": contatore + elenco squadra per cognome. */
+function buildTeam() {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var team = TEAM_NAMES.map(function (full) {
+    var sp = splitFullName_(full);
+    return {
+      cognome: toTitleCase_(sp.cognome),
+      nome: toTitleCase_(sp.nome),
+      sortKey: (sp.cognome ? sp.cognome.toLowerCase() : '￿') + '|' + sp.nome.toLowerCase()
+    };
+  });
+  team.sort(function (a, b) { return a.sortKey < b.sortKey ? -1 : (a.sortKey > b.sortKey ? 1 : 0); });
+
+  var sh = ss.getSheetByName('Team');
+  if (!sh) sh = ss.insertSheet('Team');
+  else sh.clear();
+
+  sh.getRange(1, 1).setValue('Team — Liberi dal Successo');
+  sh.getRange(2, 1).setValue('Totale team:');
+  sh.getRange(2, 2).setValue(team.length);
+
+  var headerRow = 4;
+  sh.getRange(headerRow, 1, 1, 3).setValues([['#', 'Cognome', 'Nome']]);
+  var data = team.map(function (p, idx) { return [idx + 1, p.cognome, p.nome]; });
+  sh.getRange(headerRow + 1, 1, data.length, 3).setValues(data);
+
+  sh.getRange(1, 1).setFontWeight('bold').setFontSize(13);
+  sh.getRange(2, 1, 1, 2).setFontWeight('bold');
+  sh.getRange(headerRow, 1, 1, 3)
+    .setFontWeight('bold').setBackground('#0B1C2D').setFontColor('#FFFFFF');
+  sh.setColumnWidth(1, 44);
+  sh.setColumnWidth(2, 190);
+  sh.setColumnWidth(3, 190);
+  sh.setFrozenRows(headerRow);
+
+  Logger.log('Team aggiornato: ' + team.length + ' persone.');
+  return team.length;
+}
+
+/** Esegui A MANO per creare/aggiornare subito il foglio "Totale". */
+function buildTotale() {
+  var n = rebuildTotale_(SpreadsheetApp.getActiveSpreadsheet());
+  Logger.log('Totale aggiornato: ' + n + ' persone coinvolte.');
+  return n;
+}
+
+/**
+ * (Ri)costruisce il foglio "Totale": somma persone iscritte (posti) + team
+ * interno. Sovrascritto a ogni chiamata; aggiornato anche a ogni iscrizione.
+ */
+function rebuildTotale_(ss) {
+  var sheetIscr = ss.getSheetByName('Iscrizioni');
+  if (!sheetIscr) throw new Error('Foglio "Iscrizioni" non trovato.');
+  var rows = readIscrizioni_(sheetIscr);
+
+  var totalIscrizioni = rows.length;
+  var totalPosti = 0;
+  for (var i = 0; i < rows.length; i++) {
+    var n = parseInt(String(rows[i].posti).replace(/\s/g, ''), 10);
+    if (!isNaN(n)) totalPosti += n;
+  }
+  var team = TEAM_NAMES.length;
+  var grand = totalPosti + team;
+
+  var sh = ss.getSheetByName('Totale');
+  if (!sh) sh = ss.insertSheet('Totale');
+  else sh.clear();
+
+  var dateStr = Utilities.formatDate(new Date(), 'Europe/Rome', 'dd.MM.yyyy');
+  sh.getRange(1, 1).setValue('Totale persone coinvolte — Liberi dal Successo');
+  sh.getRange(2, 1).setValue('Aggiornato al ' + dateStr);
+
+  var rowsOut = [
+    ['Iscrizioni (richieste dal form)', totalIscrizioni],
+    ['Persone iscritte (con accompagnatori)', totalPosti],
+    ['Team interno', team],
+    ['TOTALE persone (iscritti + team)', grand]
+  ];
+  sh.getRange(4, 1, rowsOut.length, 2).setValues(rowsOut);
+
+  var noteRow = 4 + rowsOut.length + 1;
+  sh.getRange(noteRow, 1).setValue(
+    'Nota: iscritti e team sono contati separatamente; un membro del team che si è anche iscritto può comparire in entrambi.'
+  );
+
+  // Formattazione
+  sh.getRange(1, 1).setFontWeight('bold').setFontSize(14).setFontColor('#0B1C2D');
+  sh.getRange(2, 1).setFontColor('#666666');
+  sh.getRange(4, 1, rowsOut.length, 1).setFontColor('#333333');
+  sh.getRange(4, 2, rowsOut.length, 1).setFontWeight('bold').setFontColor('#0B1C2D');
+  var totRow = 4 + rowsOut.length - 1;
+  sh.getRange(totRow, 1, 1, 2)
+    .setFontWeight('bold').setBackground('#C4A962').setFontColor('#0B1C2D');
+  sh.getRange(noteRow, 1).setFontColor('#666666').setFontSize(9);
+  sh.setColumnWidth(1, 320);
+  sh.setColumnWidth(2, 90);
+
+  return grand;
+}
+
 // ── NOTIFICHE ORGANIZZATORE (WhatsApp via CallMeBot) ──
 function adminLine_(v) {
   return String(v == null ? '' : v).replace(/\r|\n/g, ' ');
@@ -945,6 +1060,13 @@ function sendAdminNotifyIscrizione(data, sheetIscr, sheetCollab) {
     rebuildStatistiche_(sheetIscr.getParent());
   } catch (statErr) {
     Logger.log('rebuildStatistiche_ error: ' + (statErr && statErr.message ? statErr.message : statErr));
+  }
+
+  // Aggiorna automaticamente il foglio "Totale" (iscritti + team).
+  try {
+    rebuildTotale_(sheetIscr.getParent());
+  } catch (totErr) {
+    Logger.log('rebuildTotale_ error: ' + (totErr && totErr.message ? totErr.message : totErr));
   }
 }
 
