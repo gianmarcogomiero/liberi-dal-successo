@@ -1113,7 +1113,7 @@ function sendConfirmEmail(data) {
   var gcalLink =
     'https://calendar.google.com/calendar/render?action=TEMPLATE' +
     '&text=Liberi+dal+Successo' +
-    '&dates=20260620T153000Z/20260620T200000Z' +
+    '&dates=20260620T153000Z/20260620T193000Z' +
     '&details=' +
     detailsCal +
     '&location=Sala+Polivalente%2C+Via+Alcide+De+Gasperi+22%2C+Bresseo%2C+Teolo+(PD)';
@@ -1146,7 +1146,7 @@ function sendConfirmEmail(data) {
       "la tua iscrizione a <strong style='color:#C4A962;'>Liberi dal Successo</strong> è confermata!",
       "<table style='width:100%;border-collapse:collapse;margin:24px 0;'>" +
         "<tr><td style='padding:8px 0;color:#AFC6E9;font-size:13px;width:130px;'>Quando</td>" +
-        "<td style='padding:8px 0;color:#E6E8EC;font-size:14px;'>Sabato 20 Giugno 2026 · ore 17:30 – 22:00</td></tr>" +
+        "<td style='padding:8px 0;color:#E6E8EC;font-size:14px;'>Sabato 20 Giugno 2026 · ore 17:30 – 21:30</td></tr>" +
         "<tr><td style='padding:8px 0;color:#AFC6E9;font-size:13px;'>Dove</td>" +
         "<td style='padding:8px 0;color:#E6E8EC;font-size:14px;'>Sala Polivalente, Bresseo, Teolo (PD)</td></tr>" +
         "<tr><td style='padding:8px 0;color:#AFC6E9;font-size:13px;'>Accesso</td>" +
@@ -1178,7 +1178,7 @@ function sendConfirmEmail(data) {
     'UID:liberidalsuccesso-20260620@bresseo',
     'DTSTAMP:' + Utilities.formatDate(new Date(), 'Europe/Rome', "yyyyMMdd'T'HHmmss'Z'"),
     'DTSTART:20260620T153000Z',
-    'DTEND:20260620T200000Z',
+    'DTEND:20260620T193000Z',
     'SUMMARY:Liberi dal Successo',
     'DESCRIPTION:' + escapeIcsText(icsDescPlain),
     'LOCATION:' + escapeIcsText('Sala Polivalente, Via Alcide De Gasperi 22, Bresseo, Teolo (PD)'),
