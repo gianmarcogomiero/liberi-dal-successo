@@ -1099,7 +1099,7 @@ function sendAdminNotifyCollaborazione(data, sheetCollab, sheetIscr) {
 // ── BLOCCO "PROGRAMMA DELLA SERATA" (per la mail di conferma) ──
 function programmaBlockHtml_() {
   var IMG = 'https://liberidalsuccesso.it/people/';
-  var SERIF = "'Playfair Display',Georgia,serif";
+  var SERIF = '"Playfair Display",Georgia,serif';
   var linkStudio = "<a href='https://www.studio-essere.com' target='_blank' style='font-family:sans-serif;font-size:12px;color:#AFC6E9;text-decoration:underline;'>Studio Essere</a>";
   var linkJessy = "<a href='https://jessydanceasd9.wixsite.com/website' target='_blank' style='font-family:sans-serif;font-size:12px;color:#AFC6E9;text-decoration:underline;'>Jessydance ASD</a>";
 
