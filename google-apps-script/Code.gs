@@ -1007,11 +1007,23 @@ function testWhatsAppIntegration() {
 }
 
 function sendAdminNotifyIscrizione(data, sheetIscr, sheetCollab) {
-  // Niente notifica per-iscrizione: mando un solo messaggio (l'analisi
-  // aggregata), così non viene troncato dal doppio invio ravvicinato.
+  // 1) Chi si è appena iscritto (solo i campi essenziali).
+  var msg =
+    '🆕 *Nuova iscrizione*\n\n' +
+    'Nome: ' + adminLine_(data.nome) + ' ' + adminLine_(data.cognome) +
+    '\nEmail: ' + adminLine_(data.email) +
+    '\nEtà: ' + adminLine_(data.eta || '—') +
+    '\nComune: ' + adminLine_(data.comune || '—') +
+    '\nAccompagnatori: ' + adminLine_(data.accompagnatori || '—');
+  sendWhatsAppAdmin(msg);
+
+  // 2) Dopo una pausa (~10s) i totali, così i due messaggi non si sovrappongono.
   try {
     var analysisMsg = buildAnalysisMessage_(sheetIscr);
-    if (analysisMsg) sendWhatsAppAdmin(analysisMsg);
+    if (analysisMsg) {
+      Utilities.sleep(10000);
+      sendWhatsAppAdmin(analysisMsg);
+    }
   } catch (analysisErr) {
     Logger.log('buildAnalysisMessage error: ' + (analysisErr && analysisErr.message ? analysisErr.message : analysisErr));
   }
