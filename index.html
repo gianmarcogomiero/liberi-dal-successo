@@ -794,6 +794,97 @@
     .lang-switch a .fl { font-size: 12px; line-height: 1; }
     .lang-switch a:hover { color: var(--sand); }
     .lang-switch a.is-current { color: var(--night); background: var(--sand); }
+
+    /* ── LE VOCI DELLA SERATA (programma) ───────────────── */
+    .voci-section { max-width: 760px; margin: 0 auto; padding: 52px 24px 44px; }
+    .voci-sub {
+      font-size: 0.98rem; color: rgba(217,207,195,0.72);
+      line-height: 1.65; margin-bottom: 40px; max-width: 540px;
+    }
+
+    .program { list-style: none; }
+    .prog-item {
+      display: grid;
+      grid-template-columns: 50px 26px 1fr;
+      align-items: start; column-gap: 14px;
+    }
+    .prog-time {
+      font-family: 'DM Sans', sans-serif;
+      font-size: 13px; font-weight: 600; letter-spacing: 0.5px;
+      color: var(--gold); padding-top: 15px; text-align: right;
+    }
+    /* binario verticale + punto (motivo a punti del logo) */
+    .prog-rail { position: relative; align-self: stretch; }
+    .prog-rail::before {
+      content: ''; position: absolute; left: 50%; top: 0; bottom: 0;
+      width: 1px; background: rgba(175,198,233,0.18); transform: translateX(-50%);
+    }
+    .prog-item:first-child .prog-rail::before { top: 21px; }
+    .prog-item:last-child .prog-rail::before { bottom: calc(100% - 21px); }
+    .prog-dot {
+      position: absolute; left: 50%; top: 21px; transform: translate(-50%,-50%);
+      width: 9px; height: 9px; border-radius: 50%;
+      background: var(--night); border: 1.5px solid rgba(175,198,233,0.5); z-index: 1;
+    }
+    .prog-item--talk .prog-dot {
+      width: 11px; height: 11px; background: var(--gold); border-color: var(--gold);
+      box-shadow: 0 0 0 4px rgba(196,169,98,0.14);
+    }
+    .prog-card { display: flex; align-items: center; gap: 16px; padding-bottom: 26px; }
+    .prog-item--talk .prog-card {
+      background: rgba(175,198,233,0.04);
+      border: 1px solid rgba(175,198,233,0.11);
+      border-radius: 14px; padding: 14px 16px; margin-bottom: 22px;
+      transition: transform 0.18s, border-color 0.18s, background 0.18s;
+    }
+    .prog-item--talk .prog-card:hover {
+      transform: translateY(-2px);
+      border-color: rgba(196,169,98,0.30); background: rgba(196,169,98,0.05);
+    }
+    .prog-photo {
+      width: 64px; height: 64px; border-radius: 50%; object-fit: cover; flex-shrink: 0;
+      border: 1px solid rgba(196,169,98,0.35);
+      box-shadow: 0 0 0 4px rgba(11,28,45,0.6), 0 6px 18px rgba(0,0,0,0.25);
+    }
+    .prog-name { font-family: 'Playfair Display', serif; font-size: 1.05rem; color: var(--sand); line-height: 1.25; }
+    .prog-title { font-family: 'Playfair Display', serif; font-size: 1rem; font-style: italic; color: rgba(175,198,233,0.85); margin-top: 4px; line-height: 1.3; }
+    .prog-place { font-size: 12px; color: rgba(217,207,195,0.5); margin-top: 5px; }
+    .prog-place a { color: rgba(175,198,233,0.72); text-decoration: none; border-bottom: 1px solid rgba(175,198,233,0.28); transition: color 0.18s, border-color 0.18s; }
+    .prog-place a:hover { color: var(--sand); border-color: rgba(217,207,195,0.5); }
+    .prog-role { font-size: 10px; letter-spacing: 2px; text-transform: uppercase; color: var(--blue); opacity: 0.6; margin-bottom: 5px; }
+    .prog-mtitle { font-size: 0.98rem; color: rgba(217,207,195,0.82); font-weight: 500; line-height: 1.4; }
+
+    /* persone che danno vita alla serata */
+    .accompagnano { margin-top: 30px; padding-top: 32px; border-top: 1px solid rgba(175,198,233,0.09); }
+    .people-grid { display: flex; flex-wrap: wrap; justify-content: center; gap: 28px 18px; margin-top: 12px; }
+    .person { width: 124px; text-align: center; }
+    .person-place { font-size: 10.5px; color: rgba(217,207,195,0.45); margin-top: 4px; line-height: 1.35; }
+    .person-photo {
+      width: 96px; height: 96px; border-radius: 50%; object-fit: cover;
+      border: 1px solid rgba(175,198,233,0.25);
+      box-shadow: 0 0 0 5px rgba(175,198,233,0.05), 0 8px 20px rgba(0,0,0,0.22);
+      transition: transform 0.2s;
+    }
+    .person:hover .person-photo { transform: translateY(-3px); }
+    .person-name { font-family: 'Playfair Display', serif; font-size: 0.98rem; color: var(--sand); margin-top: 12px; }
+    .person-role { font-size: 11px; letter-spacing: 1.5px; text-transform: uppercase; color: var(--blue); opacity: 0.62; margin-top: 3px; }
+
+    /* nota + cta */
+    .voci-cta { margin-top: 38px; text-align: center; }
+    .voci-note { font-size: 0.92rem; color: rgba(217,207,195,0.6); line-height: 1.7; max-width: 480px; margin: 0 auto 24px; font-style: italic; }
+
+    /* reveal leggero */
+    .voci-reveal { opacity: 0; transform: translateY(14px); transition: opacity 0.6s ease, transform 0.6s ease; }
+    .voci-reveal.is-in { opacity: 1; transform: none; }
+    @media (prefers-reduced-motion: reduce) { .voci-reveal { opacity: 1; transform: none; transition: none; } }
+
+    @media (max-width: 560px) { .people-grid { gap: 26px 14px; } .person { width: 132px; } }
+    @media (max-width: 480px) {
+      .prog-item { grid-template-columns: 44px 22px 1fr; column-gap: 10px; }
+      .prog-time { font-size: 12px; }
+      .prog-photo { width: 54px; height: 54px; }
+      .prog-name { font-size: 1rem; }
+    }
 </style>
 </head>
 <body>
@@ -1022,6 +1113,161 @@
 
   <hr class="section-sep" />
 
+  <!-- ══════════ LE VOCI DELLA SERATA ══════════ -->
+  <section class="voci-section" id="voci" aria-labelledby="voci-heading">
+    <p class="section-tag">20 Giugno 2026</p>
+    <h2 class="serata-h2" id="voci-heading">Il programma della serata</h2>
+    <p class="voci-sub">Storie, musica e prospettive che accompagneranno il viaggio di Liberi dal Successo.</p>
+
+    <ol class="program">
+      <li class="prog-item prog-item--moment voci-reveal">
+        <div class="prog-time">17:30</div>
+        <div class="prog-rail"><span class="prog-dot"></span></div>
+        <div class="prog-card">
+          <div>
+            <p class="prog-role">Apertura</p>
+            <p class="prog-mtitle">Accoglienza e apertura evento</p>
+          </div>
+        </div>
+      </li>
+
+      <li class="prog-item prog-item--talk voci-reveal">
+        <div class="prog-time">18:00</div>
+        <div class="prog-rail"><span class="prog-dot"></span></div>
+        <div class="prog-card">
+          <img class="prog-photo" src="people/michele-uliana.jpg" alt="Michele Uliana" width="64" height="64" loading="lazy" decoding="async" />
+          <div class="prog-meta">
+            <p class="prog-name">Michele Uliana</p>
+            <p class="prog-title">Respiro e consapevolezza</p>
+            <p class="prog-place"><a href="https://www.studio-essere.com" target="_blank" rel="noopener">Studio Essere</a></p>
+          </div>
+        </div>
+      </li>
+
+      <li class="prog-item prog-item--talk voci-reveal">
+        <div class="prog-time">18:30</div>
+        <div class="prog-rail"><span class="prog-dot"></span></div>
+        <div class="prog-card">
+          <img class="prog-photo" src="people/adama-mbaye-maya-bosello.jpg" alt="Adama Mbaye e Maya Bosello" width="64" height="64" loading="lazy" decoding="async" />
+          <div class="prog-meta">
+            <p class="prog-name">Adama Mbaye &amp; Maya Bosello</p>
+            <p class="prog-title">Il confine dell’identità</p>
+          </div>
+        </div>
+      </li>
+
+      <li class="prog-item prog-item--moment voci-reveal">
+        <div class="prog-time">19:00</div>
+        <div class="prog-rail"><span class="prog-dot"></span></div>
+        <div class="prog-card">
+          <div>
+            <p class="prog-role">Pausa</p>
+            <p class="prog-mtitle">Rinfresco e momento conviviale</p>
+          </div>
+        </div>
+      </li>
+
+      <li class="prog-item prog-item--talk voci-reveal">
+        <div class="prog-time">20:00</div>
+        <div class="prog-rail"><span class="prog-dot"></span></div>
+        <div class="prog-card">
+          <img class="prog-photo" src="people/joel-parman-silvia-grimaldi.jpg" alt="Joel Parman e Silvia Grimaldi" width="64" height="64" loading="lazy" decoding="async" />
+          <div class="prog-meta">
+            <p class="prog-name">Joel Parman &amp; Silvia Grimaldi</p>
+            <p class="prog-title">A chi vuoi piacere?</p>
+          </div>
+        </div>
+      </li>
+
+      <li class="prog-item prog-item--talk voci-reveal">
+        <div class="prog-time">20:30</div>
+        <div class="prog-rail"><span class="prog-dot"></span></div>
+        <div class="prog-card">
+          <img class="prog-photo" src="people/gianmarco-gomiero.jpg" alt="Gianmarco Gomiero" width="64" height="64" loading="lazy" decoding="async" />
+          <div class="prog-meta">
+            <p class="prog-name">Gianmarco Gomiero</p>
+            <p class="prog-title">L’unica direzione</p>
+          </div>
+        </div>
+      </li>
+
+      <li class="prog-item prog-item--talk voci-reveal">
+        <div class="prog-time">21:00</div>
+        <div class="prog-rail"><span class="prog-dot"></span></div>
+        <div class="prog-card">
+          <img class="prog-photo" src="people/jessydance.jpg" alt="Jessydance — scuola di danza" width="64" height="64" loading="lazy" decoding="async" />
+          <div class="prog-meta">
+            <p class="prog-name">Jessydance</p>
+            <p class="prog-title">Performance di danza</p>
+            <p class="prog-place">Cervarese Santa Croce (PD)</p>
+          </div>
+        </div>
+      </li>
+    </ol>
+
+    <!-- persone che accompagnano -->
+    <div class="accompagnano voci-reveal">
+      <p class="section-tag">Le persone che daranno vita alla serata</p>
+      <div class="people-grid">
+        <figure class="person">
+          <img class="person-photo" src="people/giulia-lazzaretto.jpg" alt="Giulia Lazzaretto" width="96" height="96" loading="lazy" decoding="async" />
+          <figcaption>
+            <p class="person-name">Giulia Lazzaretto</p>
+            <p class="person-role">Presentatrice</p>
+          </figcaption>
+        </figure>
+        <figure class="person">
+          <img class="person-photo" src="people/agnese-ardolino.jpg" alt="Agnese Ardolino" width="96" height="96" loading="lazy" decoding="async" />
+          <figcaption>
+            <p class="person-name">Agnese Ardolino</p>
+            <p class="person-role">Violino</p>
+          </figcaption>
+        </figure>
+        <figure class="person">
+          <img class="person-photo" src="people/stefano-canton.jpg" alt="Stefano Canton" width="96" height="96" loading="lazy" decoding="async" />
+          <figcaption>
+            <p class="person-name">Stefano Canton</p>
+            <p class="person-role">Clarinetto</p>
+          </figcaption>
+        </figure>
+        <figure class="person">
+          <img class="person-photo" src="people/giacomo-gomiero.jpg" alt="Giacomo Gomiero" width="96" height="96" loading="lazy" decoding="async" />
+          <figcaption>
+            <p class="person-name">Giacomo Gomiero</p>
+            <p class="person-role">Chitarra acustica</p>
+          </figcaption>
+        </figure>
+      </div>
+    </div>
+
+    <div class="voci-cta voci-reveal">
+      <p class="voci-note">Il programma potrà subire leggere variazioni, ma il cuore della serata resta lo stesso: fermarsi, ascoltare e condividere.</p>
+      <a href="iscrizioni.html" class="btn-main">Iscriviti all’evento</a>
+    </div>
+  </section>
+
+  <script>
+    (function () {
+      var els = document.querySelectorAll('#voci .voci-reveal');
+      if (!els.length) return;
+      if (!('IntersectionObserver' in window)) {
+        els.forEach(function (e) { e.classList.add('is-in'); });
+        return;
+      }
+      var io = new IntersectionObserver(function (entries) {
+        entries.forEach(function (en) {
+          if (en.isIntersecting) { en.target.classList.add('is-in'); io.unobserve(en.target); }
+        });
+      }, { rootMargin: '0px 0px -10% 0px', threshold: 0.08 });
+      els.forEach(function (e, i) {
+        e.style.transitionDelay = (Math.min(i, 6) * 60) + 'ms';
+        io.observe(e);
+      });
+    })();
+  </script>
+
+  <hr class="section-sep" />
+
   <!-- ══════════ INFO EVENTO ══════════ -->
   <div class="section" id="info">
     <p class="section-tag">Informazioni pratiche</p>
@@ -1205,6 +1451,7 @@
     <a href="#formato">Formato</a>
     <a href="#pubblico">Per chi</a>
     <a href="#missione">Missione</a>
+    <a href="#voci">Programma</a>
     <a href="#info">Info</a>
     <a href="#faq">FAQ</a>
     <a href="identita.html">Identità</a>
@@ -1221,6 +1468,7 @@
     <a href="#formato"><span class="side-nav-label">Formato</span><span class="side-nav-dot"></span></a>
     <a href="#pubblico"><span class="side-nav-label">Per chi</span><span class="side-nav-dot"></span></a>
     <a href="#missione"><span class="side-nav-label">Missione</span><span class="side-nav-dot"></span></a>
+    <a href="#voci"><span class="side-nav-label">Programma</span><span class="side-nav-dot"></span></a>
     <a href="#info"><span class="side-nav-label">Info</span><span class="side-nav-dot"></span></a>
     <a href="#faq"><span class="side-nav-label">FAQ</span><span class="side-nav-dot"></span></a>
     <a href="identita.html"><span class="side-nav-label">Identità</span><span class="side-nav-dot"></span></a>
