@@ -1098,39 +1098,61 @@ function sendAdminNotifyCollaborazione(data, sheetCollab, sheetIscr) {
 
 // ── BLOCCO "PROGRAMMA DELLA SERATA" (per la mail di conferma) ──
 function programmaBlockHtml_() {
+  var IMG = 'https://liberidalsuccesso.it/people/';
+  var SERIF = "'Playfair Display',Georgia,serif";
+  var linkStudio = "<a href='https://www.studio-essere.com' target='_blank' style='font-family:sans-serif;font-size:12px;color:#AFC6E9;text-decoration:underline;'>Studio Essere</a>";
+  var linkJessy = "<a href='https://jessydanceasd9.wixsite.com/website' target='_blank' style='font-family:sans-serif;font-size:12px;color:#AFC6E9;text-decoration:underline;'>Jessydance ASD</a>";
+
   var slots = [
-    { t: '17:30', n: 'Accoglienza e apertura evento', s: '' },
-    { t: '18:00', n: 'Michele Uliana', s: 'Respiro e consapevolezza' },
-    { t: '18:30', n: 'Adama Mbaye & Maya Bosello', s: 'Il confine dell’identità' },
-    { t: '19:00', n: 'Rinfresco e momento conviviale', s: '' },
-    { t: '20:00', n: 'Joel Parman & Silvia Grimaldi', s: 'A chi vuoi piacere?' },
-    { t: '20:30', n: 'Gianmarco Gomiero', s: 'L’unica direzione' },
-    { t: '21:00', n: 'Jessydance', s: 'Performance di danza' }
+    { t: '17:30', n: 'Accoglienza e apertura evento', s: '', img: '', link: '' },
+    { t: '18:00', n: 'Michele Uliana', s: 'Respiro e consapevolezza', img: 'michele-uliana.jpg', link: linkStudio },
+    { t: '18:30', n: 'Adama Mbaye & Maya Bosello', s: 'Il confine dell’identità', img: 'adama-mbaye-maya-bosello.jpg', link: '' },
+    { t: '19:00', n: 'Rinfresco e momento conviviale', s: '', img: '', link: '' },
+    { t: '20:00', n: 'Joel Parman & Silvia Grimaldi', s: 'A chi vuoi piacere?', img: 'joel-parman-silvia-grimaldi.jpg', link: '' },
+    { t: '20:30', n: 'Gianmarco Gomiero', s: 'L’unica direzione', img: 'gianmarco-gomiero.jpg', link: '' },
+    { t: '21:00', n: 'Jessydance', s: 'Performance di danza', img: 'jessydance.jpg', link: linkJessy }
   ];
-  var rows = '';
+
+  var tl = '';
   for (var i = 0; i < slots.length; i++) {
     var sl = slots[i];
-    var last = i === slots.length - 1;
-    var border = last ? '' : 'border-bottom:1px solid rgba(175,198,233,0.10);';
-    var nameColor = sl.s ? '#D9CFC3' : 'rgba(230,232,236,0.72)';
-    var titleHtml = sl.s
-      ? "<div style='font-size:13px;font-style:italic;color:#AFC6E9;padding-top:2px;'>" + sl.s + '</div>'
-      : '';
-    rows +=
+    var border = (i === slots.length - 1) ? '' : 'border-bottom:1px solid rgba(175,198,233,0.10);';
+    var left = sl.img
+      ? "<img src='" + IMG + sl.img + "' width='54' height='54' alt='' style='display:block;margin:0 auto;border-radius:50%;border:1px solid rgba(196,169,98,0.55);' />"
+      : "<div style='width:11px;height:11px;border-radius:50%;background:#5d6b7d;margin:7px auto 0;'></div>";
+    var nameColor = sl.s ? '#D9CFC3' : 'rgba(230,232,236,0.78)';
+    var title = sl.s ? "<div style='font-family:" + SERIF + ";font-style:italic;font-size:14px;color:#AFC6E9;padding-top:2px;'>" + sl.s + '</div>' : '';
+    var link = sl.link ? "<div style='padding-top:5px;'>" + sl.link + '</div>' : '';
+    tl +=
       '<tr>' +
-        "<td valign='top' style='padding:9px 14px 9px 0;white-space:nowrap;" + border + "'>" +
-          "<span style='font-size:13px;font-weight:700;color:#C4A962;'>" + sl.t + '</span></td>' +
-        "<td valign='top' style='padding:9px 0;" + border + "'>" +
-          "<div style='font-size:14px;color:" + nameColor + ";line-height:1.35;'>" + sl.n + '</div>' +
-          titleHtml +
+        "<td valign='top' width='62' align='center' style='padding:12px 0;" + border + "'>" + left + '</td>' +
+        "<td valign='top' style='padding:12px 0 12px 8px;" + border + "'>" +
+          "<div style='font-family:sans-serif;font-size:11px;font-weight:700;letter-spacing:1px;color:#C4A962;'>" + sl.t + '</div>' +
+          "<div style='font-family:" + SERIF + ";font-size:16px;color:" + nameColor + ";padding-top:3px;'>" + sl.n + '</div>' +
+          title + link +
         '</td>' +
       '</tr>';
   }
+
+  function pcell(img, name, role) {
+    return "<td width='50%' align='center' valign='top' style='padding:12px 0;'>" +
+      "<img src='" + IMG + img + "' width='78' height='78' alt='' style='display:block;margin:0 auto;border-radius:50%;border:1px solid rgba(175,198,233,0.3);' />" +
+      "<div style='font-family:" + SERIF + ";font-size:14px;color:#D9CFC3;padding-top:10px;'>" + name + '</div>' +
+      "<div style='font-family:sans-serif;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:#8f9bab;padding-top:3px;'>" + role + '</div></td>';
+  }
+
   return (
     "<div style='height:1px;background:linear-gradient(90deg,transparent,rgba(175,198,233,0.18),transparent);margin:6px 0 20px;'></div>" +
     "<p style='font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#AFC6E9;margin:0 0 4px;'>Il programma della serata</p>" +
-    "<p style='font-size:13px;color:rgba(230,232,236,0.6);margin:0 0 14px;line-height:1.6;'>Ecco cosa vivremo insieme:</p>" +
-    "<table role='presentation' style='width:100%;border-collapse:collapse;'>" + rows + '</table>'
+    "<p style='font-size:13px;color:rgba(230,232,236,0.6);margin:0 0 8px;line-height:1.6;'>Ecco cosa vivremo insieme:</p>" +
+    "<table role='presentation' width='100%' style='border-collapse:collapse;'>" + tl + '</table>' +
+    "<p style='font-family:" + SERIF + ";font-style:italic;font-size:13px;color:rgba(230,232,236,0.55);margin:20px 0 0;line-height:1.7;text-align:center;'>Il programma potrà subire leggere variazioni, ma il cuore della serata resta lo stesso.</p>" +
+    "<div style='height:1px;background:rgba(175,198,233,0.10);margin:24px 0 0;'></div>" +
+    "<p style='font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#AFC6E9;margin:22px 0 8px;text-align:center;'>Le persone che daranno vita alla serata</p>" +
+    "<table role='presentation' width='100%' style='border-collapse:collapse;'>" +
+      '<tr>' + pcell('giulia-lazzaretto.jpg', 'Giulia Lazzaretto', 'Presentatrice') + pcell('agnese-ardolino.jpg', 'Agnese Ardolino', 'Violino') + '</tr>' +
+      '<tr>' + pcell('stefano-canton.jpg', 'Stefano Canton', 'Clarinetto') + pcell('giacomo-gomiero.jpg', 'Giacomo Gomiero', 'Chitarra acustica') + '</tr>' +
+    '</table>'
   );
 }
 
