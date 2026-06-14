@@ -273,12 +273,16 @@ function buildAnalysisMessage_(sheetIscr) {
     }
   }
 
+  // Provenienza per PERSONE: l'iscritto + i suoi accompagnatori contano
+  // nello stesso comune (uso i posti della riga).
   var comuniMap = {};
   var noComune = 0;
   for (var c = 0; c < rows.length; c++) {
+    var ppl = parseInt(String(rows[c].posti).replace(/\s/g, ''), 10);
+    if (isNaN(ppl) || ppl < 1) ppl = 1;
     var cm = String(rows[c].comune || '').trim();
-    if (!cm || /^ext$/i.test(cm)) { noComune++; continue; }
-    comuniMap[cm] = (comuniMap[cm] || 0) + 1;
+    if (!cm || /^ext$/i.test(cm)) { noComune += ppl; continue; }
+    comuniMap[cm] = (comuniMap[cm] || 0) + ppl;
   }
   var comuniArr = [];
   for (var key in comuniMap) comuniArr.push([key, comuniMap[key]]);
@@ -295,6 +299,7 @@ function buildAnalysisMessage_(sheetIscr) {
   }
 
   function pct(x) { return totalIscritti ? Math.round(x / totalIscritti * 100) : 0; }
+  function pctP(x) { return totalPosti ? Math.round(x / totalPosti * 100) : 0; }
   var totGen = gen.F + gen.M + gen.U;
   function pctG(x) { return totGen ? Math.round(x / totGen * 100) : 0; }
   function ageLabel(x) { return x === 'over65' ? 'over 65' : x; }
@@ -307,8 +312,8 @@ function buildAnalysisMessage_(sheetIscr) {
 
   var comuniLines = [];
   top.forEach(function(x, idx) {
-    if (idx === 0) comuniLines.push('• *' + x[0] + ' → ' + x[1] + '* (il cuore di casa 💙)');
-    else comuniLines.push('• ' + x[0] + ' → ' + x[1]);
+    if (idx === 0) comuniLines.push('• *' + x[0] + ' → ' + x[1] + ' (' + pctP(x[1]) + '%)* (il cuore di casa 💙)');
+    else comuniLines.push('• ' + x[0] + ' → ' + x[1] + ' (' + pctP(x[1]) + '%)');
   });
   if (singlesPD.length) {
     comuniLines.push('• ' + singlesPD.map(function(x){ return x[0]; }).join(', ') + ' → 1 ciascuno');
@@ -317,16 +322,7 @@ function buildAnalysisMessage_(sheetIscr) {
     comuniLines.push('• Anche da fuori: ' + singlesFuori.map(function(x){ return x[0]; }).join(', ') + ' → 1 ciascuno');
   }
   if (noComune > 0) {
-    comuniLines.push('• ' + noComune + ' iscritt' + (noComune === 1 ? 'o' : 'i') + ' senza comune compilato');
-  }
-
-  var polariz = pct(buckets['26-35'] + buckets['51-65']);
-  var insightLines = ['• Pubblico polarizzato: *26-35 + 51-65 = ' + polariz + '%*'];
-  if (buckets['18-25'] <= 2) {
-    insightLines.push('• Quasi assenti i *18-25* (solo ' + buckets['18-25'] + ' iscritt' + (buckets['18-25'] === 1 ? 'o' : 'i') + ')');
-  }
-  if (top.length) {
-    insightLines.push('• Bel mix territoriale: ' + top[0][0] + ' zoccolo duro, ma stiamo arrivando anche oltre i Colli');
+    comuniLines.push('• ' + noComune + ' person' + (noComune === 1 ? 'a' : 'e') + ' senza comune compilato (' + pctP(noComune) + '%)');
   }
 
   var dateStr = Utilities.formatDate(new Date(), 'Europe/Rome', 'dd.MM.yyyy');
@@ -350,11 +346,14 @@ function buildAnalysisMessage_(sheetIscr) {
     '📍 *Provenienza*',
     comuniLines.join('\n'),
     '',
-    '💡 *Cosa notiamo*',
-    insightLines.join('\n'),
-    '',
     '💙'
   ].join('\n');
+}
+
+/** Anteprima: stampa nel log il messaggio di analisi (senza inviarlo). */
+function testAnalisiWhatsApp() {
+  var sh = SpreadsheetApp.getActiveSpreadsheet().getSheetByName('Iscrizioni');
+  Logger.log(buildAnalysisMessage_(sh));
 }
 
 // ── FOGLIO "LISTA NOMINATIVI" (contatore + elenco completo per cognome) ──
