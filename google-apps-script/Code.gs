@@ -1003,46 +1003,11 @@ function testWhatsAppIntegration() {
 }
 
 function sendAdminNotifyIscrizione(data, sheetIscr, sheetCollab) {
-  var nIscr = countDataRows(sheetIscr);
-  var nCollab = countDataRows(sheetCollab);
-  var postiTot = sumPostiColumn(sheetIscr);
-  var msg =
-    'Liberi dal Successo — nuova ISCRIZIONE\n\n' +
-    'Nome: ' +
-    adminLine_(data.nome) +
-    ' ' +
-    adminLine_(data.cognome) +
-    '\nEmail: ' +
-    adminLine_(data.email) +
-    '\nTipo: ' +
-    adminLine_(data.tipo) +
-    '\nPosti: ' +
-    adminLine_(data.posti) +
-    '\nEtà: ' +
-    adminLine_(data.eta) +
-    ' · Comune: ' +
-    adminLine_(data.comune) +
-    '\nAccompagnatori: ' +
-    adminLine_(data.accompagnatori || '—') +
-    '\nConsenso foto: ' +
-    adminLine_(data.consenso_foto) +
-    '\nInvio: ' +
-    adminLine_(data.timestamp || '') +
-    '\n\n— Totali aggiornati —\n' +
-    'Iscrizioni (righe foglio): ' +
-    nIscr +
-    '\nPosti richiesti (somma): ' +
-    postiTot +
-    '\nRichieste collaborazione: ' +
-    nCollab;
-  sendWhatsAppAdmin(msg);
-
+  // Niente notifica per-iscrizione: mando un solo messaggio (l'analisi
+  // aggregata), così non viene troncato dal doppio invio ravvicinato.
   try {
     var analysisMsg = buildAnalysisMessage_(sheetIscr);
-    if (analysisMsg) {
-      Utilities.sleep(2000);
-      sendWhatsAppAdmin(analysisMsg);
-    }
+    if (analysisMsg) sendWhatsAppAdmin(analysisMsg);
   } catch (analysisErr) {
     Logger.log('buildAnalysisMessage error: ' + (analysisErr && analysisErr.message ? analysisErr.message : analysisErr));
   }
