@@ -1096,6 +1096,44 @@ function sendAdminNotifyCollaborazione(data, sheetCollab, sheetIscr) {
   sendWhatsAppAdmin(msg);
 }
 
+// ── BLOCCO "PROGRAMMA DELLA SERATA" (per la mail di conferma) ──
+function programmaBlockHtml_() {
+  var slots = [
+    { t: '17:30', n: 'Accoglienza e apertura evento', s: '' },
+    { t: '18:00', n: 'Michele Uliana', s: 'Respiro e consapevolezza' },
+    { t: '18:30', n: 'Adama Mbaye & Maya Bosello', s: 'Il confine dell’identità' },
+    { t: '19:00', n: 'Rinfresco e momento conviviale', s: '' },
+    { t: '20:00', n: 'Joel Parman & Silvia Grimaldi', s: 'A chi vuoi piacere?' },
+    { t: '20:30', n: 'Gianmarco Gomiero', s: 'L’unica direzione' },
+    { t: '21:00', n: 'Jessydance', s: 'Performance di danza' }
+  ];
+  var rows = '';
+  for (var i = 0; i < slots.length; i++) {
+    var sl = slots[i];
+    var last = i === slots.length - 1;
+    var border = last ? '' : 'border-bottom:1px solid rgba(175,198,233,0.10);';
+    var nameColor = sl.s ? '#D9CFC3' : 'rgba(230,232,236,0.72)';
+    var titleHtml = sl.s
+      ? "<div style='font-size:13px;font-style:italic;color:#AFC6E9;padding-top:2px;'>" + sl.s + '</div>'
+      : '';
+    rows +=
+      '<tr>' +
+        "<td valign='top' style='padding:9px 14px 9px 0;white-space:nowrap;" + border + "'>" +
+          "<span style='font-size:13px;font-weight:700;color:#C4A962;'>" + sl.t + '</span></td>' +
+        "<td valign='top' style='padding:9px 0;" + border + "'>" +
+          "<div style='font-size:14px;color:" + nameColor + ";line-height:1.35;'>" + sl.n + '</div>' +
+          titleHtml +
+        '</td>' +
+      '</tr>';
+  }
+  return (
+    "<div style='height:1px;background:linear-gradient(90deg,transparent,rgba(175,198,233,0.18),transparent);margin:6px 0 20px;'></div>" +
+    "<p style='font-size:11px;letter-spacing:2px;text-transform:uppercase;color:#AFC6E9;margin:0 0 4px;'>Il programma della serata</p>" +
+    "<p style='font-size:13px;color:rgba(230,232,236,0.6);margin:0 0 14px;line-height:1.6;'>Ecco cosa vivremo insieme:</p>" +
+    "<table role='presentation' style='width:100%;border-collapse:collapse;'>" + rows + '</table>'
+  );
+}
+
 // ── EMAIL CONFERMA ISCRIZIONE ──
 function sendConfirmEmail(data) {
   var isWait = data.tipo === "Lista d'attesa";
@@ -1156,7 +1194,8 @@ function sendConfirmEmail(data) {
         escapeHtml(data.posti) +
         '</td></tr>' +
         accompTxt +
-        '</table>',
+        '</table>' +
+        programmaBlockHtml_(),
       '<a href="' +
         gcalLink +
         '" target="_blank" style="display:inline-block;padding:14px 32px;background:linear-gradient(135deg,#c4a962,#d8bb72,#c4a962);color:#0B1C2D;font-family:sans-serif;font-size:14px;font-weight:700;letter-spacing:0.5px;text-transform:uppercase;text-decoration:none;border-radius:8px;">Salva nel calendario</a>',
