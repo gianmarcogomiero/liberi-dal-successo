@@ -1017,13 +1017,10 @@ function sendAdminNotifyIscrizione(data, sheetIscr, sheetCollab) {
     '\nAccompagnatori: ' + adminLine_(data.accompagnatori || '—');
   sendWhatsAppAdmin(msg);
 
-  // 2) Dopo una breve pausa (~2s) i totali, così i due messaggi non si sovrappongono.
+  // 2) Subito dopo, i totali (nessuna pausa).
   try {
     var analysisMsg = buildAnalysisMessage_(sheetIscr);
-    if (analysisMsg) {
-      Utilities.sleep(2000);
-      sendWhatsAppAdmin(analysisMsg);
-    }
+    if (analysisMsg) sendWhatsAppAdmin(analysisMsg);
   } catch (analysisErr) {
     Logger.log('buildAnalysisMessage error: ' + (analysisErr && analysisErr.message ? analysisErr.message : analysisErr));
   }
