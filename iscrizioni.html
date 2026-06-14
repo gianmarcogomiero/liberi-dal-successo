@@ -575,7 +575,7 @@
           </div>
 
           <div class="fg">
-            <label class="f-label" for="f-eta">Fascia d'età <span style="font-weight:400;opacity:0.5;text-transform:none;letter-spacing:0;">(facoltativo)</span></label>
+            <label class="f-label" for="f-eta">Fascia d'età <span class="req">*</span></label>
             <select id="f-eta">
               <option value="">Seleziona</option>
               <option value="under18">Meno di 18</option>
@@ -588,8 +588,8 @@
           </div>
 
           <div class="fg right">
-            <label class="f-label" for="f-comune">Comune <span style="font-weight:400;opacity:0.5;text-transform:none;letter-spacing:0;">(facoltativo)</span></label>
-            <p style="font-size:0.68rem;color:rgba(230,232,236,0.35);margin:-4px 0 6px;line-height:1.4;">Se vuoi, ci aiuta a capire da dove arrivate.</p>
+            <label class="f-label" for="f-comune">Comune <span class="req">*</span></label>
+            <p style="font-size:0.68rem;color:rgba(230,232,236,0.35);margin:-4px 0 6px;line-height:1.4;">Ci aiuta a capire da dove arrivate.</p>
             <div class="ac-wrap">
               <input type="text" id="f-comune" placeholder="Inizia a digitare…" autocomplete="off" />
               <div class="ac-list" id="js-aclist"></div>
@@ -949,6 +949,8 @@
     if (!fCognome.value) errors.push('Manca il <strong>cognome</strong> — promesso, non lo usiamo per spam ;)');
     if (!fEmail.value)   errors.push('Ops, ti sei dimenticato la <strong>mail</strong>! Senza non possiamo confermarti il posto.');
     else if (!EMAIL_RE.test(fEmail.value)) errors.push('Hmm, la <strong>mail</strong> non sembra completa — controlla che ci sia la @, il dominio e tutto il resto!');
+    if (!fEta.value)    errors.push("Manca la <strong>fascia d'età</strong> — selezionala dal menu.");
+    if (!fComune.value) errors.push('Manca il <strong>comune</strong> di provenienza.');
     var nPosti = parseInt(fPosti.value, 10) || 1;
     if (nPosti > 1) {
       var a;
