@@ -288,7 +288,8 @@ function buildAnalysisMessage_(sheetIscr) {
   for (var key in comuniMap) comuniArr.push([key, comuniMap[key]]);
   comuniArr.sort(function(a, b) { return b[1] - a[1]; });
 
-  var top = comuniArr.filter(function(x) { return x[1] >= 2; });
+  var top = comuniArr.filter(function(x) { return x[1] >= 3; });
+  var twos = comuniArr.filter(function(x) { return x[1] === 2; });
   var singles = comuniArr.filter(function(x) { return x[1] === 1; });
   var singlesPD = singles.filter(function(x) { return PD_COMUNI_[x[0].toLowerCase()]; });
   var singlesFuori = singles.filter(function(x) { return !PD_COMUNI_[x[0].toLowerCase()]; });
@@ -315,11 +316,14 @@ function buildAnalysisMessage_(sheetIscr) {
     if (idx === 0) comuniLines.push('• *' + x[0] + ' → ' + x[1] + ' (' + pctP(x[1]) + '%)* (il cuore di casa 💙)');
     else comuniLines.push('• ' + x[0] + ' → ' + x[1] + ' (' + pctP(x[1]) + '%)');
   });
+  if (twos.length) {
+    comuniLines.push('• 2 persone: ' + twos.map(function(x){ return x[0]; }).join(', '));
+  }
   if (singlesPD.length) {
-    comuniLines.push('• ' + singlesPD.map(function(x){ return x[0]; }).join(', ') + ' → 1 ciascuno');
+    comuniLines.push('• 1 persona: ' + singlesPD.map(function(x){ return x[0]; }).join(', '));
   }
   if (singlesFuori.length) {
-    comuniLines.push('• Anche da fuori: ' + singlesFuori.map(function(x){ return x[0]; }).join(', ') + ' → 1 ciascuno');
+    comuniLines.push('• Anche da fuori: ' + singlesFuori.map(function(x){ return x[0]; }).join(', '));
   }
   if (noComune > 0) {
     comuniLines.push('• ' + noComune + ' person' + (noComune === 1 ? 'a' : 'e') + ' senza comune compilato (' + pctP(noComune) + '%)');
