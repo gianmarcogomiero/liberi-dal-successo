@@ -1032,12 +1032,8 @@ function sendAdminNotifyIscrizione(data, sheetIscr, sheetCollab) {
     Logger.log('rebuildListaNominativi_ error: ' + (listaErr && listaErr.message ? listaErr.message : listaErr));
   }
 
-  // Aggiorna automaticamente il foglio "Statistiche" (KPI + grafici).
-  try {
-    rebuildStatistiche_(sheetIscr.getParent());
-  } catch (statErr) {
-    Logger.log('rebuildStatistiche_ error: ' + (statErr && statErr.message ? statErr.message : statErr));
-  }
+  // (Statistiche/grafici NON rigenerate qui: troppo lente per il form.
+  //  Aggiornale a mano con buildStatistiche quando ti servono.)
 
   // Aggiorna automaticamente il foglio "Totale" (iscritti + team).
   try {
