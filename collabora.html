@@ -439,6 +439,18 @@
           Se non vedi nulla, controlla anche lo spam.
         </p>
       </div>
+
+      <!-- Stato EVENTO PASSATO (mostrato via JS quando LDS.eventEnded) -->
+      <div class="confirm-screen" id="js-closed">
+        <div class="conf-ring">💙</div>
+        <h2 class="conf-title">L'evento è già stato</h2>
+        <p class="conf-body">
+          Liberi dal Successo si è svolto il <strong style="color: var(--info);">20 Giugno 2026</strong>.
+          Le collaborazioni per questa edizione sono chiuse — grazie a chi ha dato una mano.
+          Puoi rivivere la serata nella pagina Grazie.
+        </p>
+        <a href="grazie.html" style="display:inline-flex; align-items:center; gap:8px; margin-top:30px; padding:14px 28px; background:linear-gradient(135deg,#c4a962,#d8bb72,#c4a962); color:#0B1C2D; font-family:'DM Sans',sans-serif; font-size:0.85rem; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; border-radius:var(--r-sm); text-decoration:none;">Rivivi la serata →</a>
+      </div>
     </div>
 
   </div>
@@ -456,6 +468,7 @@
   </div>
 </footer>
 
+<script src="lds-config.js?v=20260625"></script>
 <script>
   'use strict';
 
@@ -473,6 +486,14 @@
 
   var emailRe = /^[a-zA-Z0-9._%+\-]+@[a-zA-Z0-9.\-]+\.[a-zA-Z]{2,}$/;
 
+  /* ── Evento già passato → collaborazioni chiuse, rimando a grazie.html ── */
+  if (window.LDS && window.LDS.eventEnded) {
+    if (form) form.style.display = 'none';
+    var _fh  = document.querySelector('.form-section h2');  if (_fh)  _fh.style.display = 'none';
+    var _fs  = document.querySelector('.form-sub');         if (_fs)  _fs.style.display = 'none';
+    var _cl  = document.getElementById('js-closed');        if (_cl)  _cl.style.display = 'block';
+  }
+
   function showErr(msg) {
     errBox.textContent = msg;
     errBox.style.display = 'block';
@@ -481,6 +502,7 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    if (window.LDS && window.LDS.eventEnded) { window.location.href = 'grazie.html'; return; }
     errBox.style.display = 'none';
 
     var nome = fNome.value.trim();

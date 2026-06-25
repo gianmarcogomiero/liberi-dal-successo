@@ -1,0 +1,9 @@
+# macOS
+.DS_Store
+
+# Claude Code (config locale, worktrees, sessioni) — non va pubblicato
+.claude/
+
+# Foto originali pesanti non usate dal sito (online vanno le .jpg ottimizzate)
+thanks/*.png
+thanks/0-gruppo.jpg

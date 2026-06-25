@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500&display=swap" rel="stylesheet" />
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:3024px; height:1964px; overflow:hidden; }
+  body {
+    position:relative;
+    background:
+      radial-gradient(ellipse 95% 80% at 24% 12%, rgba(175,198,233,0.11) 0%, transparent 52%),
+      radial-gradient(ellipse 85% 75% at 82% 96%, rgba(217,207,195,0.085) 0%, transparent 52%),
+      radial-gradient(circle at 50% 43%, #163css 0%, #0B1C2D 58%),
+      #0B1C2D;
+    font-family:'Playfair Display', Georgia, serif;
+  }
+  /* fallback corretto del gradiente centrale */
+  body { background:
+      radial-gradient(ellipse 95% 80% at 24% 12%, rgba(175,198,233,0.11) 0%, transparent 52%),
+      radial-gradient(ellipse 85% 75% at 82% 96%, rgba(217,207,195,0.085) 0%, transparent 52%),
+      radial-gradient(circle at 50% 43%, #15314e 0%, #0B1C2D 60%),
+      #0B1C2D; }
+
+  .spiral { position:absolute; inset:0; width:3024px; height:1964px; }
+
+  .stage {
+    position:absolute; inset:0;
+    display:flex; flex-direction:column;
+    align-items:center; justify-content:center;
+    transform: translateY(-26px);
+  }
+  .logo { width:430px; height:430px; display:block; opacity:0.96; }
+  .title {
+    margin-top:70px;
+    font-weight:400;
+    font-size:74px;
+    letter-spacing:26px;
+    /* compenso il letter-spacing sull'ultima lettera per centratura perfetta */
+    text-indent:26px;
+    color:#D9CFC3;
+    text-transform:uppercase;
+    line-height:1;
+  }
+  /* alone tenue dietro al logo per profondità */
+  .halo {
+    position:absolute; left:50%; top:calc(43% - 26px); transform:translate(-50%,-50%);
+    width:1100px; height:1100px; border-radius:50%;
+    background: radial-gradient(circle, rgba(175,198,233,0.06) 0%, transparent 62%);
+  }
+</style>
+</head>
+<body>
+  <div class="halo"></div>
+  <svg class="spiral" viewBox="0 0 3024 1964">
+    <path id="sp1" fill="none" stroke="rgba(175,198,233,0.05)" stroke-width="2.2" stroke-linecap="round" />
+    <path id="sp2" fill="none" stroke="rgba(217,207,195,0.035)" stroke-width="2" stroke-linecap="round" />
+  </svg>
+
+  <div class="stage">
+    <img class="logo" src="../Loghi/colorato-trasparente.svg" alt="" />
+    <div class="title">Liberi dal Successo</div>
+  </div>
+
+  <script>
+    function spiralPath(cx, cy, a, b, turns, rot) {
+      var pts = [], end = turns * 2 * Math.PI;
+      for (var t = 0; t <= end; t += 0.05) {
+        var r = a * Math.exp(b * t);
+        var ang = t + rot;
+        pts.push((cx + r * Math.cos(ang)).toFixed(1) + ',' + (cy + r * Math.sin(ang)).toFixed(1));
+      }
+      return 'M' + pts.join(' L');
+    }
+    var cx = 1512, cy = 826;
+    document.getElementById('sp1').setAttribute('d', spiralPath(cx, cy, 7, 0.232, 3.15, 0));
+    document.getElementById('sp2').setAttribute('d', spiralPath(cx, cy, 7, 0.232, 3.15, Math.PI));
+  </script>
+</body>
+</html>

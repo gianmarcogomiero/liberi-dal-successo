@@ -6,6 +6,10 @@
   'use strict';
 
   window.LDS = {
+    /** true = evento già svolto → iscrizioni/collaborazioni CHIUSE, rimando a grazie.html.
+     *  (per riaprire in futuro: rimetti false) */
+    eventEnded: true,
+
     /** true = capienza evento piena → CTA lista d'attesa */
     eventFull: false,
 

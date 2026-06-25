@@ -673,6 +673,18 @@
       <p class="conf-footnote" id="js-conf-footnote">Per più di sette posti in tutto, ripeti dopo ogni conferma.</p>
     </div>
 
+    <!-- Stato EVENTO PASSATO (mostrato via JS quando LDS.eventEnded) -->
+    <div class="confirm-screen" id="js-closed">
+      <div class="conf-ring">💙</div>
+      <h2 class="conf-title">L'evento è già stato</h2>
+      <p class="conf-body">
+        Liberi dal Successo si è svolto il <strong style="color:var(--info);">20 Giugno 2026</strong>.
+        Le iscrizioni sono chiuse — ma la serata continua: foto, ringraziamenti e uno spazio
+        per lasciare un pensiero ti aspettano nella pagina Grazie.
+      </p>
+      <a class="btn-cal" href="grazie.html" style="margin-top:32px;">Rivivi la serata →</a>
+    </div>
+
   </div>
 </main>
 
@@ -713,7 +725,7 @@
   </div>
 </div>
 
-<script src="lds-config.js"></script>
+<script src="lds-config.js?v=20260625"></script>
 <script>
 (function () {
   'use strict';
@@ -818,6 +830,17 @@
   /* ── UI da lds-config.js ── */
   function applyLdsUi() {
     var L = window.LDS || {};
+    if (L.eventEnded) {
+      var closed = document.getElementById('js-closed');
+      if (closed) closed.style.display = 'block';
+      [form, confirmDiv,
+       document.getElementById('js-spots-widget'),
+       document.querySelector('.section-intro')].forEach(function (el) {
+        if (el) el.style.display = 'none';
+      });
+      if (wBanner) wBanner.hidden = true;
+      return;
+    }
     var full = !!L.eventFull;
     if (wBanner && wBannerText) {
       if (full) {
@@ -999,6 +1022,7 @@
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
+    if (window.LDS && window.LDS.eventEnded) { window.location.href = 'grazie.html'; return; }
     hideSubmitErr();
     if (!validate()) return;
 

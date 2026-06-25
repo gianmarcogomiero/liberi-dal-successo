@@ -52,6 +52,17 @@ function doPost(e) {
       return jsonOut({ success: false, message: 'Dati mancanti.' });
     }
 
+    // ── Evento già svolto (20/06/2026): iscrizioni e collaborazioni CHIUSE.
+    //    Il feedback dalla pagina "Grazie" resta sempre attivo.
+    //    (per riaprire in futuro: rimetti EVENT_ENDED a false)
+    var EVENT_ENDED = true;
+    if (EVENT_ENDED && data.tipo !== 'Feedback') {
+      return jsonOut({
+        success: false,
+        message: "L'evento Liberi dal Successo si è svolto il 20 Giugno 2026: le iscrizioni e le collaborazioni sono chiuse. Vieni a rivivere la serata su liberidalsuccesso.it/grazie.html 💙"
+      });
+    }
+
     var ss = SpreadsheetApp.getActiveSpreadsheet();
 
     if (data.tipo === 'Collaborazione') {
@@ -73,6 +84,11 @@ function doPost(e) {
       } catch (adminErr) {
         Logger.log('sendAdminNotifyCollaborazione: ' + (adminErr && adminErr.message ? adminErr.message : adminErr));
       }
+    } else if (data.tipo === 'Feedback') {
+      // ── Pagina "Grazie" · pensiero/feedback sulla serata → foglio "Grazie - Feedback" ──
+      appendToSheet_('Grazie - Feedback',
+        ['Timestamp', 'Nome', 'Pensiero', 'Avvisami se rifacciamo'],
+        [data.timestamp || '', data.nome || '', data.pensiero || '', data.reinteressato || '']);
     } else {
       var sheetIscr = ss.getSheetByName('Iscrizioni');
       if (!sheetIscr) {
@@ -106,6 +122,24 @@ function doPost(e) {
       message: err && err.message ? String(err.message) : 'Errore server. Riprova più tardi.'
     });
   }
+}
+
+/**
+ * Aggiunge una riga a un foglio, CREANDOLO con intestazioni se non esiste.
+ * Usato dalla pagina "Grazie" per i fogli "Grazie - Feedback" e "Grazie - Firme",
+ * così non serve crearli a mano e le iscrizioni restano su un foglio separato.
+ */
+function appendToSheet_(sheetName, headers, row) {
+  var ss = SpreadsheetApp.getActiveSpreadsheet();
+  var sh = ss.getSheetByName(sheetName);
+  if (!sh) {
+    sh = ss.insertSheet(sheetName);
+    sh.appendRow(headers);
+    sh.getRange(1, 1, 1, headers.length)
+      .setFontWeight('bold').setBackground('#0B1C2D').setFontColor('#FFFFFF');
+    sh.setFrozenRows(1);
+  }
+  sh.appendRow(row);
 }
 
 /**

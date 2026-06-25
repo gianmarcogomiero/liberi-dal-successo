@@ -1,0 +1,458 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+  <!-- Google tag (gtag.js) -->
+  <script async src="https://www.googletagmanager.com/gtag/js?id=G-H7C5JNC6SG"></script>
+  <script>
+    window.dataLayer = window.dataLayer || [];
+    function gtag(){dataLayer.push(arguments);}
+    gtag('consent', 'default', {
+      'analytics_storage': 'granted',
+      'ad_storage': 'denied',
+      'ad_user_data': 'denied',
+      'ad_personalization': 'denied'
+    });
+    gtag('js', new Date());
+    gtag('config', 'G-H7C5JNC6SG', { 'anonymize_ip': true, 'cookie_flags': 'SameSite=None;Secure' });
+  </script>
+  <meta charset="UTF-8" />
+  <link rel="icon" href="favicon.ico" sizes="48x48" />
+  <link rel="icon" type="image/svg+xml" href="Loghi/colorato-trasparente.svg" />
+  <link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png" />
+  <link rel="icon" type="image/png" sizes="16x16" href="favicon-16.png" />
+  <link rel="apple-touch-icon" href="Loghi/apple-touch-icon.png" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Grazie — Liberi dal Successo</title>
+  <meta name="description" content="Grazie di esserci stati. Le immagini della serata, i ringraziamenti e uno spazio per lasciare un pensiero — Liberi dal Successo, 20 giugno 2026, Bresseo (Teolo)." />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400;1,600&family=DM+Sans:wght@300;400;500;600&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg:#0B1C2D; --title:#D9CFC3; --info:#AFC6E9; --body:#E6E8EC; --accent:#C4A962;
+      --surface:rgba(255,255,255,0.035); --surf2:rgba(255,255,255,0.07); --r:14px; --r-sm:9px;
+    }
+    :focus { outline:none; }
+    :focus-visible { outline:2px solid var(--accent); outline-offset:3px; }
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    html { scroll-behavior:smooth; background:#0B1C2D; }
+    body {
+      background:var(--bg); color:var(--body); font-family:'DM Sans',sans-serif;
+      font-size:16px; line-height:1.6; min-height:100vh; display:flex; flex-direction:column; overflow-x:hidden;
+    }
+    body::before {
+      content:''; position:fixed; inset:0; z-index:0; pointer-events:none;
+      background:
+        radial-gradient(ellipse 90% 60% at 15% -5%, rgba(175,198,233,0.09) 0%, transparent 55%),
+        radial-gradient(ellipse 70% 50% at 85% 105%, rgba(196,169,98,0.07) 0%, transparent 50%);
+    }
+    body::after {
+      content:''; position:fixed; inset:0; z-index:0; opacity:0.032; pointer-events:none;
+      background-image:url("data:image/svg+xml,%3Csvg viewBox='0 0 512 512' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.75' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+      background-size:220px 220px;
+    }
+    main { flex:1; position:relative; z-index:1; }
+    .page { max-width:940px; margin:0 auto; padding:0 28px 90px; }
+    .narrow { max-width:620px; margin-left:auto; margin-right:auto; }
+
+    /* animazioni */
+    .reveal { opacity:0; transform:translateY(18px); animation:revUp 0.7s cubic-bezier(0.22,1,0.36,1) forwards; }
+    .d1{animation-delay:.05s}.d2{animation-delay:.15s}.d3{animation-delay:.25s}.d4{animation-delay:.35s}.d5{animation-delay:.45s}.d6{animation-delay:.55s}
+    @keyframes revUp { to { opacity:1; transform:translateY(0); } }
+
+    /* back link */
+    .back-link { display:inline-flex; align-items:center; gap:7px; color:var(--info); text-decoration:none;
+      font-size:0.8rem; font-weight:500; letter-spacing:0.04em; text-transform:uppercase; padding:32px 0 0; opacity:0.55;
+      transition:opacity .25s, gap .25s; }
+    .back-link:hover { opacity:0.9; gap:11px; }
+
+    /* HERO */
+    .hero { text-align:center; padding:48px 0 4px; }
+    .eyebrow { font-size:0.7rem; font-weight:600; letter-spacing:0.18em; text-transform:uppercase; color:var(--accent); opacity:0.75; margin-bottom:16px; }
+    .hero-title { font-family:'Playfair Display',serif; font-size:clamp(2.2rem,6vw,3.3rem); font-weight:700; color:var(--title); line-height:1.08; letter-spacing:-0.01em; }
+    .hero-text { font-size:1.02rem; color:rgba(230,232,236,0.72); line-height:1.8; font-weight:300; margin:26px auto 0; }
+    .hero-evoc { font-family:'Playfair Display',serif; font-style:italic; font-size:1.18rem; color:var(--accent); margin-top:24px; line-height:1.5; }
+    .hero-q { font-family:'Playfair Display',serif; font-style:italic; font-size:1.02rem; color:rgba(230,232,236,0.6); margin-top:34px; }
+    .hero-words { font-family:'Playfair Display',serif; font-size:clamp(1.4rem,3.6vw,1.95rem); color:var(--accent); margin-top:14px; line-height:1.45; }
+    .hero-words .dot { color:rgba(217,207,195,0.38); margin:0 8px; font-style:normal; }
+    .hero-photo { margin:46px 0 0; border-radius:var(--r); overflow:hidden; border:1px solid rgba(196,201,212,0.12);
+      position:relative; box-shadow:0 26px 70px rgba(0,0,0,0.4); }
+    .hero-photo img { display:block; width:100%; height:auto; }
+    .hero-photo::after { content:''; position:absolute; inset:0; pointer-events:none;
+      background:linear-gradient(to bottom, rgba(11,28,45,0.10) 0%, transparent 22%, transparent 78%, rgba(11,28,45,0.28) 100%); }
+
+    /* separatore di sezione */
+    .sec { padding:70px 0 0; }
+    .sec-head { text-align:center; margin-bottom:38px; }
+    .sec-kicker { font-size:0.68rem; font-weight:700; letter-spacing:0.16em; text-transform:uppercase; color:var(--info); opacity:0.55; margin-bottom:12px; }
+    .sec-title { font-family:'Playfair Display',serif; font-size:clamp(1.5rem,4vw,2rem); font-weight:600; color:var(--title); line-height:1.2; }
+    .sec-sub { font-size:0.96rem; color:rgba(230,232,236,0.6); font-weight:300; line-height:1.7; margin:14px auto 0; }
+
+    /* GALLERY */
+    .gallery { display:grid; grid-template-columns:repeat(4,1fr); gap:14px; }
+    @media (max-width:860px){ .gallery{ grid-template-columns:repeat(3,1fr); } }
+    @media (max-width:600px){ .gallery{ grid-template-columns:repeat(2,1fr); gap:10px; } }
+    .g-item { position:relative; aspect-ratio:4/5; border-radius:var(--r-sm); overflow:hidden; cursor:pointer;
+      border:1px solid rgba(196,201,212,0.10); background:rgba(255,255,255,0.02); }
+    .g-item img { width:100%; height:100%; object-fit:cover; display:block; transition:transform 0.6s cubic-bezier(0.22,1,0.36,1), opacity 0.3s; }
+    .g-item::after { content:''; position:absolute; inset:0; background:linear-gradient(to top, rgba(11,28,45,0.35), transparent 45%); opacity:0; transition:opacity 0.3s; }
+    .g-item:hover img { transform:scale(1.05); }
+    .g-item:hover::after { opacity:1; }
+
+    /* LIGHTBOX */
+    .lb { display:none; position:fixed; inset:0; z-index:1000; background:rgba(5,12,22,0.94);
+      align-items:center; justify-content:center; padding:24px; backdrop-filter:blur(6px); }
+    .lb.open { display:flex; }
+    .lb img { max-width:92vw; max-height:86vh; border-radius:var(--r-sm); box-shadow:0 30px 80px rgba(0,0,0,0.6); }
+    .lb-btn { position:absolute; background:rgba(11,28,45,0.6); border:1px solid rgba(196,201,212,0.2); color:var(--body);
+      width:48px; height:48px; border-radius:50%; font-size:1.4rem; cursor:pointer; display:flex; align-items:center; justify-content:center;
+      transition:background 0.2s, border-color 0.2s; }
+    .lb-btn:hover { background:rgba(175,198,233,0.12); border-color:rgba(196,169,98,0.5); }
+    .lb-close { top:20px; right:20px; }
+    .lb-prev { left:18px; top:50%; transform:translateY(-50%); }
+    .lb-next { right:18px; top:50%; transform:translateY(-50%); }
+    @media (max-width:560px){ .lb-prev{left:10px} .lb-next{right:10px} }
+
+    /* RINGRAZIAMENTI */
+    .thx-lead { font-size:1.02rem; color:rgba(230,232,236,0.72); line-height:1.85; font-weight:300; text-align:center; }
+    .thx-cards { display:grid; grid-template-columns:repeat(2,1fr); gap:14px; margin-top:34px; }
+    .thx-card { background:rgba(196,201,212,0.05); border:1px solid rgba(196,201,212,0.11); border-radius:var(--r); padding:24px 24px; }
+    .thx-card h3 { font-family:'Playfair Display',serif; font-size:1.08rem; color:var(--title); margin-bottom:8px; font-weight:600; }
+    .thx-card p { font-size:0.92rem; color:rgba(230,232,236,0.62); line-height:1.7; font-weight:300; }
+    .thx-card .ico { font-size:1.1rem; margin-bottom:10px; opacity:0.85; }
+    @media (max-width:560px){ .thx-cards{ grid-template-columns:1fr; } }
+    .thx-foot { text-align:center; font-family:'Playfair Display',serif; font-style:italic; font-size:1.05rem; color:var(--accent); margin-top:34px; line-height:1.55; }
+
+    /* SOSTEGNO / partner */
+    .partner-grid { display:grid; grid-template-columns:repeat(3,1fr); gap:14px; margin-top:30px; }
+    @media (max-width:680px){ .partner-grid{ grid-template-columns:1fr; max-width:420px; } }
+    .partner { background:rgba(196,201,212,0.05); border:1px solid rgba(196,201,212,0.11); border-radius:var(--r);
+      padding:28px 24px; text-align:center; display:flex; flex-direction:column; }
+    .partner .role { font-size:0.66rem; font-weight:700; letter-spacing:0.13em; text-transform:uppercase; color:var(--info); opacity:0.55; margin-bottom:12px; }
+    .partner h3 { font-family:'Playfair Display',serif; font-size:1.18rem; color:var(--title); margin-bottom:12px; font-weight:600; }
+    .partner p { font-size:0.9rem; color:rgba(230,232,236,0.6); line-height:1.7; font-weight:300; flex:1; }
+    .partner a { display:inline-block; margin-top:18px; font-size:0.82rem; font-weight:600; color:var(--accent);
+      text-decoration:none; letter-spacing:0.02em; border-bottom:1px solid rgba(196,169,98,0.35); padding-bottom:2px;
+      transition:border-color .2s, color .2s; }
+    .partner a:hover { color:var(--title); border-color:var(--accent); }
+
+    /* FORM (riuso stile iscrizioni) */
+    .form-panel { border:1px solid rgba(196,201,212,0.12); border-radius:var(--r); overflow:hidden; background:rgba(196,201,212,0.06); }
+    .fg { padding:20px 22px; background:rgba(11,28,45,0.4); border-bottom:1px solid rgba(196,201,212,0.1); display:flex; flex-direction:column; transition:background .2s; }
+    .fg:last-child { border-bottom:none; }
+    .fg:focus-within { background:rgba(175,198,233,0.04); }
+    .fg.field-err { background:rgba(210,90,80,0.07) !important; }
+    .f-label { font-size:0.68rem; font-weight:700; letter-spacing:0.1em; text-transform:uppercase; color:rgba(175,198,233,0.55); margin-bottom:8px; }
+    .f-label .req { color:var(--accent); margin-left:2px; }
+    .f-label .opt { color:rgba(230,232,236,0.4); font-weight:400; letter-spacing:0; text-transform:none; margin-left:6px; }
+    input[type="text"], textarea {
+      background:transparent; border:none; border-bottom:1px solid rgba(196,201,212,0.2); border-radius:0;
+      padding:4px 0 10px; color:var(--body); font-family:'DM Sans',sans-serif; font-size:0.97rem; font-weight:400;
+      width:100%; outline:none; transition:border-color .25s;
+    }
+    input[type="text"]:focus { border-color:var(--accent); }
+    input::placeholder, textarea::placeholder { color:rgba(196,201,212,0.25); font-weight:300; }
+    textarea { resize:vertical; min-height:96px; border:1px solid rgba(196,201,212,0.2); border-radius:var(--r-sm);
+      padding:12px 14px; background:rgba(255,255,255,0.03); margin-top:2px; line-height:1.6; }
+    textarea:focus { border-color:var(--accent); }
+
+    /* Sì/No chips */
+    .yn { display:flex; gap:9px; margin-top:6px; }
+    .yn-chip { flex:1; text-align:center; padding:11px 14px; border:1px solid rgba(196,201,212,0.18); border-radius:100px;
+      font-size:0.9rem; font-weight:500; color:rgba(230,232,236,0.6); background:transparent; cursor:pointer; user-select:none; transition:all .2s; }
+    .yn-chip:hover { border-color:rgba(196,169,98,0.35); color:rgba(230,232,236,0.85); }
+    .yn-chip.sel { border-color:rgba(196,169,98,0.6); color:var(--title); background:rgba(196,169,98,0.09); }
+
+    /* checkbox presenza */
+    .chk-row { display:flex; align-items:flex-start; gap:13px; cursor:pointer; user-select:none; padding:4px 0; }
+    .chk-box { flex-shrink:0; width:20px; height:20px; border:1.5px solid rgba(196,201,212,0.35); border-radius:4px;
+      display:flex; align-items:center; justify-content:center; transition:all .2s; margin-top:1px; }
+    .chk-box.on { background:var(--accent); border-color:var(--accent); }
+    .chk-box svg { display:none; } .chk-box.on svg { display:block; }
+    .chk-text { font-size:0.9rem; color:rgba(230,232,236,0.7); line-height:1.6; font-weight:300; }
+
+    .btn-submit { width:100%; margin-top:20px; padding:16px 28px;
+      background:linear-gradient(135deg,#c4a962,#d8bb72,#c4a962); color:#0B1C2D; font-family:'DM Sans',sans-serif;
+      font-size:0.95rem; font-weight:700; letter-spacing:0.04em; text-transform:uppercase; border:none; border-radius:var(--r-sm);
+      cursor:pointer; display:flex; align-items:center; justify-content:center; gap:10px; transition:opacity .2s, transform .2s; }
+    .btn-submit:hover:not(:disabled) { opacity:0.9; transform:translateY(-1px); }
+    .btn-submit:disabled { opacity:0.4; cursor:not-allowed; }
+    .spin { animation:spinAnim 0.8s linear infinite; display:none; }
+    @keyframes spinAnim { to { transform:rotate(360deg); } }
+
+    .form-msg { display:none; margin-top:14px; padding:12px 16px; border-radius:var(--r-sm); font-size:0.88rem; line-height:1.5; }
+    .form-msg.err { display:block; background:rgba(210,90,80,0.12); border:1px solid rgba(210,90,80,0.35); color:rgba(230,232,236,0.92); }
+
+    /* conferma inline form */
+    .form-done { display:none; text-align:center; padding:40px 24px;
+      background:rgba(196,201,212,0.05); border:1px solid rgba(196,169,98,0.22); border-radius:var(--r); }
+    .form-done .ring { width:64px; height:64px; margin:0 auto 18px; border:1.5px solid rgba(196,169,98,0.4); border-radius:50%;
+      display:flex; align-items:center; justify-content:center; font-size:1.6rem; }
+    .form-done h3 { font-family:'Playfair Display',serif; font-size:1.35rem; color:var(--title); margin-bottom:10px; }
+    .form-done p { font-size:0.94rem; color:rgba(230,232,236,0.65); line-height:1.7; font-weight:300; max-width:380px; margin:0 auto; }
+
+    /* footer */
+    footer { position:relative; z-index:1; padding:24px 28px; text-align:center; border-top:1px solid rgba(196,201,212,0.07); }
+    .footer-inner { display:flex; flex-direction:column; align-items:center; gap:8px; }
+    .badge { display:inline-flex; align-items:center; gap:6px; padding:4px 12px; border-radius:100px;
+      background:rgba(196,169,98,0.08); border:1px solid rgba(196,169,98,0.22); color:rgba(196,169,98,0.65);
+      font-size:10px; font-weight:400; letter-spacing:1.5px; text-transform:uppercase; }
+    .footer-copy { font-size:0.75rem; color:rgba(196,201,212,0.3); }
+    .footer-copy a { color:rgba(175,198,233,0.35); text-decoration:none; }
+    .footer-copy a:hover { color:rgba(175,198,233,0.6); }
+
+    /* lang switch */
+    .lang-switch { position:fixed; top:16px; right:16px; z-index:160; display:flex; align-items:center; gap:2px; padding:4px;
+      background:rgba(11,28,45,0.85); backdrop-filter:blur(8px); border:1px solid rgba(175,198,233,0.15); border-radius:100px; }
+    .lang-switch a { display:flex; align-items:center; gap:5px; padding:4px 9px; border-radius:100px; font-size:11px; font-weight:600;
+      letter-spacing:0.6px; text-decoration:none; color:rgba(217,207,195,0.5); transition:color .2s, background .2s; }
+    .lang-switch a .fl { font-size:12px; line-height:1; }
+    .lang-switch a:hover { color:var(--title); }
+    .lang-switch a.is-current { color:var(--bg); background:var(--title); }
+  </style>
+</head>
+<body>
+
+<nav class="lang-switch" aria-label="Lingua del sito">
+  <a href="https://liberidalsuccesso.it/grazie.html" class="is-current" hreflang="it" aria-current="true"><span class="fl">🇮🇹</span> IT</a>
+  <a href="https://liberidalsuccesso-it.translate.goog/grazie.html?_x_tr_sl=it&amp;_x_tr_tl=en&amp;_x_tr_hl=en" hreflang="en" rel="nofollow"><span class="fl">🇬🇧</span> EN</a>
+  <a href="https://liberidalsuccesso-it.translate.goog/grazie.html?_x_tr_sl=it&amp;_x_tr_tl=es&amp;_x_tr_hl=es" hreflang="es" rel="nofollow"><span class="fl">🇪🇸</span> ES</a>
+</nav>
+
+<main>
+  <div class="page">
+    <a class="back-link reveal d1" href="index.html">← Torna alla home</a>
+
+    <!-- 1 · HERO -->
+    <section class="hero reveal d2">
+      <p class="eyebrow">Liberi dal Successo · 20 giugno 2026</p>
+      <h1 class="hero-title">Grazie di<br>esserci stati</h1>
+      <p class="hero-text narrow">
+        Ci sono serate che finiscono quando si spengono le luci. E poi ci sono serate che continuano dentro le persone.<br><br>
+        Quello che si è creato sabato sera è difficile da raccontare con foto o video: storie vere, musica, emozioni, riflessioni e soprattutto persone che hanno scelto di mettersi in gioco con autenticità.<br><br>
+        Per chi era presente, resterà un ricordo da portare con sé. Per chi non c'era, queste immagini raccontano almeno una piccola parte di ciò che abbiamo vissuto insieme.
+      </p>
+      <p class="hero-q narrow">Se dovessimo scegliere tre parole per descrivere quella serata?</p>
+      <p class="hero-words narrow">Autenticità<span class="dot">·</span>Unione<span class="dot">·</span>Consapevolezza 💙</p>
+      <figure class="hero-photo">
+        <img src="thanks/hero-gruppo.jpg" alt="Foto di gruppo della serata Liberi dal Successo" width="1920" height="1280" decoding="async" />
+      </figure>
+    </section>
+
+    <!-- 2 · GALLERY -->
+    <section class="sec reveal">
+      <div class="sec-head">
+        <p class="sec-kicker">La serata in immagini</p>
+        <h2 class="sec-title">Qualche istante di quella sera</h2>
+      </div>
+      <div class="gallery" id="js-gallery">
+        <div class="g-item"><img src="thanks/1-giulia.jpg" alt="Giulia, presentatrice della serata" loading="lazy" decoding="async" /></div>
+        <div class="g-item"><img src="thanks/2-musicisti.jpg" alt="I musicisti della serata" loading="lazy" decoding="async" /></div>
+        <div class="g-item"><img src="thanks/3-michele.jpg" alt="Michele Uliana sul palco" loading="lazy" decoding="async" /></div>
+        <div class="g-item"><img src="thanks/4-maya_adama.jpg" alt="Maya Bosello e Adama Mbaye" loading="lazy" decoding="async" /></div>
+        <div class="g-item"><img src="thanks/5-joel_silvia.jpg" alt="Joel Parman e Silvia Grimaldi" loading="lazy" decoding="async" /></div>
+        <div class="g-item"><img src="thanks/6-gianmarco.jpg" alt="Gianmarco Gomiero sul palco" loading="lazy" decoding="async" /></div>
+        <div class="g-item"><img src="thanks/7-ballo.jpg" alt="La performance di danza" loading="lazy" decoding="async" /></div>
+        <div class="g-item"><img src="thanks/8-mix_persone.jpg" alt="Le persone della serata" loading="lazy" decoding="async" /></div>
+      </div>
+    </section>
+
+    <!-- 3 · RINGRAZIAMENTI -->
+    <section class="sec reveal">
+      <div class="sec-head">
+        <p class="sec-kicker">Riconoscenza</p>
+        <h2 class="sec-title">Grazie a chi ha reso<br>possibile tutto questo</h2>
+      </div>
+      <p class="thx-lead narrow">
+        Una serata così non la fa una persona sola. La fanno tante mani, spesso invisibili, che hanno scelto di esserci con cura. A ognuna di loro va un grazie sincero.
+      </p>
+      <div class="thx-cards narrow" style="max-width:760px;">
+        <div class="thx-card">
+          <div class="ico">🎙️</div>
+          <h3>Chi ha messo la voce</h3>
+          <p>A chi è salito sul palco e ha condiviso una storia vera, senza nascondersi: è da lì che è partito tutto.</p>
+        </div>
+        <div class="thx-card">
+          <div class="ico">🎶</div>
+          <h3>Chi ha portato musica e presenza</h3>
+          <p>Ai musicisti, alla presentatrice e a chi ha danzato: avete dato respiro e calore a ogni momento della serata.</p>
+        </div>
+        <div class="thx-card">
+          <div class="ico">🛠️</div>
+          <h3>Chi ha costruito dietro le quinte</h3>
+          <p>A chi ha pensato all'allestimento, alla logistica, alla comunicazione e ai mille dettagli che non si vedono ma si sentono.</p>
+        </div>
+        <div class="thx-card">
+          <div class="ico">💙</div>
+          <h3>Chi ha scelto di esserci</h3>
+          <p>A chi si è preso il tempo di venire e di vivere la serata con apertura: senza di voi sarebbe stata solo una sala con delle sedie.</p>
+        </div>
+      </div>
+      <p class="thx-foot narrow">Grazie. Davvero, a tutti.</p>
+    </section>
+
+    <!-- 3b · HANNO SOSTENUTO LA SERATA -->
+    <section class="sec reveal">
+      <div class="sec-head">
+        <p class="sec-kicker">Il sostegno</p>
+        <h2 class="sec-title">Hanno scelto di<br>sostenere la serata</h2>
+        <p class="sec-sub narrow">Realtà del territorio che ci hanno dato una mano e hanno creduto in questa prima serata. Vale la pena conoscerle.</p>
+      </div>
+      <div class="partner-grid narrow" style="max-width:820px;">
+        <div class="partner">
+          <div class="role">Respiro &amp; consapevolezza</div>
+          <h3>Studio Essere</h3>
+          <p>Con Michele Uliana, per ricordarci che tutto parte dal respiro e dall'ascolto di sé.</p>
+          <a href="https://www.studio-essere.com/" target="_blank" rel="noopener">Visita il sito →</a>
+        </div>
+        <div class="partner">
+          <div class="role">Il rinfresco</div>
+          <h3>Forno Maistrello</h3>
+          <p>Per aver dato sapore e calore al momento conviviale, con la bontà dei suoi prodotti.</p>
+          <a href="https://www.facebook.com/p/Forno-Maistrello-100057686438396/" target="_blank" rel="noopener">Visita la pagina →</a>
+        </div>
+        <div class="partner">
+          <div class="role">La danza</div>
+          <h3>Jessydance ASD</h3>
+          <p>Per aver riempito la sala di movimento e chiuso la serata con una performance che resta.</p>
+          <a href="https://jessydanceasd9.wixsite.com/website" target="_blank" rel="noopener">Visita il sito →</a>
+        </div>
+      </div>
+    </section>
+
+    <!-- 4 · FEEDBACK -->
+    <section class="sec reveal" id="feedback">
+      <div class="sec-head">
+        <p class="sec-kicker">Un pensiero</p>
+        <h2 class="sec-title">Cosa ti è rimasto<br>di questa serata?</h2>
+        <p class="sec-sub narrow">Se una frase, un momento o una sensazione ti è rimasta addosso, ci farebbe piacere raccoglierla. Non per fare statistiche, ma per capire cosa ha lasciato davvero questa prima serata.</p>
+      </div>
+      <div class="narrow">
+        <form id="js-feedback" novalidate>
+          <div class="form-panel">
+            <div class="fg">
+              <label class="f-label" for="fb-nome">Nome <span class="opt">(facoltativo)</span></label>
+              <input type="text" id="fb-nome" placeholder="Come ti chiami" autocomplete="given-name" />
+            </div>
+            <div class="fg">
+              <label class="f-label" for="fb-pensiero">C'è un momento, una frase o una sensazione che ti porti via? <span class="req">*</span></label>
+              <textarea id="fb-pensiero" placeholder="Scrivi liberamente, anche solo poche parole…"></textarea>
+            </div>
+            <div class="fg">
+              <label class="f-label">Se rifacessimo qualcosa del genere, ti farebbe piacere saperlo?</label>
+              <div class="yn" id="fb-yn" role="group" aria-label="Ti farebbe piacere saperlo">
+                <div class="yn-chip" data-val="Sì" role="button" tabindex="0">Sì, avvisatemi</div>
+                <div class="yn-chip" data-val="No" role="button" tabindex="0">No, grazie</div>
+              </div>
+            </div>
+          </div>
+          <button type="submit" class="btn-submit" id="fb-btn">
+            <svg class="spin" id="fb-spin" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#0B1C2D" stroke-width="2.5"><path d="M12 2a10 10 0 0 1 10 10" stroke-linecap="round"/></svg>
+            <span id="fb-btn-txt">Lascia il tuo pensiero</span>
+          </button>
+          <div class="form-msg" id="fb-msg"></div>
+        </form>
+        <div class="form-done" id="fb-done">
+          <div class="ring">💙</div>
+          <h3>Grazie del pensiero</h3>
+          <p>L'abbiamo ricevuto. Ogni parola che ci avete lasciato ci aiuta a far crescere quello che è iniziato.</p>
+        </div>
+      </div>
+    </section>
+
+  </div>
+</main>
+
+<!-- LIGHTBOX -->
+<div class="lb" id="js-lb" aria-hidden="true">
+  <button class="lb-btn lb-close" id="lb-close" aria-label="Chiudi">✕</button>
+  <button class="lb-btn lb-prev" id="lb-prev" aria-label="Precedente">‹</button>
+  <img id="lb-img" src="" alt="" />
+  <button class="lb-btn lb-next" id="lb-next" aria-label="Successiva">›</button>
+</div>
+
+<footer>
+  <div class="footer-inner">
+    <span class="badge">v1.1 · 14.06.2026</span>
+    <span class="footer-copy">© 2026 Liberi dal Successo · Bresseo, Teolo (PD) · <a href="index.html">liberidalsuccesso.it</a></span>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var ENDPOINT = 'https://script.google.com/macros/s/AKfycbzAB8dEhTDBejNjUpWdkAO5HyUzZIf0U6-CTzdWqCrdHDVTtAxkktAfZXn0DUPVKsg7KQ/exec';
+  function nowTs() { return new Date().toLocaleString('it-IT', { timeZone: 'Europe/Rome' }); }
+
+  /* ── LIGHTBOX ── */
+  (function () {
+    var imgs = Array.prototype.slice.call(document.querySelectorAll('#js-gallery .g-item img'));
+    var lb = document.getElementById('js-lb');
+    var lbImg = document.getElementById('lb-img');
+    var idx = 0;
+    function show(i) { idx = (i + imgs.length) % imgs.length; lbImg.src = imgs[idx].src; lbImg.alt = imgs[idx].alt; }
+    function open(i) { show(i); lb.classList.add('open'); lb.setAttribute('aria-hidden', 'false'); document.body.style.overflow = 'hidden'; }
+    function close() { lb.classList.remove('open'); lb.setAttribute('aria-hidden', 'true'); document.body.style.overflow = ''; }
+    imgs.forEach(function (im, i) { im.parentNode.addEventListener('click', function () { open(i); }); });
+    document.getElementById('lb-close').addEventListener('click', close);
+    document.getElementById('lb-prev').addEventListener('click', function (e) { e.stopPropagation(); show(idx - 1); });
+    document.getElementById('lb-next').addEventListener('click', function (e) { e.stopPropagation(); show(idx + 1); });
+    lb.addEventListener('click', function (e) { if (e.target === lb) close(); });
+    document.addEventListener('keydown', function (e) {
+      if (!lb.classList.contains('open')) return;
+      if (e.key === 'Escape') close();
+      else if (e.key === 'ArrowLeft') show(idx - 1);
+      else if (e.key === 'ArrowRight') show(idx + 1);
+    });
+  })();
+
+  /* ── invio generico a Apps Script ── */
+  function postData(payload, btn, btnTxt, spin, msg, doneEl, formEl) {
+    btn.disabled = true; spin.style.display = 'block'; btnTxt.textContent = '';
+    msg.className = 'form-msg';
+    fetch(ENDPOINT, { method: 'POST', headers: { 'Content-Type': 'text/plain;charset=utf-8' }, body: JSON.stringify(payload) })
+      .then(function (r) { return r.text().then(function (t) {
+        var d = {}; try { d = t ? JSON.parse(t) : {}; } catch (e) {}
+        if (!r.ok || (d && d.success === false)) throw new Error((d && d.message) || 'Il server non ha accettato la richiesta. Riprova tra poco.');
+        return d;
+      }); })
+      .then(function () { formEl.style.display = 'none'; doneEl.style.display = 'block'; doneEl.scrollIntoView({ behavior: 'smooth', block: 'center' }); })
+      .catch(function (err) { msg.textContent = (err && err.message) || 'Connessione non riuscita. Riprova.'; msg.className = 'form-msg err'; })
+      .finally(function () { btn.disabled = false; spin.style.display = 'none'; });
+  }
+
+  /* ── FEEDBACK ── */
+  (function () {
+    var form = document.getElementById('js-feedback');
+    var nome = document.getElementById('fb-nome');
+    var pensiero = document.getElementById('fb-pensiero');
+    var ynWrap = document.getElementById('fb-yn');
+    var msg = document.getElementById('fb-msg');
+    var ynVal = '';
+    ynWrap.querySelectorAll('.yn-chip').forEach(function (c) {
+      function sel() { ynWrap.querySelectorAll('.yn-chip').forEach(function (x) { x.classList.remove('sel'); }); c.classList.add('sel'); ynVal = c.getAttribute('data-val'); }
+      c.addEventListener('click', sel);
+      c.addEventListener('keydown', function (e) { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); sel(); } });
+    });
+    form.addEventListener('submit', function (e) {
+      e.preventDefault();
+      pensiero.value = pensiero.value.trim();
+      if (!pensiero.value) {
+        msg.textContent = 'Scrivi qualche parola nel campo del pensiero — è l\'unico campo che ci serve.';
+        msg.className = 'form-msg err';
+        pensiero.closest('.fg').classList.add('field-err');
+        return;
+      }
+      pensiero.closest('.fg').classList.remove('field-err');
+      postData({
+        timestamp: nowTs(),
+        nome: nome.value.trim(),
+        pensiero: pensiero.value,
+        reinteressato: ynVal,
+        tipo: 'Feedback'
+      }, document.getElementById('fb-btn'), document.getElementById('fb-btn-txt'),
+         document.getElementById('fb-spin'), msg, document.getElementById('fb-done'), form);
+    });
+  })();
+
+})();
+</script>
+</body>
+</html>

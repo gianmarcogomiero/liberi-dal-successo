@@ -885,11 +885,54 @@
       .prog-photo { width: 54px; height: 54px; }
       .prog-name { font-size: 1rem; }
     }
+
+    /* ── POST-EVENTO (fascia in cima, dopo la serata) ── */
+    .postevent {
+      min-height: 90vh; display: flex; align-items: center; justify-content: center;
+      text-align: center; padding: 84px 24px 56px; position: relative;
+    }
+    .pe-inner { max-width: 640px; }
+    .pe-kicker {
+      font-size: 11px; letter-spacing: 0.22em; text-transform: uppercase;
+      color: var(--blue); opacity: 0.6; margin-bottom: 22px;
+    }
+    .pe-title {
+      font-family: 'Playfair Display', serif; font-weight: 700;
+      font-size: clamp(2.6rem, 8vw, 4.4rem); color: var(--sand);
+      line-height: 1.05; letter-spacing: -0.01em;
+    }
+    .pe-title .pe-em { font-style: italic; color: var(--gold); font-weight: 600; }
+    .pe-sub {
+      font-size: clamp(1rem, 2.4vw, 1.12rem); color: rgba(217,207,195,0.7);
+      line-height: 1.75; font-weight: 300; margin: 26px auto 0; max-width: 520px;
+    }
+    .pe-cta { margin-top: 38px; }
+    .pe-scroll {
+      display: inline-block; margin-top: 30px; font-size: 0.82rem; letter-spacing: 0.05em;
+      color: rgba(175,198,233,0.5); text-decoration: none; transition: color 0.2s;
+    }
+    .pe-scroll:hover { color: var(--sand); }
+    .pe-divider { width: 100%; height: 1px; max-width: 680px; margin: 0 auto;
+      background: rgba(175,198,233,0.10); }
 </style>
 </head>
 <body>
 
 <main id="main-content">
+
+  <!-- ══════════ POST-EVENTO (in primo piano dopo la serata) ══════════ -->
+  <section class="postevent" id="postevento">
+    <div class="pe-inner">
+      <p class="pe-kicker">20 Giugno 2026 · è andata 💙</p>
+      <h1 class="pe-title">Grazie di<br><span class="pe-em">esserci stati</span></h1>
+      <p class="pe-sub">Una serata di storie, musica e persone vere. Le foto, i ringraziamenti e uno spazio per lasciare un pensiero sono qui.</p>
+      <div class="pe-cta">
+        <a href="grazie.html" class="btn-main">Rivivi la serata</a>
+      </div>
+      <a href="#hero" class="pe-scroll">Scopri com'era l'evento ↓</a>
+    </div>
+  </section>
+  <hr class="pe-divider" />
 
   <!-- ══════════ HERO ══════════ -->
   <div class="hero" id="hero">
@@ -1455,6 +1498,7 @@
     <a href="#info">Info</a>
     <a href="#faq">FAQ</a>
     <a href="identita.html">Identità</a>
+    <a href="grazie.html">Grazie</a>
     <a href="#cta">Iscriviti</a>
   </nav>
 
@@ -1472,6 +1516,7 @@
     <a href="#info"><span class="side-nav-label">Info</span><span class="side-nav-dot"></span></a>
     <a href="#faq"><span class="side-nav-label">FAQ</span><span class="side-nav-dot"></span></a>
     <a href="identita.html"><span class="side-nav-label">Identità</span><span class="side-nav-dot"></span></a>
+    <a href="grazie.html"><span class="side-nav-label">Grazie</span><span class="side-nav-dot"></span></a>
     <a href="#cta"><span class="side-nav-label">Iscriviti</span><span class="side-nav-dot"></span></a>
   </nav>
 
@@ -1493,15 +1538,28 @@
     <a href="https://www.instagram.com/liberidalsuccesso/" target="_blank" rel="noopener"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" style="vertical-align: -2px;"><rect x="2" y="2" width="20" height="20" rx="5"/><circle cx="12" cy="12" r="5"/><circle cx="17.5" cy="6.5" r="1.5" fill="currentColor" stroke="none"/></svg> Instagram</a>
   </footer>
 
-  <script src="lds-config.js"></script>
+  <script src="lds-config.js?v=20260625"></script>
   <script>
   (function () {
     var L = window.LDS || {};
+    var ended = !!L.eventEnded;
     var full = !!L.eventFull;
-    var label = full ? "Iscriviti alla lista d'attesa" : "Iscriviti";
+    var label = ended ? "Rivivi la serata" : (full ? "Iscriviti alla lista d'attesa" : "Iscriviti");
     document.querySelectorAll(".js-cta-primary").forEach(function (el) {
       el.textContent = label;
+      if (ended) {
+        var a = el.closest("a");
+        if (a) a.setAttribute("href", "grazie.html");
+      }
     });
+    if (ended) {
+      // Evento passato: niente più inviti a collaborare, CTA finale → "la serata continua"
+      document.querySelectorAll('a.btn-outline[href*="collabora"]').forEach(function (a) {
+        a.style.display = "none";
+      });
+      var ctaTitle = document.querySelector(".cta-title");
+      if (ctaTitle) ctaTitle.innerHTML = 'La serata<br><span class="gold">continua</span>';
+    }
     var strip = document.getElementById("js-hero-strip-note");
     if (strip && L.heroStripNote) {
       strip.textContent = L.heroStripNote;
@@ -1535,7 +1593,7 @@
     }
     var kicker = document.getElementById("js-cta-kicker");
     if (kicker) {
-      kicker.textContent = full ? "Lista d'attesa" : "Un posto per te";
+      kicker.textContent = ended ? "Grazie di esserci stati" : (full ? "Lista d'attesa" : "Un posto per te");
     }
   })();
   </script>

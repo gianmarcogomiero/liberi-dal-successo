@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:1080px; height:1350px; overflow:hidden; }
+  body {
+    background:
+      radial-gradient(ellipse 80% 55% at 18% -8%, rgba(175,198,233,0.10) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 50% at 88% 108%, rgba(196,169,98,0.10) 0%, transparent 52%),
+      #0B1C2D;
+    color:#D9CFC3;
+    font-family:'DM Sans',sans-serif;
+    position:relative;
+  }
+  .frame { position:absolute; inset:26px; border:1px solid rgba(196,169,98,0.30); border-radius:18px; pointer-events:none; }
+  .wrap { position:relative; height:100%; padding:74px 86px 64px; display:flex; flex-direction:column; }
+
+  .top { text-align:center; }
+  .logo { width:96px; height:96px; display:block; margin:0 auto 20px; }
+  .brand { font-size:15px; letter-spacing:7px; text-transform:uppercase; color:#AFC6E9; font-weight:600; }
+  .date { font-size:15px; letter-spacing:4px; text-transform:uppercase; color:#C4A962; font-weight:600; margin-top:14px; }
+
+  h1 { font-family:'Playfair Display',serif; font-weight:700; font-size:62px; line-height:1.1; color:#D9CFC3; text-align:center; margin-top:26px; }
+  .sub { text-align:center; font-size:20px; line-height:1.6; color:rgba(217,207,195,0.62); max-width:640px; margin:18px auto 0; font-weight:400; }
+
+  .rule { width:70px; height:2px; background:linear-gradient(90deg,transparent,#C4A962,transparent); margin:30px auto 0; }
+
+  .program { margin-top:30px; flex:1; }
+  .slot { display:grid; grid-template-columns:118px 1fr; align-items:center; gap:18px; padding:17px 4px; border-bottom:1px solid rgba(175,198,233,0.12); }
+  .slot:last-child { border-bottom:none; }
+  .time { font-size:25px; font-weight:600; color:#C4A962; letter-spacing:1px; text-align:right; }
+  .name { font-family:'Playfair Display',serif; font-size:29px; color:#D9CFC3; line-height:1.2; }
+  .title { font-family:'Playfair Display',serif; font-style:italic; font-size:21px; color:#AFC6E9; margin-top:3px; }
+  .moment { font-size:22px; color:rgba(217,207,195,0.78); font-weight:500; }
+
+  .foot { text-align:center; margin-top:26px; }
+  .foot .place { font-size:21px; color:#D9CFC3; font-weight:500; }
+  .foot .meta { font-size:17px; color:rgba(217,207,195,0.5); margin-top:8px; letter-spacing:1px; }
+  .foot .site { font-size:19px; color:#C4A962; font-weight:600; letter-spacing:2px; margin-top:16px; }
+</style>
+</head>
+<body>
+  <div class="frame"></div>
+  <div class="wrap">
+
+    <div class="top">
+      <img class="logo" src="Loghi/colorato%201.png" alt="" />
+      <div class="brand">Liberi dal Successo</div>
+      <div class="date">· Sabato 20 Giugno 2026 ·</div>
+    </div>
+
+    <h1>Il programma della serata</h1>
+    <p class="sub">Storie, musica e prospettive che accompagneranno il viaggio della serata.</p>
+    <div class="rule"></div>
+
+    <div class="program">
+      <div class="slot">
+        <div class="time">17:30</div>
+        <div><div class="moment">Accoglienza e apertura evento</div></div>
+      </div>
+      <div class="slot">
+        <div class="time">18:00</div>
+        <div><div class="name">Michele Uliana</div><div class="title">Respiro e consapevolezza</div></div>
+      </div>
+      <div class="slot">
+        <div class="time">18:30</div>
+        <div><div class="name">Adama Mbaye &amp; Maya Bosello</div><div class="title">Il confine dell&rsquo;identità</div></div>
+      </div>
+      <div class="slot">
+        <div class="time">19:00</div>
+        <div><div class="moment">Rinfresco e momento conviviale</div></div>
+      </div>
+      <div class="slot">
+        <div class="time">20:00</div>
+        <div><div class="name">Joel Parman &amp; Silvia Grimaldi</div><div class="title">A chi vuoi piacere?</div></div>
+      </div>
+      <div class="slot">
+        <div class="time">20:30</div>
+        <div><div class="name">Gianmarco Gomiero</div><div class="title">L&rsquo;unica direzione</div></div>
+      </div>
+      <div class="slot">
+        <div class="time">21:00</div>
+        <div><div class="name">Jessydance</div><div class="title">Performance di danza</div></div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <div class="place">Sala Polivalente · Bresseo, Teolo (PD)</div>
+      <div class="meta">Ingresso gratuito · Rinfresco</div>
+      <div class="site">liberidalsuccesso.it</div>
+    </div>
+
+  </div>
+</body>
+</html>

@@ -1,0 +1,131 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+<meta charset="utf-8" />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;0,700;1,400&family=DM+Sans:wght@400;500;600&display=swap" rel="stylesheet" />
+<style>
+  @page { size: A4 portrait; margin: 0; }
+  * { margin:0; padding:0; box-sizing:border-box; }
+  html,body { width:210mm; height:297mm; }
+  body {
+    background:
+      radial-gradient(ellipse 70% 40% at 90% 108%, rgba(196,169,98,0.10) 0%, transparent 55%),
+      #1C3A60;
+    font-family:'DM Sans',sans-serif; color:#E7E1D7;
+    -webkit-print-color-adjust:exact; print-color-adjust:exact;
+  }
+  .frame { position:absolute; top:8mm; left:8mm; right:8mm; bottom:8mm; border:1px solid rgba(196,169,98,0.40); border-radius:4mm; }
+  .wrap { position:absolute; top:8mm; left:8mm; right:8mm; bottom:8mm; padding:9mm 12mm 9mm; display:flex; flex-direction:column; }
+
+  /* HEADER */
+  .head { text-align:center; }
+  .logo { width:54px; height:54px; display:block; margin:0 auto 8px; }
+  .brand { font-size:11px; letter-spacing:6px; text-transform:uppercase; color:#AFC6E9; font-weight:600; }
+  .date { font-family:'Playfair Display',Georgia,serif; font-weight:700; font-size:42px; line-height:1.05; color:#F0EAE0; margin-top:8px; }
+  .date em { font-style:normal; color:#E0BE72; }
+  .place { font-size:12.5px; color:rgba(231,225,215,0.66); margin-top:10px; letter-spacing:0.4px; }
+  .rule { width:60px; height:2px; background:linear-gradient(90deg,transparent,#C4A962,transparent); margin:14px auto 0; }
+
+  .seclabel { font-size:10.5px; letter-spacing:3px; text-transform:uppercase; color:#AFC6E9; font-weight:600; }
+
+  /* PROGRAMMA con foto */
+  .ptitle { font-family:'Playfair Display',Georgia,serif; font-size:21px; color:#F0EAE0; margin:12px 0 8px; text-align:center; }
+  .slot { display:flex; align-items:center; gap:12px; padding:6px 2px; border-bottom:1px solid rgba(175,198,233,0.16); }
+  .slot:last-child { border-bottom:none; }
+  .sph { width:13mm; height:13mm; border-radius:50%; object-fit:cover; border:1px solid rgba(224,190,114,0.6); flex-shrink:0; }
+  .sdotw { width:13mm; flex-shrink:0; text-align:center; }
+  .sdot { width:8px; height:8px; border-radius:50%; background:#8aa0bd; display:inline-block; }
+  .stime { font-size:13px; font-weight:600; color:#E0BE72; letter-spacing:0.5px; }
+  .sname { font-family:'Playfair Display',Georgia,serif; font-size:17px; color:#F0EAE0; line-height:1.18; margin-top:1px; }
+  .sdesc { font-family:'Playfair Display',Georgia,serif; font-style:italic; font-size:13px; color:#AFC6E9; margin-top:0; }
+  .smoment { font-size:14px; color:rgba(231,225,215,0.8); margin-top:1px; }
+
+  /* PERSONE */
+  .people { margin-top:auto; padding-top:12px; }
+  .people-head { text-align:center; }
+  .pgrid { display:flex; justify-content:center; gap:9mm; margin-top:12px; }
+  .person { text-align:center; width:33mm; }
+  .pph { width:27mm; height:27mm; border-radius:50%; object-fit:cover; border:1px solid rgba(175,198,233,0.45); box-shadow:0 0 0 4px rgba(175,198,233,0.06); }
+  .person .nm { font-family:'Playfair Display',Georgia,serif; font-size:13.5px; color:#F0EAE0; margin-top:8px; line-height:1.2; }
+  .person .rl { font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#E0BE72; margin-top:4px; }
+
+  /* FOOTER + QR */
+  .foot { display:flex; align-items:flex-end; justify-content:space-between; margin-top:14px; }
+  .foot-left .fl1 { font-size:13px; color:#F0EAE0; font-weight:500; }
+  .foot-left .fl2 { font-size:11px; color:rgba(231,225,215,0.55); margin-top:5px; }
+  .foot-left .fl3 { font-size:13px; color:#E0BE72; font-weight:600; letter-spacing:1.5px; margin-top:9px; }
+  .qr-box { text-align:center; }
+  .qr-box img { width:26mm; height:26mm; display:block; border-radius:2mm; }
+  .qr-box .qrlbl { font-size:9px; letter-spacing:1.5px; text-transform:uppercase; color:#AFC6E9; margin-top:5px; }
+</style>
+</head>
+<body>
+  <div class="frame"></div>
+  <div class="wrap">
+
+    <div class="head">
+      <img class="logo" src="../Loghi/colorato-trasparente.svg" alt="" />
+      <div class="brand">Liberi dal Successo</div>
+      <div class="date">Sabato 20 Giugno <em>2026</em></div>
+      <div class="place">Sala Polivalente · Bresseo, Teolo (PD) · dalle 17:30</div>
+      <div class="rule"></div>
+    </div>
+
+    <div class="prog">
+      <div class="ptitle">Il programma della serata</div>
+
+      <div class="slot">
+        <div class="sdotw"><span class="sdot"></span></div>
+        <div><div class="stime">17:30</div><div class="smoment">Accoglienza e apertura evento</div></div>
+      </div>
+      <div class="slot">
+        <img class="sph" src="../people/michele-uliana.jpg" alt="" />
+        <div><div class="stime">18:00</div><div class="sname">Michele Uliana</div><div class="sdesc">Respiro e consapevolezza</div></div>
+      </div>
+      <div class="slot">
+        <img class="sph" src="../people/adama-mbaye-maya-bosello.jpg" alt="" />
+        <div><div class="stime">18:30</div><div class="sname">Adama Mbaye &amp; Maya Bosello</div><div class="sdesc">Il confine dell’identità</div></div>
+      </div>
+      <div class="slot">
+        <div class="sdotw"><span class="sdot"></span></div>
+        <div><div class="stime">19:00</div><div class="smoment">Rinfresco e momento conviviale</div></div>
+      </div>
+      <div class="slot">
+        <img class="sph" src="../people/joel-parman-silvia-grimaldi.jpg" alt="" />
+        <div><div class="stime">20:00</div><div class="sname">Joel Parman &amp; Silvia Grimaldi</div><div class="sdesc">A chi vuoi piacere?</div></div>
+      </div>
+      <div class="slot">
+        <img class="sph" src="../people/gianmarco-gomiero.jpg" alt="" />
+        <div><div class="stime">20:30</div><div class="sname">Gianmarco Gomiero</div><div class="sdesc">L’unica direzione</div></div>
+      </div>
+      <div class="slot">
+        <img class="sph" src="../people/jessydance.jpg" alt="" />
+        <div><div class="stime">21:00</div><div class="sname">Jessydance</div><div class="sdesc">Performance di danza</div></div>
+      </div>
+    </div>
+
+    <div class="people">
+      <div class="people-head"><span class="seclabel">Le persone che daranno vita alla serata</span></div>
+      <div class="pgrid">
+        <div class="person"><img class="pph" src="../people/giulia-lazzaretto.jpg" alt="" /><div class="nm">Giulia Lazzaretto</div><div class="rl">Presentatrice</div></div>
+        <div class="person"><img class="pph" src="../people/agnese-ardolino.jpg" alt="" /><div class="nm">Agnese Ardolino</div><div class="rl">Violino</div></div>
+        <div class="person"><img class="pph" src="../people/stefano-canton.jpg" alt="" /><div class="nm">Stefano Canton</div><div class="rl">Clarinetto</div></div>
+        <div class="person"><img class="pph" src="../people/giacomo-gomiero.jpg" alt="" /><div class="nm">Giacomo Gomiero</div><div class="rl">Chitarra acustica</div></div>
+      </div>
+    </div>
+
+    <div class="foot">
+      <div class="foot-left">
+        <div class="fl1">Ingresso gratuito · Rinfresco</div>
+        <div class="fl2">Un evento per ridefinire il significato di successo.</div>
+        <div class="fl3">liberidalsuccesso.it</div>
+      </div>
+      <div class="qr-box">
+        <img src="qr-liberidalsuccesso.png" alt="QR liberidalsuccesso.it" />
+        <div class="qrlbl">Scopri di più</div>
+      </div>
+    </div>
+
+  </div>
+</body>
+</html>
