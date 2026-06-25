@@ -89,6 +89,11 @@ function doPost(e) {
       appendToSheet_('Grazie - Feedback',
         ['Timestamp', 'Nome', 'Pensiero', 'Avvisami se rifacciamo'],
         [data.timestamp || '', data.nome || '', data.pensiero || '', data.reinteressato || '']);
+      try {
+        sendAdminNotifyFeedback(data);
+      } catch (adminErr) {
+        Logger.log('sendAdminNotifyFeedback: ' + (adminErr && adminErr.message ? adminErr.message : adminErr));
+      }
     } else {
       var sheetIscr = ss.getSheetByName('Iscrizioni');
       if (!sheetIscr) {
@@ -996,6 +1001,46 @@ function getWhatsAppConfig_() {
  * Invia messaggio WhatsApp tramite https://www.callmebot.com/ (UrlFetch).
  * Se mancano proprietà o CallMeBot risponde errore, scrive in Logger (Esecuzioni).
  */
+/**
+ * Notifica organizzatore di un nuovo FEEDBACK dalla pagina "Grazie".
+ * 1) WhatsApp (CallMeBot, il bot solito)  2) email di backup a liberidalsuccesso@gmail.com.
+ * Entrambe in try/catch: se una fallisce, l'altra parte comunque.
+ */
+function sendAdminNotifyFeedback(data) {
+  var nome     = adminLine_(data.nome || 'Anonimo');
+  var pensiero = adminLine_(data.pensiero || '—');
+  var avvisa   = adminLine_(data.reinteressato || '—');
+
+  // 1) WhatsApp
+  try {
+    sendWhatsAppAdmin(
+      '💙 *Nuovo feedback (pagina Grazie)*\n\n' +
+      'Nome: ' + nome +
+      '\nPensiero: ' + pensiero +
+      '\nVuole essere avvisato: ' + avvisa
+    );
+  } catch (waErr) {
+    Logger.log('[Feedback WhatsApp] ' + (waErr && waErr.message ? waErr.message : waErr));
+  }
+
+  // 2) Email di backup
+  try {
+    GmailApp.sendEmail(
+      'liberidalsuccesso@gmail.com',
+      'Nuovo feedback dalla pagina Grazie — ' + nome,
+      'Hai ricevuto un nuovo pensiero dalla pagina Grazie.\n\n' +
+      'Nome: ' + nome + '\n' +
+      'Pensiero: ' + pensiero + '\n' +
+      'Vuole essere avvisato se rifacciamo: ' + avvisa + '\n' +
+      'Quando: ' + (data.timestamp || '') + '\n\n' +
+      '— Notifica automatica · Liberi dal Successo',
+      { name: 'Liberi dal Successo' }
+    );
+  } catch (mailErr) {
+    Logger.log('[Feedback mail] ' + (mailErr && mailErr.message ? mailErr.message : mailErr));
+  }
+}
+
 function sendWhatsAppAdmin(text) {
   var c = getWhatsAppConfig_();
   if (!c.phone || !c.apikey) {
